@@ -17,6 +17,7 @@
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.4",
     "iron-session": "^6.3.1",
+    "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.0",
     "mongodb": "^5.4.0",
     "mongoose": "^7.1.0",

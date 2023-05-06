@@ -1,8 +1,9 @@
 import axios from "axios";
+import { useRouter } from "next/router";
 
-export default function Navbar({isLogged, user}: {isLogged: boolean, user: {email: string}}) {
-    console.log(isLogged)
-    console.log(user)
+export default function Navbar({isLogged}: {isLogged: boolean}) {
+    
+    const { push } = useRouter();
 
     const Logout = async () => {
         try {
@@ -11,7 +12,10 @@ export default function Navbar({isLogged, user}: {isLogged: boolean, user: {emai
             console.error(error); // log any errors that occur
             return;
         }
+        push("/login"); // bug where i logout from homepage but still same navbar
     }
+
+    console.log(isLogged)
 
     return (
     <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6">

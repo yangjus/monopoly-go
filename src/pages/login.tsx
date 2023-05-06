@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import axios from "axios";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { GetServerSideProps } from "next";
+import jwt from "jsonwebtoken";
+import Navbar from "@component/components/Navbar";
 
 interface FormData {
     email: string;
     password: string;
 }
 
-export default function Register() {
+export default function Register({ user }: { user: any }) {
     const { push } = useRouter();
 
     const [formData, setFormData] = useState<FormData>({
@@ -31,13 +34,11 @@ export default function Register() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setSubmitting(true);
-        console.log(formData);
 
         try {
             const response = await axios.post("/api/login", formData);
-            console.log(response)
             if (response.status === 200) {
-                push("/register");
+                push("/");
             }
         } catch (error) {
             console.error(error); // log any errors that occur
@@ -51,6 +52,8 @@ export default function Register() {
     };
 
   return (
+    <>
+    <Navbar isLogged={user ? true : false}/>
     <div className="flex justify-center py-4">
         <form className="min-h-screen w-full max-w-sm" onSubmit={handleSubmit}>
             <div className="text-4xl py-4">Login</div>
@@ -86,5 +89,25 @@ export default function Register() {
             )}
         </form>
     </div>
+    </>
   );
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ req }: {req: any }) => {
+
+    if (req.headers.cookie) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false
+        }
+      }
+    }
+
+    //no user
+    return {
+      props: {
+        user: false
+      }
+    }
 }

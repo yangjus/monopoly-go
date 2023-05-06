@@ -1,15 +1,18 @@
 import { GetServerSideProps } from "next";
 import { useRouter } from 'next/router';
 import jwt from "jsonwebtoken";
+import Navbar from "@component/components/Navbar";
 
 export default function Home({ user }: { user: any }) {
   const router = useRouter();
-  console.log(user);
+
   const handleClick = () => {
     router.push("/register");
   }
-
+  
   return (
+    <>
+    <Navbar isLogged={user ? true : false}/>
     <div className="items-center text-center justify-center h-screen space-y-4">
       <div className="text-4xl pt-20">Welcome to the MonopolyGO trading website!</div>
       <div className="text-2xl">Trading cards made easy</div>
@@ -19,16 +22,20 @@ export default function Home({ user }: { user: any }) {
         Get started now!
       </button>
     </div>
+    </>
   )
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ req }: {req: any }) => {
 
-if (!req.headers.cookie) {
+  if (!req.headers.cookie) {
     return {
-      redirect: {
-        destination: '/login',
-        permanent: false
+      // redirect: {
+      //   destination: '/login',
+      //   permanent: false
+      // }
+      props: {
+        user: false
       }
     }
   }

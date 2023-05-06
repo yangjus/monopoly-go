@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { GetServerSideProps } from "next";
+import Navbar from "@component/components/Navbar";
+
+import { useRouter } from "next/navigation";
 
 interface FormData {
     email: string;
@@ -51,7 +55,10 @@ const formCheck = (formData: FormData) => {
     return "";
 }
 
-export default function Register() {
+export default function Register({ user }: { user: any }) {
+    
+    const { push } = useRouter();
+
     const [formData, setFormData] = useState<FormData>({
         email: "",
         password: "",
@@ -103,6 +110,7 @@ export default function Register() {
             });
             setSubmitting(false);
             setSuccess(true);
+            push("/");
         } catch (error) {
             console.error(error); // log any errors that occur
             setError(true);
@@ -110,6 +118,8 @@ export default function Register() {
     };
 
   return (
+    <>
+    <Navbar isLogged={user ? true : false}/>
     <div className="flex justify-center py-4">
         <form className="min-h-screen w-full max-w-sm" onSubmit={handleSubmit}>
             <div className="text-4xl py-4">Register Account</div>
@@ -145,5 +155,25 @@ export default function Register() {
             )}
         </form>
     </div>
+    </>
   );
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ req }: {req: any }) => {
+
+    if (req.headers.cookie) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false
+        }
+      }
+    }
+
+    //no user
+    return {
+      props: {
+        user: false
+      }
+    }
 }
