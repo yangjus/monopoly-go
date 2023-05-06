@@ -1,9 +1,6 @@
-import { withSessionRoute } from "@component/../lib/withSession";
 
-export default withSessionRoute(
-    function logoutRoute(req: any, res: any) {
-      req.session.destroy();
-      res.send({ ok: true });
-      res.redirect("/");
-    },
-);
+export default function logoutRoute(req: any, res: any) {
+    res.setHeader('Set-Cookie', 'token=; Max-Age=0; Path=/; HttpOnly');
+    res.send({ ok: true });
+    res.redirect("/");
+};

@@ -7,8 +7,8 @@ import Head from 'next/head';
 import Navbar from '@component/components/Navbar'
 import Footer from '@component/components/Footer'
 import Loading from '@component/components/Loading';
-import { withSessionSsr } from "@component/../lib/withSession";
 import { GetServerSideProps } from "next";
+import jwt from "jsonwebtoken";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -54,27 +54,25 @@ export default function App({ Component, pageProps, isLogged, user }: AppProps &
   )
 }
 
-export const getServerSideProps: GetServerSideProps = withSessionSsr(
-  async ({ req, res }: {req: any, res: any}) => {
-    console.log("getServerSideProps called");
-    console.log("req.session.user", req.session.user);
-    
-    const user = req.session.get("user");
+export const getServerSideProps: GetServerSideProps = async ({ req }: {req: any }) => {
 
-    if (!user.email) { //if user is not logged in
-      return {
-        props: {
-          isLogged: false,
-          user: null,
-        }
-      };
-    }
-
+  if (!req.headers.cookie) { //if user is not logged in
     return {
       props: {
-        isLogged: true,
-        user: req.session.user,
-      },
+        isLogged: false,
+        user: null,
+      }
     };
   }
-)
+
+  console.log(req.headers.cookie)
+  const token = req.headers.cookie.split(';').find((cookie: any) => cookie.trim().startsWith('token='))?.split('=')[1];
+  const decodedToken = jwt.verify(token, process.env.JWT_TOKEN);
+
+  return {
+    props: {
+      isLogged: true,
+      user: decodedToken,
+    },
+  };
+}

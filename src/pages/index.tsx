@@ -1,10 +1,10 @@
 import { GetServerSideProps } from "next";
 import { useRouter } from 'next/router';
-import { getSession } from "next-auth/react";
+import jwt from "jsonwebtoken";
 
-export default function Home({ session }: { session: any }) {
+export default function Home({ user }: { user: any }) {
   const router = useRouter();
-  console.log(session);
+  console.log(user);
   const handleClick = () => {
     router.push("/register");
   }
@@ -22,12 +22,9 @@ export default function Home({ session }: { session: any }) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context: any) => {
+export const getServerSideProps: GetServerSideProps = async ({ req }: {req: any }) => {
 
-  const session = await getSession(context);
-  console.log(session)
-
-  if (!session) {
+if (!req.headers.cookie) {
     return {
       redirect: {
         destination: '/login',
@@ -36,9 +33,12 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
     }
   }
 
+  const token = req.headers.cookie.split(';').find((cookie: any) => cookie.trim().startsWith('token='))?.split('=')[1];
+  const decodedToken = jwt.verify(token, process.env.JWT_TOKEN);
+
   return {
     props: {
-      session
+      user: decodedToken
     }
   }
 }
