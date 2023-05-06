@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 interface FormData {
     email: string;
@@ -18,6 +19,38 @@ const labelName = {
     social: "Discord/Facebook/social link*",
 }
 
+const formCheck = (formData: FormData) => {
+    //Validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email || !emailRegex.test(formData.email)) {
+        return "Please enter a valid email address.";
+    }
+
+    //Check password strength
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    if (!formData.password || !passwordRegex.test(formData.password)) {
+        return "Please enter a strong password (at least 8 characters, 1 uppercase letter, 1 lowercase letter, and 1 number).";
+    }
+
+    //Validate rank
+    if (!formData.rank || formData.rank < 0 || formData.rank > 20000) {
+        return "Please enter a valid numerical rank.";
+    }
+    
+    const inviteRegex = /^https:\/\/s\.scope\.ly\/[a-zA-Z0-9]{11}$/;
+    //Validate invite link
+    if (formData.invite && !inviteRegex.test(formData.invite)) {
+        return "Please enter a valid invite link.";
+    }
+
+    //Make sure social link is required
+    if (!formData.social) {
+        return "Please enter a social (discord, facebook, etc.) link.";
+    }
+
+    return "";
+}
+
 export default function Register() {
     const [formData, setFormData] = useState<FormData>({
         email: "",
@@ -31,8 +64,9 @@ export default function Register() {
     const formKeys = Object.keys(formData) as (keyof FormData)[];
 
     const [submitting, setSubmitting] = useState(false);
-    const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
+    const [error, setError] = useState(false);
+    const [message, setMessage] = useState("error registrating");
     
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
@@ -41,16 +75,38 @@ export default function Register() {
         });
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setSubmitting(true);
-        setError(null);
         // TODO: Submit the form data to the server
-        // Example code for simulating a successful form submission after 2 seconds
-        setTimeout(() => {
+        const error_message: string = formCheck(formData);
+        if (error_message !== "") {
+            setError(true);
+            setMessage(error_message);
+            setSubmitting(false);
+            return;
+        }
+
+        setError(false);
+
+        try {
+            const response = await axios.post("/api/register", formData);
+            console.log(response.data); // log the response data for debugging
+            // Reset form after successful submission
+            setFormData({
+                email: "",
+                password: "",
+                username: "",
+                rank: 0,
+                invite: "",
+                social: "", 
+            });
             setSubmitting(false);
             setSuccess(true);
-        }, 2000);
+        } catch (error) {
+            console.error(error); // log any errors that occur
+            setError(true);
+        }
     };
 
   return (
@@ -83,6 +139,9 @@ export default function Register() {
             </div>
             {success && (
             <p className="md:flex md:items-center text-green-500 mb-4 justify-center pt-6">Registration successful!</p>
+            )}
+            {error && (
+            <p className="md:flex md:items-center text-red-500 mb-4 justify-center pt-6">{message}</p>
             )}
         </form>
     </div>

@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 interface FormData {
     email: string;
@@ -6,6 +9,8 @@ interface FormData {
 }
 
 export default function Register() {
+    const { push } = useRouter();
+
     const [formData, setFormData] = useState<FormData>({
         email: "",
         password: "",
@@ -14,8 +19,7 @@ export default function Register() {
     const formKeys = Object.keys(formData) as (keyof FormData)[];
 
     const [submitting, setSubmitting] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const [success, setSuccess] = useState(false);
+    const [success, setSuccess] = useState<boolean | null>(null);
     
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
@@ -24,16 +28,26 @@ export default function Register() {
         });
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setSubmitting(true);
-        setError(null);
-        // TODO: Submit the form data to the server
-        // Example code for simulating a successful form submission after 2 seconds
-        setTimeout(() => {
+        console.log(formData);
+
+        try {
+            const response = await axios.post("/api/login", formData);
+            console.log(response)
+            if (response.status === 200) {
+                push("/register");
+            }
+        } catch (error) {
+            console.error(error); // log any errors that occur
+            setSuccess(false);
             setSubmitting(false);
-            setSuccess(true);
-        }, 2000);
+            return;
+        }
+
+        setSuccess(true);
+        setSubmitting(false);
     };
 
   return (
@@ -66,6 +80,9 @@ export default function Register() {
             </div>
             {success && (
             <p className="md:flex md:items-center text-green-500 mb-4 justify-center pt-6">Login successful!</p>
+            )}
+            {success === false && (
+            <p className="md:flex md:items-center text-red-500 mb-4 justify-center pt-6">Login unsuccessful.</p>
             )}
         </form>
     </div>

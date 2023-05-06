@@ -1,9 +1,10 @@
-import { GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 import { useRouter } from 'next/router';
+import { getSession } from "next-auth/react";
 
-export default function Home({ test }: { test: String }) {
+export default function Home({ session }: { session: any }) {
   const router = useRouter();
-
+  console.log(session);
   const handleClick = () => {
     router.push("/register");
   }
@@ -17,18 +18,27 @@ export default function Home({ test }: { test: String }) {
         className="mx-auto bg-teal-500 hover:bg-teal-700 text-white text-2xl font-bold py-6 px-10 rounded">
         Get started now!
       </button>
-      <div>{test}</div>
     </div>
   )
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (context: any) => {
 
-  const test: String = "this is a test";
+  const session = await getSession(context);
+  console.log(session)
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false
+      }
+    }
+  }
 
   return {
     props: {
-      test,
+      session
     }
   }
 }
