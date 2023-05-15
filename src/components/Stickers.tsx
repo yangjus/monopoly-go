@@ -1,12 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import FilterSelect from "./FilterSelect";
 import { Sticker, Album, stickers } from "../../constants/stickers";
 import { SelectChangeEvent } from "@mui/material";
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 
 export default function Stickers() {
     const [selectedAlbum, setSelectedAlbum] = useState<string>("New York");
     const [selectedStar, setSelectedStar] = useState<string>("1");
     const [selectedStickers, setSelectedStickers] = useState<Sticker[]>();
+    const [checkAllAlbum, setCheckAllAlbum] = useState<boolean>(true);
+    const [checkAllStar, setCheckAllStar] = useState<boolean>(true);
 
     const albumOptions: {label: Album, value: Album}[] = Object.values(Album).map((album) => ({
         label: album,
@@ -29,36 +34,100 @@ export default function Stickers() {
         setSelectedStar(event.target.value as string);
     };
 
-    useEffect(() => {
-        console.log(selectedAlbum);
-        console.log(selectedStar);
-        const filteredStickers: Sticker[] = stickers.filter((sticker) => 
-            sticker.album === selectedAlbum && sticker.star === Number(selectedStar)
-        )
-        setSelectedStickers(filteredStickers);
+    const handleCheckAlbum = (event: ChangeEvent<HTMLInputElement>) => {
+        setCheckAllAlbum(event.target.checked);
+    };
 
-    }, [selectedAlbum, selectedStar]);
+    const handleCheckStar = (event: ChangeEvent<HTMLInputElement>) => {
+        setCheckAllStar(event.target.checked);
+    };
+
+    useEffect(() => {
+        console.log(`selected album: `, selectedAlbum);
+        console.log(`selected star: `, selectedStar);
+        console.log(`all albums? `, checkAllAlbum);
+        console.log(`all stars? `, checkAllStar);
+
+        if (checkAllAlbum && checkAllStar) {
+            setSelectedStickers(stickers);
+
+        }
+        else if (checkAllAlbum) {
+            const allAlbumStickers: Sticker[] = stickers.filter((sticker) =>
+                sticker.star === Number(selectedStar)
+            )
+            setSelectedStickers(allAlbumStickers);
+        }
+        else if (checkAllStar) {
+            const allStarStickers: Sticker[] = stickers.filter((sticker) => 
+                sticker.album === selectedAlbum
+            )
+            setSelectedStickers(allStarStickers);
+        }
+        else {
+            const filteredStickers: Sticker[] = stickers.filter((sticker) => 
+                sticker.album === selectedAlbum && sticker.star === Number(selectedStar)
+            )
+            setSelectedStickers(filteredStickers);
+        }
+
+    }, [selectedAlbum, selectedStar, checkAllAlbum, checkAllStar]);
 
     return (
     <div>
         <div className="text-2xl text-white pb-5">Tradeable Stickers</div>
         <div className="grid grid-rows-8 gap-4 text-left">
             <div className="row-span-1 rounded-md text-white">
-                <div className="grid grid-cols-4 gap-4">
-                    <div className="col-span-1 flex items-center justify-center">
-                        Filter:
-                    </div>
+                <div className="grid grid-cols-3 gap-4">
                     <div className="col-span-1">
+                        <FormGroup>
+                            <FormControlLabel 
+                                control={
+                                    <Checkbox
+                                        checked={checkAllAlbum}
+                                        onChange={handleCheckAlbum}
+                                        sx={{
+                                            color: "white",
+                                            '&.Mui-checked': {
+                                            color: "white",
+                                            },
+                                        }}
+                                    />
+                                } 
+                                labelPlacement="start" 
+                                label="All" 
+                            />
+                        </FormGroup>
                         <FilterSelect 
                             title="Album"
+                            disabled={checkAllAlbum}
                             options={albumOptions} 
                             onChange={handleAlbumSelectChange} 
                             selectedOption={selectedAlbum}
                         />
                     </div>
                     <div className="col-span-1">
+                        <FormGroup>
+                            <FormControlLabel 
+                                control={
+                                    <Checkbox
+                                        checked={checkAllStar}
+                                        onChange={handleCheckStar}
+                                        sx={{
+                                            color: "white",
+                                            '&.Mui-checked': {
+                                            color: "white",
+                                            },
+                                        }}
+                                    />
+                                } 
+                                labelPlacement="start" 
+                                label="All" 
+                            />
+                        </FormGroup>
                         <FilterSelect 
                             title="Star"
+                            disabled={checkAllStar}
                             options={starOptions} 
                             onChange={handleStarSelectChange} 
                             selectedOption={selectedStar}
@@ -72,7 +141,7 @@ export default function Stickers() {
             <div className="row-span-1 text-2xl text-white">
                 Extras:
             </div>
-            <div className="row-span-3 flex flex-wrap rounded-md bg-white p-3 h-64">
+            <div className="row-span-3 flex flex-wrap overflow-auto rounded-md bg-white p-3 h-64">
                 {selectedStickers?.map((sticker: Sticker) => (
                     <>
                     <div>
@@ -87,7 +156,7 @@ export default function Stickers() {
             <div className="row-span-1 text-2xl text-white">
                 Missing:
             </div>
-            <div className="row-span-2 rounded-md bg-white p-3 h-64">
+            <div className="row-span-2 flex flex-wrap overflow-auto rounded-md bg-white p-3 h-64">
                 insert missing stickers here
             </div>
         </div>

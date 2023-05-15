@@ -17,16 +17,17 @@ type SelectOption = {
   
   type SelectProps = {
     title: string;
+    disabled: boolean;
     options: SelectOption[];
     onChange: (event: SelectChangeEvent) => void;
     selectedOption: string;
   };
   
-export default function FilterSelect({title, options, onChange, selectedOption}: SelectProps) {
+export default function FilterSelect({title, disabled, options, onChange, selectedOption}: SelectProps) {
 
     return (
         <Box sx={{ minWidth: 120 }}>
-        <FormControl fullWidth>
+        <FormControl fullWidth disabled={disabled}>
             <InputLabel sx={{ color: "white" }}>{title}</InputLabel>
             <Select
                 sx={{
