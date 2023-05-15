@@ -1,63 +1,17 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 import axios from "axios";
-import { GetServerSideProps } from "next";
-import Navbar from "@component/components/Navbar";
+import { FormData, labelName, formCheck } from "@component/pages/register";
 
-import { useRouter } from "next/navigation";
+export default function Account() {
 
-export interface FormData {
-    email: string;
-    password: string;
-    username: string;
-    rank: number;
-    invite: string;
-    social: string;
-}
-
-export const labelName = {
-    email: "Email*",
-    password: "Password*",
-    username: "MonopolyGO! Username*",
-    rank: "MonopolyGO! Rank",
-    invite: "MonopolyGO! Invite Link",
-    social: "Discord/Facebook/social link*",
-}
-
-export const formCheck = (formData: FormData) => {
-    //Validate email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!formData.email || !emailRegex.test(formData.email)) {
-        return "Please enter a valid email address.";
+    const labelEnabled = {
+        email: false,
+        password: true,
+        username: false,
+        rank: true,
+        invite: true,
+        social: true,
     }
-
-    //Check password strength
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-    if (!formData.password || !passwordRegex.test(formData.password)) {
-        return "Please enter a strong password (at least 8 characters, 1 uppercase letter, 1 lowercase letter, and 1 number).";
-    }
-
-    //Validate rank
-    if (!formData.rank || formData.rank < 0 || formData.rank > 20000) {
-        return "Please enter a valid numerical rank.";
-    }
-    
-    const inviteRegex = /^https:\/\/s\.scope\.ly\/[a-zA-Z0-9]{11}$/;
-    //Validate invite link
-    if (formData.invite && !inviteRegex.test(formData.invite)) {
-        return "Please enter a valid invite link.";
-    }
-
-    //Make sure social link is required
-    if (!formData.social) {
-        return "Please enter a social (discord, facebook, etc.) link.";
-    }
-
-    return "";
-}
-
-export default function Register({ user }: { user: any }) {
-    
-    const { push } = useRouter();
 
     const [formData, setFormData] = useState<FormData>({
         email: "",
@@ -110,26 +64,24 @@ export default function Register({ user }: { user: any }) {
             });
             setSubmitting(false);
             setSuccess(true);
-            push("/");
         } catch (error) {
             console.error(error); // log any errors that occur
             setError(true);
         }
     };
 
-  return (
-    <>
-    <Navbar isLogged={user ? true : false}/>
-    <div className="flex justify-center py-4">
-        <form className="min-h-screen w-full max-w-sm" onSubmit={handleSubmit}>
-            <div className="text-4xl py-4">Register Account</div>
+    return (
+    <div>
+        <div className="text-2xl text-white">Account Info</div>
+        <form className="min-h-screen w-full max-w-sm pt-5" onSubmit={handleSubmit}>
             {formKeys.map((key: keyof FormData) => (
                 <div className="mb-4">
-                    <label htmlFor={key} className="block capitalize text-gray-500 font-bold mb-2">
+                    <label htmlFor={key} className="block capitalize text-white font-bold mb-2">
                         {labelName[key]}
                     </label>
                     <input
                         type="text"
+                        disabled={!labelEnabled[key]}
                         name={key}
                         id={key}
                         value={formData[key]}
@@ -142,7 +94,7 @@ export default function Register({ user }: { user: any }) {
                 <button 
                     type="submit"
                     disabled={submitting}
-                    className="shadow bg-teal-500 hover:bg-teal-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                    className="border border-white bg-teal-500 hover:bg-teal-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
                 >
                     {submitting ? "Submitting..." : "Submit"}
                 </button>
@@ -155,25 +107,5 @@ export default function Register({ user }: { user: any }) {
             )}
         </form>
     </div>
-    </>
-  );
-}
-
-export const getServerSideProps: GetServerSideProps = async ({ req }: {req: any }) => {
-
-    if (req.headers.cookie) {
-      return {
-        redirect: {
-          destination: '/',
-          permanent: false
-        }
-      }
-    }
-
-    //no user
-    return {
-      props: {
-        user: false
-      }
-    }
-}
+    );
+};

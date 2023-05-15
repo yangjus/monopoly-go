@@ -15,7 +15,7 @@ export default function Home({ user }: { user: any }) {
     <Navbar isLogged={user ? true : false}/>
     <div className="items-center text-center justify-center h-screen space-y-4">
       <div className="text-4xl pt-20">Welcome to the MonopolyGO trading website!</div>
-      <div className="text-2xl">Trading cards made easy</div>
+      <div className="text-2xl">Trading stickers made easy</div>
       <button 
         onClick={handleClick}
         className="mx-auto bg-teal-500 hover:bg-teal-700 text-white text-2xl font-bold py-6 px-10 rounded">
