@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
-import FilterDropdown from "./FilterDropdown";
+import FilterSelect from "./FilterSelect";
 import { Sticker, Album, stickers } from "../../constants/stickers";
+import { SelectChangeEvent } from "@mui/material";
 
 export default function Stickers() {
-    const [selectedAlbum, setSelectedAlbum] = 
-        useState<{label: string, value: string}>({label: "New York", value: "New York"});
-    const [selectedStar, setSelectedStar] = 
-        useState<{label: string, value: string}>({label: "1", value: "1"});
+    const [selectedAlbum, setSelectedAlbum] = useState<string>("New York");
+    const [selectedStar, setSelectedStar] = useState<string>("1");
     const [selectedStickers, setSelectedStickers] = useState<Sticker[]>();
 
     const albumOptions: {label: Album, value: Album}[] = Object.values(Album).map((album) => ({
@@ -22,19 +21,19 @@ export default function Stickers() {
         {label: "5", value: "5"}
     ]
   
-    const handleAlbumDropdownChange = (value: string) => {
-        setSelectedAlbum({label: value, value: value});
+    const handleAlbumSelectChange = (event: SelectChangeEvent) => {
+        setSelectedAlbum(event.target.value as string);
     };
 
-    const handleStarDropdownChange = (value: string) => {
-        setSelectedStar({label: value, value: value});
+    const handleStarSelectChange = (event: SelectChangeEvent) => {
+        setSelectedStar(event.target.value as string);
     };
 
     useEffect(() => {
         console.log(selectedAlbum);
         console.log(selectedStar);
         const filteredStickers: Sticker[] = stickers.filter((sticker) => 
-            sticker.album === selectedAlbum?.value && sticker.star === Number(selectedStar?.value)
+            sticker.album === selectedAlbum && sticker.star === Number(selectedStar)
         )
         setSelectedStickers(filteredStickers);
 
@@ -43,25 +42,25 @@ export default function Stickers() {
     return (
     <div>
         <div className="text-2xl text-white pb-5">Tradeable Stickers</div>
-        <div className="grid grid-rows-6 gap-4 text-left">
+        <div className="grid grid-rows-8 gap-4 text-left">
             <div className="row-span-1 rounded-md text-white">
                 <div className="grid grid-cols-4 gap-4">
                     <div className="col-span-1 flex items-center justify-center">
                         Filter:
                     </div>
                     <div className="col-span-1">
-                        Album
-                        <FilterDropdown 
+                        <FilterSelect 
+                            title="Album"
                             options={albumOptions} 
-                            onChange={handleAlbumDropdownChange} 
+                            onChange={handleAlbumSelectChange} 
                             selectedOption={selectedAlbum}
                         />
                     </div>
                     <div className="col-span-1">
-                        Star
-                        <FilterDropdown 
+                        <FilterSelect 
+                            title="Star"
                             options={starOptions} 
-                            onChange={handleStarDropdownChange} 
+                            onChange={handleStarSelectChange} 
                             selectedOption={selectedStar}
                         />
                     </div>
@@ -70,8 +69,10 @@ export default function Stickers() {
                     </div>
                 </div>
             </div>
-            <div className="row-span-3 rounded-md bg-white p-5">
+            <div className="row-span-1 text-2xl text-white">
                 Extras:
+            </div>
+            <div className="row-span-3 flex flex-wrap rounded-md bg-white p-3 h-64">
                 {selectedStickers?.map((sticker: Sticker) => (
                     <>
                     <div>
@@ -83,8 +84,11 @@ export default function Stickers() {
                     </>
                 ))}
             </div>
-            <div className="row-span-2 rounded-md bg-white p-5">
+            <div className="row-span-1 text-2xl text-white">
                 Missing:
+            </div>
+            <div className="row-span-2 rounded-md bg-white p-3 h-64">
+                insert missing stickers here
             </div>
         </div>
     </div>
