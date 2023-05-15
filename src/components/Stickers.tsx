@@ -5,6 +5,7 @@ import { SelectChangeEvent } from "@mui/material";
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import Badge from "./Badge";
 
 export default function Stickers() {
     const [selectedAlbum, setSelectedAlbum] = useState<string>("New York");
@@ -49,24 +50,26 @@ export default function Stickers() {
         console.log(`all stars? `, checkAllStar);
 
         if (checkAllAlbum && checkAllStar) {
-            setSelectedStickers(stickers);
-
+            const allTradeableStickers: Sticker[] = stickers.filter((sticker) =>
+                sticker.tradeable
+            )
+            setSelectedStickers(allTradeableStickers);
         }
         else if (checkAllAlbum) {
             const allAlbumStickers: Sticker[] = stickers.filter((sticker) =>
-                sticker.star === Number(selectedStar)
+                sticker.star === Number(selectedStar) && sticker.tradeable
             )
             setSelectedStickers(allAlbumStickers);
         }
         else if (checkAllStar) {
             const allStarStickers: Sticker[] = stickers.filter((sticker) => 
-                sticker.album === selectedAlbum
+                sticker.album === selectedAlbum && sticker.tradeable
             )
             setSelectedStickers(allStarStickers);
         }
         else {
             const filteredStickers: Sticker[] = stickers.filter((sticker) => 
-                sticker.album === selectedAlbum && sticker.star === Number(selectedStar)
+                sticker.album === selectedAlbum && sticker.star === Number(selectedStar) && sticker.tradeable
             )
             setSelectedStickers(filteredStickers);
         }
@@ -143,14 +146,9 @@ export default function Stickers() {
             </div>
             <div className="row-span-3 flex flex-wrap overflow-auto rounded-md bg-white p-3 h-64">
                 {selectedStickers?.map((sticker: Sticker) => (
-                    <>
-                    <div>
-                        Name: {sticker.name} | Album: {sticker.album}
+                    <div className="p-1">
+                        <Badge name={sticker.name} album={sticker.album} star={sticker.star}/>
                     </div>
-                    <div>
-                        Star: {sticker.star.toString()} | Tradeable?: {sticker.tradeable ? "true" : "false"}
-                    </div>
-                    </>
                 ))}
             </div>
             <div className="row-span-1 text-2xl text-white">

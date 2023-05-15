@@ -1,8 +1,8 @@
 export interface Sticker {
-    name: String,
+    name: string,
     album: Album,
-    star: Number,
-    tradeable: Boolean
+    star: number,
+    tradeable: boolean
 };
 
 export enum Album {
@@ -147,15 +147,15 @@ export const stickers: Sticker[] = [
     { name: "Miss Marigny", album: Album.NO, star: 5, tradeable: true },
     { name: "Ghostly Gator", album: Album.NO, star: 5, tradeable: true },
 
-    { name: "Round the Maypole", album: Album.NO, star: 2, tradeable: true },
-    { name: "Spring Feast", album: Album.NO, star: 3, tradeable: true },
-    { name: "Portly Pretzel", album: Album.NO, star: 3, tradeable: true },
-    { name: "Alphorn Magic", album: Album.NO, star: 3, tradeable: true },
-    { name: "Poocherhosen", album: Album.NO, star: 4, tradeable: true },
-    { name: "Lebkuchen Lovers", album: Album.NO, star: 4, tradeable: false },
-    { name: "Bovine Beauty", album: Album.NO, star: 5, tradeable: true },
-    { name: "Polka Party", album: Album.NO, star: 5, tradeable: true },
-    { name: "Volksfest", album: Album.NO, star: 5, tradeable: false },
+    { name: "Round the Maypole", album: Album.Bavaria, star: 2, tradeable: true },
+    { name: "Spring Feast", album: Album.Bavaria, star: 3, tradeable: true },
+    { name: "Portly Pretzel", album: Album.Bavaria, star: 3, tradeable: true },
+    { name: "Alphorn Magic", album: Album.Bavaria, star: 3, tradeable: true },
+    { name: "Poocherhosen", album: Album.Bavaria, star: 4, tradeable: true },
+    { name: "Lebkuchen Lovers", album: Album.Bavaria, star: 4, tradeable: false },
+    { name: "Bovine Beauty", album: Album.Bavaria, star: 5, tradeable: true },
+    { name: "Polka Party", album: Album.Bavaria, star: 5, tradeable: true },
+    { name: "Volksfest", album: Album.Bavaria, star: 5, tradeable: false },
 
     { name: "The Old Mill", album: Album.Vermont, star: 3, tradeable: true },
     { name: "Sweater Weather", album: Album.Vermont, star: 3, tradeable: true },
@@ -179,10 +179,10 @@ export const stickers: Sticker[] = [
 
     { name: "Joyride", album: Album.Montreal, star: 3, tradeable: true },
     { name: "Doughlicious", album: Album.Montreal, star: 4, tradeable: true },
-    { name: "Tough Crowd", album: Album.Montreal, star: 4, tradeable: true },
+    { name: "Tough Crowd", album: Album.Montreal, star: 4, tradeable: false },
     { name: "Good Gravy", album: Album.Montreal, star: 4, tradeable: false },
-    { name: "Get Your Toboggan", album: Album.Montreal, star: 4, tradeable: true },
-    { name: "Slap Shot", album: Album.Montreal, star: 4, tradeable: true },
+    { name: "Get Your Toboggan", album: Album.Montreal, star: 5, tradeable: true },
+    { name: "Slap Shot", album: Album.Montreal, star: 5, tradeable: true },
     { name: "The Wheel Deal", album: Album.Montreal, star: 5, tradeable: false },
     { name: "Hundred Steeples", album: Album.Montreal, star: 5, tradeable: false },
     { name: "Plaid Chad", album: Album.Montreal, star: 5, tradeable: false },
