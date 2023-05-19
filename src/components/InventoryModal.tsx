@@ -1,6 +1,7 @@
 import { useState, ChangeEvent } from 'react';
-import { Box, Button, Grid, Typography, Modal } from '@mui/material';
+import { Box, Button, Grid, Typography, Modal, IconButton } from '@mui/material';
 import { stickers, Sticker, Album } from '../../constants/stickers';
+import CloseIcon from '@mui/icons-material/Close';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -97,6 +98,9 @@ export default function InventoryModal({user, inventory}: {user: any, inventory:
         onClose={handleClose}
     >
         <Box sx={style}>
+            <IconButton onClick={handleClose} size="small" sx={{ position: 'absolute', top: 0, right: 0 }}>
+                <CloseIcon />
+            </IconButton>
             <Typography variant="h5">
             Your Inventory
             </Typography>

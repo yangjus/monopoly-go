@@ -1,12 +1,27 @@
 import { useState, useEffect, ChangeEvent } from "react";
 import FilterSelect from "./FilterSelect";
 import { Sticker, Album, stickers } from "../../constants/stickers";
-import { SelectChangeEvent } from "@mui/material";
+import { IconButton, SelectChangeEvent, Modal, Typography, Box } from "@mui/material";
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Badge from "./Badge";
 import InventoryModal from "./InventoryModal";
+import InfoIcon from '@mui/icons-material/Info';
+import CloseIcon from '@mui/icons-material/Close';
+import untradeableStickers from "../../images/untradeable_stickers.jpg";
+
+const style = {
+    position: 'absolute', 
+    top: '50%', 
+    left: '50%', 
+    width: '30%',
+    height: '80%',
+    transform: 'translate(-50%, -50%)', 
+    bgcolor: 'background.paper', 
+    boxShadow: 24, 
+    p: 4,
+};
 
 export default function Stickers({user, inventory}: {user: any, inventory: number[]}) {
     const [selectedAlbum, setSelectedAlbum] = useState<string>("New York");
@@ -14,6 +29,7 @@ export default function Stickers({user, inventory}: {user: any, inventory: numbe
     const [selectedStickers, setSelectedStickers] = useState<Sticker[]>();
     const [checkAllAlbum, setCheckAllAlbum] = useState<boolean>(true);
     const [checkAllStar, setCheckAllStar] = useState<boolean>(true);
+    const [open, setOpen] = useState<boolean>(false);
 
     const albumOptions: {label: Album, value: Album}[] = Object.values(Album).map((album) => ({
         label: album,
@@ -77,9 +93,35 @@ export default function Stickers({user, inventory}: {user: any, inventory: numbe
 
     }, [selectedAlbum, selectedStar, checkAllAlbum, checkAllStar]);
 
+    const handleOpen = () => {
+        setOpen(true);
+    };
+    
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     return (
     <div>
-        <div className="text-2xl text-white pb-5">Tradeable Stickers</div>
+        <div className="text-2xl text-white pb-5 mr-4">
+            Tradeable Stickers
+            <IconButton onClick={handleOpen} className="mb-1">
+                <InfoIcon />
+            </IconButton>
+        </div>
+        <Modal open={open} onClose={handleClose}>
+            <Box sx={style}>
+                <IconButton onClick={handleClose} size="small" sx={{ position: 'absolute', top: 0, right: 0 }}>
+                    <CloseIcon />
+                </IconButton>
+                <img
+                    className="object-contain max-w-full max-h-full mx-auto"
+                    src={untradeableStickers.src}
+                    alt="image of untradeable stickers"
+                    loading="lazy"
+                />
+            </Box>
+        </Modal>
         <div className="grid grid-rows-8 gap-4 text-left">
             <div className="row-span-1 rounded-md text-white">
                 <div className="grid grid-cols-3 gap-4">
