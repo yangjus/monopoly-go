@@ -6,8 +6,9 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Badge from "./Badge";
+import InventoryModal from "./InventoryModal";
 
-export default function Stickers() {
+export default function Stickers({user, inventory}: {user: any, inventory: number[]}) {
     const [selectedAlbum, setSelectedAlbum] = useState<string>("New York");
     const [selectedStar, setSelectedStar] = useState<string>("1");
     const [selectedStickers, setSelectedStickers] = useState<Sticker[]>();
@@ -136,8 +137,8 @@ export default function Stickers() {
                             selectedOption={selectedStar}
                         />
                     </div>
-                    <div className="col-span-1 flex items-center justify-center">
-                        View/Edit Inventory
+                    <div className="col-span-1 flex justify-center mt-12">
+                        <InventoryModal user={user} inventory={inventory}/>
                     </div>
                 </div>
             </div>
@@ -146,7 +147,7 @@ export default function Stickers() {
             </div>
             <div className="row-span-3 flex flex-wrap overflow-auto rounded-md bg-white p-3 h-64">
                 {selectedStickers?.map((sticker: Sticker) => (
-                    <div className="p-1">
+                    <div className="p-1" key={sticker.name}>
                         <Badge name={sticker.name} album={sticker.album} star={sticker.star}/>
                     </div>
                 ))}

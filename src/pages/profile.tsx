@@ -4,10 +4,14 @@ import jwt from "jsonwebtoken";
 import Account from "@component/components/Account";
 import Stickers from "@component/components/Stickers";
 import { hasCookie, getCookie } from 'cookies-next';
+import { stickers } from "../../constants/stickers";
 
-export default function Profile({ user }: { user: any }) {
+export default function Profile({ user, inventory }: { user: any, inventory: number[] }) {
 
   console.log(user)
+
+  //add logic in Stickers such that if user just created account and has no inventory,
+  //add a div line saying: New to the website? Update your inventory to start trading!
 
   return (
   <>
@@ -18,7 +22,7 @@ export default function Profile({ user }: { user: any }) {
               <Account />
           </div>
           <div className="col-span-2 rounded-md bg-teal-500 p-5">
-              <Stickers />
+              <Stickers user={user} inventory={inventory}/>
           </div>
       </div>
   </div>
@@ -40,10 +44,13 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }: {req:
     const token: any = getCookie('session', { req, res });
 
     const decodedToken = jwt.verify(token, process.env.JWT_TOKEN);
+
+    const initialArray = new Array(stickers.length).fill(0);
   
     return {
       props: {
-        user: decodedToken
+        user: decodedToken,
+        inventory: initialArray
       }
     }
   }
