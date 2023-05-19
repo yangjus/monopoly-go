@@ -1,5 +1,7 @@
+import { deleteCookie } from 'cookies-next';
 
 export default function logoutRoute(req: any, res: any) {
-    res.setHeader('Set-Cookie', 'token=; Max-Age=0; Path=/; HttpOnly');
-    res.send({ ok: true }).end();
+
+    deleteCookie('session', { req, res });
+    res.redirect('/login');
 };

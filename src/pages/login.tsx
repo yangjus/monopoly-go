@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { GetServerSideProps } from "next";
 import jwt from "jsonwebtoken";
 import Navbar from "@component/components/Navbar";
+import { hasCookie } from 'cookies-next';
 
 interface FormData {
     email: string;
@@ -38,6 +39,7 @@ export default function Register({ user }: { user: any }) {
         try {
             const response = await axios.post("/api/login", formData);
             if (response.status === 200) {
+                //bug where when logging in, the page renders in faster than the navbar can change
                 push("/");
             }
         } catch (error) {
@@ -53,7 +55,6 @@ export default function Register({ user }: { user: any }) {
 
   return (
     <>
-    <Navbar isLogged={user ? true : false}/>
     <div className="flex justify-center py-4">
         <form className="min-h-screen w-full max-w-sm" onSubmit={handleSubmit}>
             <div className="text-4xl py-4">Login</div>
@@ -93,21 +94,20 @@ export default function Register({ user }: { user: any }) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ req }: {req: any }) => {
+export const getServerSideProps: GetServerSideProps = async ({ req, res }: {req: any, res: any }) => {
 
-    if (req.headers.cookie) {
-      return {
-        redirect: {
-          destination: '/',
-          permanent: false
-        }
-      }
+    if (!hasCookie('session', { req, res })) {
+        return {
+            props: {
+              user: false
+            }
+        } 
     }
 
-    //no user
     return {
-      props: {
-        user: false
-      }
+        redirect: {
+            destination: '/',
+            permanent: false
+        }
     }
 }

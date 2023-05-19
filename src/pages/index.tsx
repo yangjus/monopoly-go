@@ -1,46 +1,67 @@
 import { GetServerSideProps } from "next";
 import { useRouter } from 'next/router';
 import jwt from "jsonwebtoken";
-import Navbar from "@component/components/Navbar";
+import { TextField } from '@mui/material';
+import { hasCookie, getCookie } from 'cookies-next';
 
-export default function Home({ user }: { user: any }) {
+export default function Home({ user }: { user: {email: string} }) {
   const router = useRouter();
 
   const handleClick = () => {
     router.push("/register");
   }
+
+  console.log(user);
   
   return (
     <>
-    <Navbar isLogged={user ? true : false}/>
     <div className="items-center text-center justify-center h-screen space-y-4">
       <div className="text-4xl pt-20">Welcome to the MonopolyGO trading website!</div>
       <div className="text-2xl">Trading stickers made easy</div>
-      <button 
-        onClick={handleClick}
-        className="mx-auto bg-teal-500 hover:bg-teal-700 text-white text-2xl font-bold py-6 px-10 rounded">
-        Get started now!
-      </button>
+      <div className="pt-10 px-36">
+        {!user.email && 
+          <button 
+            onClick={handleClick}
+            className="mx-auto bg-teal-500 hover:bg-teal-700 text-white text-2xl font-bold py-6 px-10 rounded">
+            Get started now!
+          </button>
+        }
+        {user.email &&
+          <div>
+            <div className="text-2xl">
+              Feedback, suggestions, or found a bug?
+            </div>
+            <div className="text-2xl pb-5">
+              Send a message here:
+            </div>
+            <TextField
+              fullWidth
+              label="Message"
+              multiline
+              rows={5}
+              placeholder="feedback..."
+            />
+          </div>
+        }
+      </div>
+
     </div>
     </>
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ req }: {req: any }) => {
+export const getServerSideProps: GetServerSideProps = async ({ req, res }: {req: any, res: any }) => {
 
-  if (!req.headers.cookie) {
+  if (!hasCookie('session', { req, res })) {
     return {
-      // redirect: {
-      //   destination: '/login',
-      //   permanent: false
-      // }
       props: {
-        user: false
+        user: {}
       }
     }
   }
 
-  const token = req.headers.cookie.split(';').find((cookie: any) => cookie.trim().startsWith('token='))?.split('=')[1];
+  const token: any = getCookie('session', { req, res });
+
   const decodedToken = jwt.verify(token, process.env.JWT_TOKEN);
 
   return {
