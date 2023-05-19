@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { GetServerSideProps } from "next";
 import { hasCookie } from "cookies-next";
-
+import { stickers } from "../../constants/stickers";
 import { useRouter } from "next/navigation";
 
 export interface FormData {
@@ -18,7 +18,7 @@ export const labelName = {
     email: "Email*",
     password: "Password*",
     username: "MonopolyGO! Username*",
-    rank: "MonopolyGO! Rank",
+    rank: "MonopolyGO! Rank*",
     invite: "MonopolyGO! Invite Link",
     social: "Discord/Facebook/social link*",
 }
@@ -97,7 +97,9 @@ export default function Register({ user }: { user: any }) {
         setError(false);
 
         try {
-            const response = await axios.post("/api/register", formData);
+            const initialInventory = new Array(stickers.length).fill(0);
+            const payload = { ...formData, trusted: false, inventory: initialInventory}
+            const response = await axios.post("/api/register", payload);
             console.log(response.data); // log the response data for debugging
             // Reset form after successful submission
             setFormData({

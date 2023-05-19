@@ -2,6 +2,7 @@ import { useState, ChangeEvent } from 'react';
 import { Box, Button, Grid, Typography, Modal, IconButton } from '@mui/material';
 import { stickers, Sticker, Album } from '../../constants/stickers';
 import CloseIcon from '@mui/icons-material/Close';
+import axios from "axios";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -26,11 +27,11 @@ interface StickerID {
     id: number
 };
 
-export default function InventoryModal({user, inventory}: {user: any, inventory: number[]}) {
+export default function InventoryModal({user}: {user: any}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
-    setInventoryState(inventory);
+    setInventoryState(user.inventory);
     setOpen(false);
   }
 
@@ -39,7 +40,7 @@ export default function InventoryModal({user, inventory}: {user: any, inventory:
     id: index
   }));
 
-  const [inventoryState, setInventoryState] = useState<number[]>(inventory);
+  const [inventoryState, setInventoryState] = useState<number[]>(user.inventory);
 
   const handleInventoryChange = (e: ChangeEvent<HTMLInputElement>, id: number) => {
     let temp: number[] = [...inventoryState]
@@ -53,6 +54,17 @@ export default function InventoryModal({user, inventory}: {user: any, inventory:
       e.preventDefault();
     }
   };
+
+  const databaseUpdate = async () => {
+    try {
+      const payload = {email: user.email, inventory: inventoryState}
+      const response = await axios.post("/api/update-inventory", payload);
+      console.log("updated user: ", response);
+    }
+    catch (error) {
+      console.error(error);
+    }
+  }
 
   const renderInventory = () => {
     //logic: split up stickers by album
@@ -108,6 +120,14 @@ export default function InventoryModal({user, inventory}: {user: any, inventory:
             All stickers you currently have, including non-duplicates.
             </Typography>
             {renderInventory()}
+            <form method="POST" onSubmit={databaseUpdate}>
+              <button 
+                type="submit" 
+                className="border border-white bg-teal-500 hover:bg-teal-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+              >
+                  Save Changes
+              </button>
+            </form>
         </Box>
     </Modal>
     </div>

@@ -58,7 +58,7 @@ export default function FilterSelect({title, disabled, options, onChange, select
                 } as CustomMenuProps}
             >
             {options.map((option: SelectOption) => (
-                <MenuItem value={option.value}>{option.label}</MenuItem>
+                <MenuItem value={option.value} key={option.value}>{option.label}</MenuItem>
             ))}
             </Select>
         </FormControl>

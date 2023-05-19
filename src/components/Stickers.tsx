@@ -61,10 +61,6 @@ export default function Stickers({user, inventory}: {user: any, inventory: numbe
     };
 
     useEffect(() => {
-        console.log(`selected album: `, selectedAlbum);
-        console.log(`selected star: `, selectedStar);
-        console.log(`all albums? `, checkAllAlbum);
-        console.log(`all stars? `, checkAllStar);
 
         if (checkAllAlbum && checkAllStar) {
             const allTradeableStickers: Sticker[] = stickers.filter((sticker) =>

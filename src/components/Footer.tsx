@@ -2,6 +2,7 @@ export default function Footer() {
     return (
     <div className="flex justify-between bg-teal-500 p-6">
         <div className="block mt-4 lg:inline-block lg:mt-0 text-white mr-4">
+            Use latest Chrome browser version for best user experience.
             This website is not affiliated with the official MonopolyGO creators.
         </div>
         <div className="block mt-4 lg:inline-block lg:mt-0 text-white mr-4">

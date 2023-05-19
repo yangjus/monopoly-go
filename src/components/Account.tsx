@@ -75,7 +75,7 @@ export default function Account() {
         <div className="text-2xl text-white">Account Info</div>
         <form className="min-h-screen w-full max-w-sm pt-5" onSubmit={handleSubmit}>
             {formKeys.map((key: keyof FormData) => (
-                <div className="mb-4">
+                <div className="mb-4" key={key}>
                     <label htmlFor={key} className="block capitalize text-white font-bold mb-2">
                         {labelName[key]}
                     </label>
