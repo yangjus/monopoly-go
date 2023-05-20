@@ -1,8 +1,9 @@
 import React, { useState } from "react"
 import axios from "axios";
 import { FormData, labelName, formCheck } from "@component/pages/register";
+import { FormControlLabel, Checkbox } from "@mui/material";
 
-export default function Account() {
+export default function Account({user}: {user: any}) {
 
     const labelEnabled = {
         email: false,
@@ -14,12 +15,12 @@ export default function Account() {
     }
 
     const [formData, setFormData] = useState<FormData>({
-        email: "",
-        password: "",
-        username: "",
-        rank: 0,
-        invite: "",
-        social: "",
+        email: user.email,
+        password: user.password,
+        username: user.username,
+        rank: user.rank,
+        invite: user.invite,
+        social: user.social,
     });
 
     const formKeys = Object.keys(formData) as (keyof FormData)[];
@@ -28,6 +29,8 @@ export default function Account() {
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const [message, setMessage] = useState("error registrating");
+
+    const [showPassword, setShowPassword] = useState<boolean>(false);
     
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
@@ -70,17 +73,32 @@ export default function Account() {
         }
     };
 
+    const togglePassword = () => {
+        setShowPassword(!showPassword);
+    }
+
     return (
     <div>
         <div className="text-2xl text-white">Account Info</div>
         <form className="min-h-screen w-full max-w-sm pt-5" onSubmit={handleSubmit}>
             {formKeys.map((key: keyof FormData) => (
                 <div className="mb-4" key={key}>
-                    <label htmlFor={key} className="block capitalize text-white font-bold mb-2">
+                    <label htmlFor={key} className="block capitalize text-white font-bold mb-2 flex justify-between">
                         {labelName[key]}
+                        { key == "password" && 
+                        <FormControlLabel 
+                            control={
+                                <Checkbox 
+                                    checked={showPassword} 
+                                    onChange={togglePassword}
+                                />
+                            }
+                            label="Show" 
+                        />
+                        }
                     </label>
                     <input
-                        type="text"
+                        type={(key == "password" && !showPassword) ? "password" : "text"}
                         disabled={!labelEnabled[key]}
                         name={key}
                         id={key}
@@ -96,11 +114,11 @@ export default function Account() {
                     disabled={submitting}
                     className="border border-white bg-teal-500 hover:bg-teal-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
                 >
-                    {submitting ? "Submitting..." : "Submit"}
+                    {submitting ? "Saving..." : "Save"}
                 </button>
             </div>
             {success && (
-            <p className="md:flex md:items-center text-green-500 mb-4 justify-center pt-6">Registration successful!</p>
+            <p className="md:flex md:items-center text-green-500 mb-4 justify-center pt-6">Saved successfully!</p>
             )}
             {error && (
             <p className="md:flex md:items-center text-red-500 mb-4 justify-center pt-6">{message}</p>

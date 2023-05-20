@@ -4,6 +4,7 @@ import { GetServerSideProps } from "next";
 import { hasCookie } from "cookies-next";
 import { stickers } from "../../constants/stickers";
 import { useRouter } from "next/navigation";
+import { FormControlLabel, Checkbox } from "@mui/material";
 
 export interface FormData {
     email: string;
@@ -74,6 +75,8 @@ export default function Register({ user }: { user: any }) {
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const [message, setMessage] = useState("error registrating");
+
+    const [showPassword, setShowPassword] = useState<boolean>(false);
     
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
@@ -119,18 +122,33 @@ export default function Register({ user }: { user: any }) {
         }
     };
 
-  return (
+    const togglePassword = () => {
+        setShowPassword(!showPassword);
+    }
+
+    return (
     <>
     <div className="flex justify-center py-4">
         <form className="min-h-screen w-full max-w-sm" onSubmit={handleSubmit}>
             <div className="text-4xl py-4">Register Account</div>
             {formKeys.map((key: keyof FormData) => (
                 <div className="mb-4" key={key}>
-                    <label htmlFor={key} className="block capitalize text-gray-500 font-bold mb-2">
+                    <label htmlFor={key} className="block capitalize text-gray-500 font-bold mb-2 flex justify-between">
                         {labelName[key]}
+                        { key == "password" && 
+                        <FormControlLabel 
+                            control={
+                                <Checkbox 
+                                    checked={showPassword} 
+                                    onChange={togglePassword}
+                                />
+                            }
+                            label="Show" 
+                        />
+                        }
                     </label>
                     <input
-                        type="text"
+                        type={(key == "password" && !showPassword) ? "password" : "text"}
                         name={key}
                         id={key}
                         value={formData[key]}
@@ -157,7 +175,7 @@ export default function Register({ user }: { user: any }) {
         </form>
     </div>
     </>
-  );
+    );
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }: {req: any, res: any }) => {

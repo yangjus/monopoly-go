@@ -38,7 +38,7 @@ export default function Profile({ user }: { user: any }) {
       }
       <div className="grid grid-cols-3 gap-4 px-10 py-5">
           <div className="col-span-1 rounded-md bg-teal-500 p-5">
-              <Account />
+              <Account user={user}/>
           </div>
           <div className="col-span-2 rounded-md bg-teal-500 p-5">
               <Stickers user={user} />
