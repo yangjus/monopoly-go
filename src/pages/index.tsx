@@ -3,15 +3,54 @@ import { useRouter } from 'next/router';
 import jwt from "jsonwebtoken";
 import { TextField } from '@mui/material';
 import { hasCookie, getCookie } from 'cookies-next';
+import emailjs from "@emailjs/browser";
+import { useState } from "react";
+
+function objectToForm(object: any) {
+  const form = document.createElement('form');
+
+  for (const key in object) {
+    if (object.hasOwnProperty(key)) {
+      const input = document.createElement('input');
+      input.setAttribute('type', 'text');
+      input.setAttribute('name', key);
+      input.setAttribute('value', object[key]);
+      form.appendChild(input);
+    }
+  }
+
+  document.body.appendChild(form);
+
+  return form;
+}
 
 export default function Home({ user }: { user: {email: string} }) {
   const router = useRouter();
+
+  const [message, setMessage] = useState<string>("");
+  const [result, setResult] = useState<string>("");
 
   const handleClick = () => {
     router.push("/register");
   }
 
-  console.log(user);
+  const submitMessage = (e: any) => {
+    e.preventDefault();
+    const sendData: {from_email: string, message: string} = {
+      from_email: user.email,
+      message: message
+    }
+
+    emailjs.send(process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!, 
+      process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!, sendData, process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY)
+    .then((result) => {
+      console.log(result);
+      setResult("Message has been successfully sent.");
+    }, (error) => {
+      console.log(error);
+      setResult("There is an error sending the message.");
+    });
+  }
   
   return (
     <>
@@ -40,11 +79,23 @@ export default function Home({ user }: { user: {email: string} }) {
               multiline
               rows={5}
               placeholder="feedback..."
+              value={message}
+              onChange={(event) => setMessage(event.target.value)}
             />
+            <form method="POST" onSubmit={submitMessage}>
+              <button
+                type="submit" 
+                className="border border-white mt-5 bg-teal-500 hover:bg-teal-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+              >
+                Submit
+              </button>
+            </form>
+            {result !== "" &&
+              <p className="md:flex md:items-center text-teal-500 mb-4 justify-center pt-6">{result}</p>
+            }
           </div>
         }
       </div>
-
     </div>
     </>
   )
@@ -62,7 +113,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }: {req:
 
   const token: any = getCookie('session', { req, res });
 
-  const decodedToken = jwt.verify(token, process.env.JWT_TOKEN);
+  const decodedToken = jwt.verify(token, process.env.JWT_TOKEN!);
 
   return {
     props: {
