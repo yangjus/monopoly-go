@@ -18,7 +18,6 @@ export default function Profile({ user }: { user: any }) {
   useEffect(() => {
     for (let i = 0; i < user.inventory.length; i++) {
       if (user.inventory[i] > 0) {
-        console.log(user.inventory[i])
         setNoStickers(false);
         break;
       }
@@ -42,7 +41,7 @@ export default function Profile({ user }: { user: any }) {
               <Account />
           </div>
           <div className="col-span-2 rounded-md bg-teal-500 p-5">
-              <Stickers user={user} inventory={user.inventory}/>
+              <Stickers user={user} />
           </div>
       </div>
   </div>

@@ -23,10 +23,13 @@ const style = {
     p: 4,
 };
 
-export default function Stickers({user, inventory}: {user: any, inventory: number[]}) {
+export default function Stickers({user }: {user: any }) {
     const [selectedAlbum, setSelectedAlbum] = useState<string>("New York");
     const [selectedStar, setSelectedStar] = useState<string>("1");
-    const [selectedStickers, setSelectedStickers] = useState<Sticker[]>();
+
+    const [extraStickers, setExtraStickers] = useState<Sticker[]>();
+    const [missingStickers, setMissingStickers] = useState<Sticker[]>();
+
     const [checkAllAlbum, setCheckAllAlbum] = useState<boolean>(true);
     const [checkAllStar, setCheckAllStar] = useState<boolean>(true);
     const [open, setOpen] = useState<boolean>(false);
@@ -62,29 +65,42 @@ export default function Stickers({user, inventory}: {user: any, inventory: numbe
 
     useEffect(() => {
 
+        const inventory: number[] = user.inventory;
+        const extra: Sticker[] = inventory.map((quantity, index) => ({ quantity, index }))
+            .filter(({ quantity, index }) => quantity > 1 && stickers[index].tradeable)
+            .map(({ index }) => stickers[index]);
+
+        const missing: Sticker[] = inventory.map((quantity, index) => ({ quantity, index }))
+        .filter(({ quantity, index }) => quantity < 1 && stickers[index].tradeable)
+        .map(({ index }) => stickers[index]);
+
         if (checkAllAlbum && checkAllStar) {
-            const allTradeableStickers: Sticker[] = stickers.filter((sticker) =>
-                sticker.tradeable
-            )
-            setSelectedStickers(allTradeableStickers);
+            setExtraStickers(extra);
+            setMissingStickers(missing);
         }
         else if (checkAllAlbum) {
-            const allAlbumStickers: Sticker[] = stickers.filter((sticker) =>
-                sticker.star === Number(selectedStar) && sticker.tradeable
-            )
-            setSelectedStickers(allAlbumStickers);
+            setExtraStickers(extra.filter((sticker: Sticker) =>
+                sticker.star === Number(selectedStar)
+            ));
+            setMissingStickers(missing.filter((sticker: Sticker) =>
+                sticker.star === Number(selectedStar)
+            ));
         }
         else if (checkAllStar) {
-            const allStarStickers: Sticker[] = stickers.filter((sticker) => 
-                sticker.album === selectedAlbum && sticker.tradeable
-            )
-            setSelectedStickers(allStarStickers);
+            setExtraStickers(extra.filter((sticker: Sticker) => 
+                sticker.album === selectedAlbum
+            ));
+            setMissingStickers(missing.filter((sticker: Sticker) => 
+                sticker.album === selectedAlbum
+            ));
         }
         else {
-            const filteredStickers: Sticker[] = stickers.filter((sticker) => 
-                sticker.album === selectedAlbum && sticker.star === Number(selectedStar) && sticker.tradeable
-            )
-            setSelectedStickers(filteredStickers);
+            setExtraStickers(extra.filter((sticker: Sticker) => 
+                sticker.album === selectedAlbum && sticker.star === Number(selectedStar)
+            ));
+            setMissingStickers(missing.filter((sticker: Sticker) => 
+                sticker.album === selectedAlbum && sticker.star === Number(selectedStar)
+            ));
         }
 
     }, [selectedAlbum, selectedStar, checkAllAlbum, checkAllStar]);
@@ -176,7 +192,7 @@ export default function Stickers({user, inventory}: {user: any, inventory: numbe
                         />
                     </div>
                     <div className="col-span-1 flex justify-center mt-12">
-                        <InventoryModal user={user} inventory={inventory}/>
+                        <InventoryModal user={user} />
                     </div>
                 </div>
             </div>
@@ -184,7 +200,7 @@ export default function Stickers({user, inventory}: {user: any, inventory: numbe
                 Extras:
             </div>
             <div className="row-span-3 flex flex-wrap overflow-auto rounded-md bg-white p-3 h-64">
-                {selectedStickers?.map((sticker: Sticker) => (
+                {extraStickers?.map((sticker: Sticker) => (
                     <div className="p-1" key={sticker.name}>
                         <Badge name={sticker.name} album={sticker.album} star={sticker.star}/>
                     </div>
@@ -194,7 +210,11 @@ export default function Stickers({user, inventory}: {user: any, inventory: numbe
                 Missing:
             </div>
             <div className="row-span-2 flex flex-wrap overflow-auto rounded-md bg-white p-3 h-64">
-                insert missing stickers here
+                {missingStickers?.map((sticker: Sticker) => (
+                    <div className="p-1" key={sticker.name}>
+                        <Badge name={sticker.name} album={sticker.album} star={sticker.star}/>
+                    </div>
+                ))}
             </div>
         </div>
     </div>
