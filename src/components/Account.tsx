@@ -54,17 +54,9 @@ export default function Account({user}: {user: any}) {
         setError(false);
 
         try {
-            const response = await axios.post("/api/register", formData);
+            const response = await axios.post("/api/update-profile", formData);
             console.log(response.data); // log the response data for debugging
             // Reset form after successful submission
-            setFormData({
-                email: "",
-                password: "",
-                username: "",
-                rank: 0,
-                invite: "",
-                social: "", 
-            });
             setSubmitting(false);
             setSuccess(true);
         } catch (error) {
@@ -118,10 +110,10 @@ export default function Account({user}: {user: any}) {
                 </button>
             </div>
             {success && (
-            <p className="md:flex md:items-center text-green-500 mb-4 justify-center pt-6">Saved successfully!</p>
+            <p className="md:flex md:items-center text-white mb-4 justify-center pt-6">Saved successfully!</p>
             )}
             {error && (
-            <p className="md:flex md:items-center text-red-500 mb-4 justify-center pt-6">{message}</p>
+            <p className="md:flex md:items-center text-white mb-4 justify-center pt-6">{message}</p>
             )}
         </form>
     </div>
