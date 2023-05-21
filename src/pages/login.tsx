@@ -6,6 +6,7 @@ import { GetServerSideProps } from "next";
 import jwt from "jsonwebtoken";
 import Navbar from "@component/components/Navbar";
 import { hasCookie } from 'cookies-next';
+import { FormControlLabel, Checkbox } from "@mui/material";
 
 interface FormData {
     email: string;
@@ -24,6 +25,11 @@ export default function Register({ user }: { user: any }) {
 
     const [submitting, setSubmitting] = useState(false);
     const [success, setSuccess] = useState<boolean | null>(null);
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+
+    const togglePassword = () => {
+        setShowPassword(!showPassword);
+    }
     
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
@@ -60,11 +66,22 @@ export default function Register({ user }: { user: any }) {
             <div className="text-4xl py-4">Login</div>
             {formKeys.map((key: keyof FormData) => (
                 <div className="mb-4">
-                    <label htmlFor={key} className="block capitalize text-gray-500 font-bold mb-2">
+                    <label htmlFor={key} className="block capitalize text-gray-500 font-bold mb-2 flex justify-between">
                         {key}*
+                        { key == "password" && 
+                        <FormControlLabel 
+                            control={
+                                <Checkbox 
+                                    checked={showPassword} 
+                                    onChange={togglePassword}
+                                />
+                            }
+                            label="Show" 
+                        />
+                        }
                     </label>
                     <input
-                        type="text"
+                        type={(key == "password" && !showPassword) ? "password" : "text"}
                         name={key}
                         id={key}
                         value={formData[key]}

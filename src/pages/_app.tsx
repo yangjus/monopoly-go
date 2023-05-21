@@ -15,12 +15,14 @@ export default function App({ Component, pageProps }: AppProps) {
       <Head>
         <title>MonopolyGO! Trading</title>
       </Head>
-        <NextNProgress />
-        <Navbar />
-        <div className="px-4 py-2">
-          <Component {...pageProps} />
-        </div>
-      <Footer />
+      <NextNProgress />
+      <Navbar />
+      <div className="px-4 py-2">
+        <Component {...pageProps} />
+      </div>
+      <div className="bottom-0">
+        <Footer />
+      </div>
     </main>
   )
 }

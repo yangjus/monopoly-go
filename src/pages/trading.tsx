@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 import jwt from "jsonwebtoken";
 import { hasCookie, getCookie } from 'cookies-next';
 import connect from "@component/../lib/mongodb";
@@ -42,6 +42,8 @@ export default function Trading({ user, matchedUsers }: { user: UserType, matche
     const [checkAllAlbum, setCheckAllAlbum] = useState<boolean>(true);
     const [checkAllStar, setCheckAllStar] = useState<boolean>(true);
 
+    const [filteredUsers, setFilteredUsers] = useState<TradingUser[]>(matchedUsers);
+
     const albumOptions: {label: Album, value: Album}[] = Object.values(Album).map((album) => ({
         label: album,
         value: album
@@ -71,10 +73,53 @@ export default function Trading({ user, matchedUsers }: { user: UserType, matche
         setCheckAllStar(event.target.checked);
     };
 
+    useEffect(() => {
+        if (checkAllAlbum && checkAllStar) {
+            setFilteredUsers(matchedUsers);
+        }
+        else if (checkAllAlbum) {
+            const users: TradingUser[] = [];
+            matchedUsers.map((otherUser: TradingUser) => {
+                const filteredStickers: number[] = otherUser.hasStickers.filter((index: number) => 
+                    stickers[index].star === Number(selectedStar)
+                );
+                if (filteredStickers.length > 0) {
+                    users.push({ ...otherUser, hasStickers: filteredStickers})
+                }
+            });
+            setFilteredUsers(users);
+        }
+        else if (checkAllStar) {
+            const users: TradingUser[] = [];
+            matchedUsers.map((otherUser: TradingUser) => {
+                const filteredStickers: number[] = otherUser.hasStickers.filter((index: number) => 
+                    stickers[index].album === selectedAlbum
+                );
+                if (filteredStickers.length > 0) {
+                    users.push({ ...otherUser, hasStickers: filteredStickers})
+                }
+            });
+            setFilteredUsers(users);
+        }
+        else {
+            const users: TradingUser[] = [];
+            matchedUsers.map((otherUser: TradingUser) => {
+                const filteredStickers: number[] = otherUser.hasStickers.filter((index: number) => 
+                    stickers[index].album === selectedAlbum && stickers[index].star === Number(selectedStar)
+                );
+                if (filteredStickers.length > 0) {
+                    users.push({ ...otherUser, hasStickers: filteredStickers})
+                }
+            });
+            setFilteredUsers(users);
+        }
+
+    }, [selectedAlbum, selectedStar, checkAllAlbum, checkAllStar]);
+
     console.log(user);
 
     return (
-    <div className="items-center space-y-4">
+    <div className="items-center h-screen  space-y-4">
         <div className="text-4xl pt-5 text-center justify-center">Marketplace</div>
         <div className="text-xl text-center justify-center">
             Finds other users who have what you need, and want what you have!
@@ -159,7 +204,7 @@ export default function Trading({ user, matchedUsers }: { user: UserType, matche
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                        {matchedUsers.map((user: TradingUser) => (
+                        {filteredUsers.map((user: TradingUser) => (
                             <UserRow user={user}/>
                         ))}
                         </TableBody>
