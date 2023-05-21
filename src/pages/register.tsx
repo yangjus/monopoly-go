@@ -30,6 +30,10 @@ export const formCheck = (formData: FormData) => {
     if (!formData.email || !emailRegex.test(formData.email)) {
         return "Please enter a valid email address.";
     }
+    //Check username length
+    if (formData.username.length > 20) {
+        return "Please enter a username under 21 characters.";
+    }
 
     //Check password strength
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;

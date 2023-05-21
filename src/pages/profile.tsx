@@ -9,7 +9,7 @@ import connect from "@component/../lib/mongodb";
 import User from "@component/../model/schema";
 import { UserType } from "../../constants/users";
 
-export default function Profile({ user }: { user: any }) {
+export default function Profile({ user }: { user: UserType }) {
 
   console.log(user)
 
@@ -24,13 +24,9 @@ export default function Profile({ user }: { user: any }) {
     }
   }, []);
 
-  //add logic in Stickers such that if user just created account and has no inventory,
-  //add a div line saying: New to the website? Update your inventory to start trading!
-
   return (
-  <>
   <div className="items-center text-center justify-center space-y-4">
-      <div className="text-4xl pt-10">Your Profile</div>
+      <div className="text-4xl pt-5">Your Profile</div>
       {noStickers && 
         <div className="text-xl">
           New to the website? Update your inventory to start trading
@@ -45,7 +41,6 @@ export default function Profile({ user }: { user: any }) {
           </div>
       </div>
   </div>
-  </>
   )
 };
 
@@ -61,7 +56,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }: {req:
   }
 
   const token: any = getCookie('session', { req, res });
-  const decodedToken: any = jwt.verify(token, process.env.JWT_TOKEN);
+  const decodedToken: any = jwt.verify(token, process.env.JWT_TOKEN!);
 
   const userEmail: {email: string, iat: number} = {...decodedToken};
 
