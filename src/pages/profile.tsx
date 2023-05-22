@@ -6,7 +6,7 @@ import Stickers from "@component/components/Stickers";
 import { hasCookie, getCookie } from 'cookies-next';
 import { stickers } from "../../constants/stickers";
 import connect from "@component/../lib/mongodb";
-import User from "@component/../model/schema";
+import User from "@component/../model/user_schema";
 import { UserType } from "../../constants/users";
 
 export default function Profile({ user }: { user: UserType }) {
@@ -70,7 +70,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }: {req:
     password: parsedObject.password,
     username: parsedObject.username,
     rank: parsedObject.rank,
-    invite: parsedObject.invite,
+    invite: parsedObject.invite,\admin\history
     social: parsedObject.social,
     trusted: parsedObject.trusted,
     inventory: parsedObject.inventory

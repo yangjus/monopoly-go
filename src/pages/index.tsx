@@ -42,7 +42,7 @@ export default function Home({ user }: { user: {email: string} }) {
     }
 
     emailjs.send(process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!, 
-      process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!, sendData, process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY)
+      process.env.NEXT_PUBLIC_EMAILJS_FEEDBACK_TEMPLATE_ID!, sendData, process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY)
     .then((result) => {
       console.log(result);
       setResult("Message has been successfully sent.");

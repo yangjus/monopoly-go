@@ -4,8 +4,10 @@ import { GetServerSideProps } from "next";
 import { hasCookie } from "cookies-next";
 import { stickers } from "../../constants/stickers";
 import { useRouter } from "next/navigation";
-import { FormControlLabel, Checkbox } from "@mui/material";
+import { FormControlLabel, Checkbox, Tooltip } from "@mui/material";
+import InfoIcon from '@mui/icons-material/Info';
 import moment from 'moment';
+import emailjs from "@emailjs/browser";
 
 export interface FormData {
     email: string;
@@ -107,9 +109,28 @@ export default function Register({ user }: { user: any }) {
         try {
             const initialInventory = new Array(stickers.length).fill(0);
             const currentDate: moment.Moment = moment();
-            const payload = { ...formData, trusted: false, inventory: initialInventory, last_logged: currentDate}
+            //create random 8 digit code
+            const random_code: number = Math.floor(10000000 + Math.random() * 90000000);
+
+            const payload = { ...formData, trusted: false, inventory: initialInventory, last_logged: currentDate, code: random_code};
             const response = await axios.post("/api/register", payload);
             console.log(response.data); // log the response data for debugging
+
+            //send email verification
+            const sendData: {to_email: string, verify_code: number} = {
+                to_email: formData.email,
+                verify_code: random_code
+            }
+            emailjs.send(process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!, 
+                process.env.NEXT_PUBLIC_EMAILJS_VERIFY_TEMPLATE_ID!, sendData, process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY)
+              .then((result) => {
+                console.log(result);
+              }, (error) => {
+                console.log(error);
+                setError(true);
+                setSubmitting(false);
+                return;
+            });
             // Reset form after successful submission
             setFormData({
                 email: "",
@@ -142,6 +163,18 @@ export default function Register({ user }: { user: any }) {
                 <div className="mb-4" key={key}>
                     <label htmlFor={key} className="block capitalize text-gray-500 font-bold mb-2 flex justify-between">
                         {labelName[key]}
+                        { key == "email" &&
+                        <Tooltip title="an email verification code will be sent" placement='top'>
+                            <InfoIcon 
+                                style={{ 
+                                    color: 'grey',
+                                    marginBottom: '4px',
+                                    marginLeft: '8px',
+                                    fontSize: '1.5rem'
+                                }}
+                            />
+                        </Tooltip>
+                        }
                         { key == "password" && 
                         <FormControlLabel 
                             control={
@@ -164,6 +197,7 @@ export default function Register({ user }: { user: any }) {
                     />
                 </div>
             ))}
+            <div className="flex mb-4">A verification email will be sent to you shortly after submission.</div>
             <div className="md:flex md:items-center justify-center">
                 <button 
                     type="submit"
@@ -174,7 +208,9 @@ export default function Register({ user }: { user: any }) {
                 </button>
             </div>
             {success && (
-            <p className="md:flex md:items-center text-green-500 mb-4 justify-center pt-6">Registration successful!</p>
+            <p className="md:flex md:items-center text-green-500 mb-4 justify-center pt-6">
+                Registration successful! Check your email for a verification code.
+            </p>
             )}
             {error && (
             <p className="md:flex md:items-center text-red-500 mb-4 justify-center pt-6">{message}</p>

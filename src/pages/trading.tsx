@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import ReactPaginate from 'react-paginate';
 import { hasCookie, getCookie } from 'cookies-next';
 import connect from "@component/../lib/mongodb";
-import User from "@component/../model/schema";
+import User from "@component/../model/user_schema";
 import { UserType } from "../../constants/users";
 import { FormGroup, FormControlLabel, Checkbox, SelectChangeEvent } from '@mui/material';
 import { Album, stickers } from "../../constants/stickers";

@@ -1,5 +1,5 @@
 import connect from "@component/../lib/mongodb";
-import User from "@component/../model/schema";
+import User from "@component/../model/user_schema";
 
 connect();
 

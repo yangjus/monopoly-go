@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { GetServerSideProps } from "next";
-import jwt from "jsonwebtoken";
-import Navbar from "@component/components/Navbar";
 import { hasCookie } from 'cookies-next';
-import { FormControlLabel, Checkbox } from "@mui/material";
+import { FormControlLabel, Checkbox, Tooltip } from "@mui/material";
+import InfoIcon from '@mui/icons-material/Info';
 
 interface FormData {
     email: string;
@@ -23,7 +21,7 @@ export default function Register({ user }: { user: any }) {
 
     const formKeys = Object.keys(formData) as (keyof FormData)[];
 
-    const [submitting, setSubmitting] = useState(false);
+    const [submitting, setSubmitting] = useState<boolean>(false);
     const [success, setSuccess] = useState<boolean | null>(null);
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -42,10 +40,16 @@ export default function Register({ user }: { user: any }) {
         e.preventDefault();
         setSubmitting(true);
 
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!formData.email || !emailRegex.test(formData.email)) {
+            setSuccess(false);
+            setSubmitting(false);
+            return;
+        }
+
         try {
             const response = await axios.post("/api/login", formData);
             if (response.status === 200) {
-                //bug where when logging in, the page renders in faster than the navbar can change
                 push("/");
             }
         } catch (error) {
@@ -68,6 +72,18 @@ export default function Register({ user }: { user: any }) {
                 <div className="mb-4">
                     <label htmlFor={key} className="block capitalize text-gray-500 font-bold mb-2 flex justify-between">
                         {key}*
+                        { key == "email" &&
+                        <Tooltip title="verify your email via a verification code sent to you" placement='top'>
+                            <InfoIcon 
+                                style={{ 
+                                    color: 'grey',
+                                    marginBottom: '4px',
+                                    marginLeft: '8px',
+                                    fontSize: '1.5rem'
+                                }}
+                            />
+                        </Tooltip>
+                        }
                         { key == "password" && 
                         <FormControlLabel 
                             control={
@@ -103,7 +119,7 @@ export default function Register({ user }: { user: any }) {
             <p className="md:flex md:items-center text-green-500 mb-4 justify-center pt-6">Login successful!</p>
             )}
             {success === false && (
-            <p className="md:flex md:items-center text-red-500 mb-4 justify-center pt-6">Login unsuccessful.</p>
+            <p className="md:flex md:items-center text-red-500 mb-4 justify-center pt-6">Login unsuccessful. Did you verify your email?</p>
             )}
         </form>
     </div>

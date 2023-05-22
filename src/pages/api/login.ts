@@ -1,8 +1,9 @@
 import connect from "@component/../lib/mongodb";
-import User from "@component/../model/schema";
+import User from "@component/../model/user_schema";
 import jwt from "jsonwebtoken";
 import { setCookie } from 'cookies-next';
 import moment from 'moment';
+import Verify from "@component/../model/verify_schema";
 
 connect()
 
@@ -15,15 +16,22 @@ export default async function login(req: any, res: any) {
         return res.status(404).json({error: "Unable to find user in database."})
     }
     else {
-        //update user's lastLogged to reflect current time
-        const currentDate: moment.Moment = moment();
-        await User.findOneAndUpdate(
-            { email: req.body.email },
-            { $set: { last_logged: currentDate }}
-        );
+        //check if email is verified
+        const isVerified = await Verify.findOne({email: email});
+        if (isVerified && isVerified.email_verified) {
+            //update user's lastLogged to reflect current time
+            const currentDate: moment.Moment = moment();
+            await User.findOneAndUpdate(
+                { email: req.body.email },
+                { $set: { last_logged: currentDate }}
+            );
 
-        const token = jwt.sign(payload, process.env.JWT_TOKEN!);
-        setCookie('session', token, { req, res, maxAge: 60 * 60 * 24 })
-        res.status(200).json({ token });
+            const token = jwt.sign(payload, process.env.JWT_TOKEN!);
+            setCookie('session', token, { req, res, maxAge: 60 * 60 * 24 })
+            res.status(200).json({ token });
+        }
+        else {
+            return res.status(404).json({error: "User's email is not verified."})
+        }
     }
 }
