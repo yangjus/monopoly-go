@@ -2,6 +2,7 @@ import connect from "@component/../lib/mongodb";
 import User from "@component/../model/schema";
 import jwt from "jsonwebtoken";
 import { setCookie } from 'cookies-next';
+import moment from 'moment';
 
 connect()
 
@@ -14,7 +15,14 @@ export default async function login(req: any, res: any) {
         return res.status(404).json({error: "Unable to find user in database."})
     }
     else {
-        const token = jwt.sign(payload, process.env.JWT_TOKEN);
+        //update user's lastLogged to reflect current time
+        const currentDate: moment.Moment = moment();
+        await User.findOneAndUpdate(
+            { email: req.body.email },
+            { $set: { last_logged: currentDate }}
+        );
+
+        const token = jwt.sign(payload, process.env.JWT_TOKEN!);
         setCookie('session', token, { req, res, maxAge: 60 * 60 * 24 })
         res.status(200).json({ token });
     }
