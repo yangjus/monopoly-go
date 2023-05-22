@@ -15,7 +15,7 @@ export default async function session(req: any, res: any) {
     }
 
     try {
-        const decodedToken = jwt.verify(token, process.env.JWT_TOKEN);
+        const decodedToken = jwt.verify(token, process.env.JWT_TOKEN!);
         res.status(200).json({ decodedToken });
     } catch (error) {
         return res.status(400).json({ error: "Invalid session token." });
