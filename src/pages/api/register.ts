@@ -37,9 +37,6 @@ export default async function handler(req: any, res: any) {
         }
         res.end(JSON.stringify(user));
     } catch (error) {
-        const test: string = "MONGODB_URI: " + process.env.MONGODB_URI +
-            " | JWT_TOKEN: " + process.env.JWT_TOKEN + " | SERVICE_ID: " +
-            process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
-        res.status(400).json({status: test}).end()
+        res.status(400).json({status: error}).end()
     }
 }
