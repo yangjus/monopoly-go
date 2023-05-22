@@ -19,7 +19,7 @@ const UserRow = ( {user} : {user: TradingUser} ) => {
     return (
     <>
     <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-        <TableCell component="th" scope="row" align="left">
+        <TableCell component="th" scope="row">
             {user.username}
             {user.trusted &&
                 <Tooltip title="Trusted Trader" placement='top'>

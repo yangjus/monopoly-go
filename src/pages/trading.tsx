@@ -12,6 +12,7 @@ import FilterSelect from "@component/components/FilterSelect";
 import UserRow from "@component/components/UserRow";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+
 import {
     Table, 
     TableBody, 
@@ -70,17 +71,13 @@ export default function Trading({ user, matchedUsers }: { user: UserType, matche
     const displayUsers = pageCount > maxDisplayedPages ?
         filteredUsers
             .slice(0, usersPerPage)
-            .map((user: TradingUser, index: number) => 
-                <div key={index}>
-                    <UserRow user={user} />
-                </div>
+            .map((user: TradingUser) => 
+                    <UserRow user={user} key={user.username + user.rank}/>
             ) :
         filteredUsers
             .slice(pagesVisited, pagesVisited + usersPerPage)
-            .map((user: TradingUser, index: number) => 
-                <div key={index}>
-                    <UserRow user={user} />
-                </div>
+            .map((user: TradingUser) => 
+                    <UserRow user={user} key={user.username + user.rank}/>
             );
 
     const handleAlbumSelectChange = (event: SelectChangeEvent) => {
@@ -141,8 +138,6 @@ export default function Trading({ user, matchedUsers }: { user: UserType, matche
         }
 
     }, [selectedAlbum, selectedStar, checkAllAlbum, checkAllStar, matchedUsers]);
-
-    console.log(user);
 
     return (
     <div className="items-center space-y-4">
@@ -222,10 +217,10 @@ export default function Trading({ user, matchedUsers }: { user: UserType, matche
             </div>
             <div className="col-span-2 rounded-md bg-teal-500 p-5">
                 <TableContainer component={Paper} className="px-2">
-                    <Table>
+                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
                             <TableRow>
-                                <TableCell align="left"><Typography variant='h6'>Username</Typography></TableCell>
+                                <TableCell><Typography variant='h6'>Username</Typography></TableCell>
                                 <TableCell align="left"><Typography variant='h6'>Rank</Typography></TableCell>
                             </TableRow>
                         </TableHead>

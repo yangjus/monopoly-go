@@ -73,7 +73,7 @@ export default function InventoryModal({user}: {user: any}) {
     <Grid container spacing={1} className="justify-center">
             {Object.values(Album).map((album) => (
             <div key={album}>
-            <Grid item xs={12} className="border border-teal-500 justify-center m-3 p-2">
+            <Grid item xs={12} className="border border-teal-500 justify-center ml-3 mr-3 mt-3 mb-3 p-2">
                 <div className="text-teal-500 font-bold text-2xl">{album}</div>
                 {idStickers.filter((sticker) => sticker.album === album).map((sticker: StickerID) => (
                     <div className="flex justify-between py-1 text-sm" key={sticker.id}>
@@ -99,11 +99,13 @@ export default function InventoryModal({user}: {user: any}) {
 
   return (
     <div>
-    <Button 
-        className="border border-white hover:bg-teal-400 text-white"
-        variant="outlined"
-        onClick={handleOpen}>View/Edit Inventory
-    </Button>
+    <button 
+      type="submit"
+      onClick={handleOpen}
+      className="border border-white bg-teal-500 hover:bg-teal-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+    >
+      View/Edit Inventory
+    </button>
 
     <Modal
         open={open}

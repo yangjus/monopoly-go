@@ -45,6 +45,7 @@ export default function Home({ user }: { user: {email: string} }) {
       process.env.NEXT_PUBLIC_EMAILJS_FEEDBACK_TEMPLATE_ID!, sendData, process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY)
     .then((result) => {
       console.log(result);
+      setMessage("");
       setResult("Message has been successfully sent.");
     }, (error) => {
       console.log(error);
