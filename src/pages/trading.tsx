@@ -343,7 +343,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }: {req:
 
     //sort matchedUsers with first being the latest time for lastLogged
     //this is to prevent users from having to scroll needlessly through inactive accounts
-    matchedUsersDate.sort((a, b) => moment(a.lastLogged).diff(moment(b.lastLogged)));
+    matchedUsersDate.sort((a, b) => moment(b.lastLogged).diff(moment(a.lastLogged)));
     const matchedUsers: TradingUser[] = matchedUsersDate.map(({ lastLogged, ...rest }) => rest);
   
     if (user) {
