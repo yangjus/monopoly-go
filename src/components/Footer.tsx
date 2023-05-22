@@ -1,4 +1,5 @@
-import { Grid } from "@mui/material"
+import { Grid } from "@mui/material";
+import Link from 'next/link';
 
 export default function Footer() {
     return (
@@ -9,7 +10,10 @@ export default function Footer() {
                     Use a desktop and the latest Chrome browser version for best user experience.
                 </Grid>
                 <Grid item xs={12}>
-                    This website is not affiliated with the official MonopolyGO creators.
+                    This website is not affiliated with the official MonopolyGO creators. 
+                    <Link href="/privacy" className="ml-4 text-blue-600">
+                        Privacy Policy
+                    </Link>
                 </Grid>
             </Grid>
         </div>
