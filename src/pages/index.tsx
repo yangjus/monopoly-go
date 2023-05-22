@@ -44,11 +44,11 @@ export default function Home({ user }: { user: {email: string} }) {
     emailjs.send(process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!, 
       process.env.NEXT_PUBLIC_EMAILJS_FEEDBACK_TEMPLATE_ID!, sendData, process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY)
     .then((result) => {
-      console.log(result);
+      //console.log(result);
       setMessage("");
       setResult("Message has been successfully sent.");
     }, (error) => {
-      console.log(error);
+      //console.log(error);
       setResult("There is an error sending the message.");
     });
   }

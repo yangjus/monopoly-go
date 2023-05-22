@@ -39,8 +39,6 @@ export interface TradingUser {
 
 export default function Trading({ user, matchedUsers }: { user: UserType, matchedUsers: TradingUser[] }) {
 
-    console.log(matchedUsers);
-
     const [selectedAlbum, setSelectedAlbum] = useState<string>("New York");
     const [selectedStar, setSelectedStar] = useState<string>("1");
 

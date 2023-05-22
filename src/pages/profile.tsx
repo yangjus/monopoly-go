@@ -11,8 +11,6 @@ import { UserType } from "../../constants/users";
 
 export default function Profile({ user }: { user: UserType }) {
 
-  console.log(user)
-
   const [noStickers, setNoStickers] = useState<boolean>(true);
 
   useEffect(() => {

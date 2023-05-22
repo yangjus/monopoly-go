@@ -11,11 +11,6 @@ export default function Verify({ user }: { user: any }) {
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [success, setSuccess] = useState<boolean | null>(null);
 
-    useEffect(() => {
-        console.log(code)
-        console.log(email)
-    }, [code, email])
-
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setSubmitting(true);

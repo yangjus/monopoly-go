@@ -114,7 +114,6 @@ export default function Register({ user }: { user: any }) {
 
             const payload = { ...formData, trusted: false, inventory: initialInventory, last_logged: currentDate, code: random_code};
             const response = await axios.post("/api/register", payload);
-            console.log(response.data); // log the response data for debugging
 
             //send email verification
             const sendData: {to_email: string, verify_code: number} = {
@@ -124,9 +123,9 @@ export default function Register({ user }: { user: any }) {
             emailjs.send(process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!, 
                 process.env.NEXT_PUBLIC_EMAILJS_VERIFY_TEMPLATE_ID!, sendData, process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY)
               .then((result) => {
-                console.log(result);
+                //console.log(result);
               }, (error) => {
-                console.log(error);
+                //console.log(error);
                 setError(true);
                 setSubmitting(false);
                 return;
