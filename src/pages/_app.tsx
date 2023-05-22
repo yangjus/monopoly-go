@@ -5,10 +5,25 @@ import Head from 'next/head';
 import Footer from '@component/components/Footer'
 import Navbar from '@component/components/Navbar';
 import NextNProgress from 'nextjs-progressbar';
+import { useEffect, useState } from 'react';
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function App({ Component, pageProps }: AppProps) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768); // Adjust the breakpoint as needed
+    };
+
+    handleResize(); // Check initial window size
+    window.addEventListener('resize', handleResize); // Add event listener for window resize
+
+    return () => {
+      window.removeEventListener('resize', handleResize); // Clean up the event listener on component unmount
+    };
+  }, []);
 
   return (
     <main className={inter.className}>
@@ -17,9 +32,18 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <NextNProgress />
       <Navbar />
-      <div className="px-4 py-2">
-        <Component {...pageProps} />
-      </div>
+      {isMobile ? (
+        <div className="mobile-screen text-2xl m-6 h-screen">
+          This page is not available on mobile and other small screen devices.
+          Stay tuned for a mobile-responsive update!
+        </div>
+      ) : (
+        <>
+          <div className="px-4 py-2">
+            <Component {...pageProps} />
+          </div>
+        </>
+      )}
       <div className="bottom-0">
         <Footer />
       </div>

@@ -5,6 +5,7 @@ import { hasCookie } from "cookies-next";
 import { stickers } from "../../constants/stickers";
 import { useRouter } from "next/navigation";
 import { FormControlLabel, Checkbox } from "@mui/material";
+import moment from 'moment';
 
 export interface FormData {
     email: string;
@@ -105,7 +106,8 @@ export default function Register({ user }: { user: any }) {
 
         try {
             const initialInventory = new Array(stickers.length).fill(0);
-            const payload = { ...formData, trusted: false, inventory: initialInventory}
+            const currentDate: moment.Moment = moment();
+            const payload = { ...formData, trusted: false, inventory: initialInventory, last_logged: currentDate}
             const response = await axios.post("/api/register", payload);
             console.log(response.data); // log the response data for debugging
             // Reset form after successful submission

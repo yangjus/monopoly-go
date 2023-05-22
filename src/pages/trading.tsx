@@ -24,6 +24,7 @@ import {
     Tooltip
 } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
+import moment from "moment";
 
 export interface TradingUser {
     username: string,
@@ -290,16 +291,24 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }: {req:
         invite: string,
         social: string,
         trusted: boolean,
-        inventory: number[]
+        inventory: number[],
+        last_logged: Date
     }
 
-    //TODO:
-    //set a field in user db for lastLogged as datetime
-    //sort matchedUsers by lastLogged
-    //this is to prevent users from having to scroll needlessly through inactive accounts
+    interface TradingUserDate {
+        username: string,
+        rank: number,
+        invite: string,
+        social: string,
+        trusted: boolean,
+        lastLogged: Date,
+        hasStickers: number[],
+        needStickers: number[]
+    }
 
-    const users: ParsedUser[] = await User.find({}, 'username rank invite social trusted inventory').exec();
-    const matchedUsers: TradingUser[] = [];
+    const query: string = 'username rank invite social trusted inventory last_logged';
+    const users: ParsedUser[] = await User.find({}, query).exec();
+    const matchedUsersDate: TradingUserDate[] = [];
 
     users.map((otherUser) => {
         //an array of indexes referring to which stickers another user has that the current user needs
@@ -317,18 +326,24 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }: {req:
             }
         }
         if (hasStickers.length > 0 && needStickers.length > 0) {
-            const addUser: TradingUser = {
+            const addUser: TradingUserDate = {
                 username: otherUser.username,
                 rank: otherUser.rank,
                 invite: otherUser.invite,
                 social: otherUser.social,
                 trusted: otherUser.trusted,
+                lastLogged: otherUser.last_logged,
                 hasStickers: hasStickers,
                 needStickers: needStickers
             }
-            matchedUsers.push(addUser);
+            matchedUsersDate.push(addUser);
         }
     })
+
+    //sort matchedUsers with first being the latest time for lastLogged
+    //this is to prevent users from having to scroll needlessly through inactive accounts
+    matchedUsersDate.sort((a, b) => moment(a.lastLogged).diff(moment(b.lastLogged)));
+    const matchedUsers: TradingUser[] = matchedUsersDate.map(({ lastLogged, ...rest }) => rest);
   
     if (user) {
       return {
