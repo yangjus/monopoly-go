@@ -22,7 +22,7 @@ export default function Profile({ user }: { user: UserType }) {
         break;
       }
     }
-  }, []);
+  }, [user.inventory]);
 
   return (
   <div className="items-center text-center justify-center space-y-4">

@@ -43,5 +43,9 @@
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.2"
-  }
+  },
+  "cacheDirectories": [
+    "node_modules/",
+    ".next/cache/"
+  ]
 }
