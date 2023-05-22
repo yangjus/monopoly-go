@@ -70,10 +70,18 @@ export default function Trading({ user, matchedUsers }: { user: UserType, matche
     const displayUsers = pageCount > maxDisplayedPages ?
         filteredUsers
             .slice(0, usersPerPage)
-            .map((user: TradingUser) => <UserRow user={user} />) :
+            .map((user: TradingUser, index: number) => 
+                <div key={index}>
+                    <UserRow user={user} />
+                </div>
+            ) :
         filteredUsers
             .slice(pagesVisited, pagesVisited + usersPerPage)
-            .map((user: TradingUser) => <UserRow user={user} />);
+            .map((user: TradingUser, index: number) => 
+                <div key={index}>
+                    <UserRow user={user} />
+                </div>
+            );
 
     const handleAlbumSelectChange = (event: SelectChangeEvent) => {
         setSelectedAlbum(event.target.value as string);
@@ -132,7 +140,7 @@ export default function Trading({ user, matchedUsers }: { user: UserType, matche
             setFilteredUsers(users);
         }
 
-    }, [selectedAlbum, selectedStar, checkAllAlbum, checkAllStar]);
+    }, [selectedAlbum, selectedStar, checkAllAlbum, checkAllStar, matchedUsers]);
 
     console.log(user);
 

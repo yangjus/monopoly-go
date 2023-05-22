@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { getCookie } from "cookies-next";
+import Link from "next/link";
 
 export default function Navbar() {
 
@@ -24,26 +25,26 @@ export default function Navbar() {
         { !loading &&
         <div className="justify-end">
             <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-                <a href="/" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+                <Link href="/" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
                     Home
-                </a>
+                </Link>
                 {!getCookie('session') && 
                 <>
-                    <a href="/register" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+                    <Link href="/register" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
                         Register
-                    </a>
-                    <a href="/login" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
+                    </Link>
+                    <Link href="/login" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
                         Login
-                    </a>
+                    </Link>
                 </>}
                 {getCookie('session') && 
                 <>
-                    <a href="/trading" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+                    <Link href="/trading" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
                         Trading
-                    </a>
-                    <a href="/profile" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-10">
+                    </Link>
+                    <Link href="/profile" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-10">
                         Profile
-                    </a>
+                    </Link>
                     <form method="POST" action="/api/logout">
                         <button type="submit" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
                             Logout

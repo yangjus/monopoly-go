@@ -38,7 +38,7 @@ const UserDropdown = ({ user }: { user: TradingUser }) => {
         {/*They Want*/}
         <Grid item xs={6}>
             <Typography sx={{marginBottom: "10px"}}>
-                {user.username}'s Inventory
+                {user.username}&apos;s Inventory
                 <Tooltip title="Based on what they have that you need" placement='top'>
                     <InfoIcon 
                         style={{ 

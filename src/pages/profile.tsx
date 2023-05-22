@@ -70,7 +70,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }: {req:
     password: parsedObject.password,
     username: parsedObject.username,
     rank: parsedObject.rank,
-    invite: parsedObject.invite,\admin\history
+    invite: parsedObject.invite,
     social: parsedObject.social,
     trusted: parsedObject.trusted,
     inventory: parsedObject.inventory

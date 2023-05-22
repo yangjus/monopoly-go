@@ -69,7 +69,7 @@ export default function Register({ user }: { user: any }) {
         <form className="min-h-screen w-full max-w-sm" onSubmit={handleSubmit}>
             <div className="text-4xl py-4">Login</div>
             {formKeys.map((key: keyof FormData) => (
-                <div className="mb-4">
+                <div className="mb-4" key={key}>
                     <label htmlFor={key} className="block capitalize text-gray-500 font-bold mb-2 flex justify-between">
                         {key}*
                         { key == "email" &&

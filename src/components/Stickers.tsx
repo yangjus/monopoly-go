@@ -1,7 +1,7 @@
 import { useState, useEffect, ChangeEvent } from "react";
 import FilterSelect from "./FilterSelect";
 import { Sticker, Album, stickers } from "../../constants/stickers";
-import { IconButton, SelectChangeEvent, Modal, Typography, Box } from "@mui/material";
+import { IconButton, SelectChangeEvent, Modal, Box } from "@mui/material";
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
@@ -10,6 +10,7 @@ import InventoryModal from "./InventoryModal";
 import InfoIcon from '@mui/icons-material/Info';
 import CloseIcon from '@mui/icons-material/Close';
 import untradeableStickers from "../../images/untradeable_stickers.jpg";
+import Image from "next/image";
 
 const style = {
     position: 'absolute', 
@@ -103,7 +104,7 @@ export default function Stickers({user }: {user: any }) {
             ));
         }
 
-    }, [selectedAlbum, selectedStar, checkAllAlbum, checkAllStar]);
+    }, [selectedAlbum, selectedStar, checkAllAlbum, checkAllStar, user.inventory]);
 
     const handleOpen = () => {
         setOpen(true);
@@ -126,7 +127,7 @@ export default function Stickers({user }: {user: any }) {
                 <IconButton onClick={handleClose} size="small" sx={{ position: 'absolute', top: 0, right: 0 }}>
                     <CloseIcon />
                 </IconButton>
-                <img
+                <Image
                     className="object-contain max-w-full max-h-full mx-auto"
                     src={untradeableStickers.src}
                     alt="image of untradeable stickers"
