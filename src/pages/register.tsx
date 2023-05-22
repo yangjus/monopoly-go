@@ -78,7 +78,7 @@ export default function Register({ user }: { user: any }) {
     const [submitting, setSubmitting] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
-    const [message, setMessage] = useState("error registrating");
+    const [message, setMessage] = useState("Error Registrating. Try another valid email.");
 
     const [showPassword, setShowPassword] = useState<boolean>(false);
     
@@ -117,13 +117,14 @@ export default function Register({ user }: { user: any }) {
                 invite: "",
                 social: "", 
             });
-            setSubmitting(false);
             setSuccess(true);
             push("/");
         } catch (error) {
             console.error(error); // log any errors that occur
             setError(true);
         }
+
+        setSubmitting(false);
     };
 
     const togglePassword = () => {

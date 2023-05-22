@@ -1,14 +1,17 @@
 import { GetServerSideProps } from "next";
 import { useState, ChangeEvent, useEffect } from "react";
 import jwt from "jsonwebtoken";
+import ReactPaginate from 'react-paginate';
 import { hasCookie, getCookie } from 'cookies-next';
 import connect from "@component/../lib/mongodb";
 import User from "@component/../model/schema";
 import { UserType } from "../../constants/users";
 import { FormGroup, FormControlLabel, Checkbox, SelectChangeEvent } from '@mui/material';
-import { Sticker, Album, stickers } from "../../constants/stickers";
+import { Album, stickers } from "../../constants/stickers";
 import FilterSelect from "@component/components/FilterSelect";
 import UserRow from "@component/components/UserRow";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import {
     Table, 
     TableBody, 
@@ -56,6 +59,20 @@ export default function Trading({ user, matchedUsers }: { user: UserType, matche
         {label: "4", value: "4"},
         {label: "5", value: "5"}
     ]
+
+      const [pageNumber, setPageNumber] = useState(0);
+    const usersPerPage = 5; // Number of users to display per page
+    const maxDisplayedPages = 20; // Maximum number of displayed pages
+    const pagesVisited = pageNumber * usersPerPage;
+    const pageCount = Math.ceil(filteredUsers.length / usersPerPage);
+
+    const displayUsers = pageCount > maxDisplayedPages ?
+        filteredUsers
+            .slice(0, usersPerPage)
+            .map((user: TradingUser) => <UserRow user={user} />) :
+        filteredUsers
+            .slice(pagesVisited, pagesVisited + usersPerPage)
+            .map((user: TradingUser) => <UserRow user={user} />);
 
     const handleAlbumSelectChange = (event: SelectChangeEvent) => {
         setSelectedAlbum(event.target.value as string);
@@ -119,13 +136,13 @@ export default function Trading({ user, matchedUsers }: { user: UserType, matche
     console.log(user);
 
     return (
-    <div className="items-center h-screen  space-y-4">
+    <div className="items-center space-y-4">
         <div className="text-4xl pt-5 text-center justify-center">Marketplace</div>
         <div className="text-xl text-center justify-center">
             Finds other users who have what you need, and want what you have!
         </div>
         <div className="grid grid-cols-3 gap-4 px-10 py-5">
-            <div className="col-span-1 rounded-md bg-teal-500 p-5">
+            <div className="col-span-1 rounded-md bg-teal-500 p-5 min-h-screen">
                 <div className="text-white text-2xl">
                     Filter
                     <Tooltip title="Filter based on stickers you need" placement='top'>
@@ -204,12 +221,29 @@ export default function Trading({ user, matchedUsers }: { user: UserType, matche
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                        {filteredUsers.map((user: TradingUser) => (
-                            <UserRow user={user}/>
-                        ))}
+                            {displayUsers}
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <div className="flex justify-center mt-4 bottom-0">
+                    {pageCount > maxDisplayedPages ? (
+                        <p className="text-white">Too many users to display. Filter users to display again.</p>
+                        ) : (
+                        <ReactPaginate
+                            pageCount={pageCount}
+                            onPageChange={(data) => {
+                                setPageNumber(data.selected);
+                            }}
+                            containerClassName={'flex items-center space-x-2'}
+                            previousLinkClassName={'p-1 border rounded-full bg-white'}
+                            nextLinkClassName={'p-1 border rounded-full bg-white'}
+                            disabledClassName={'opacity-50 cursor-not-allowed'}
+                            activeClassName={'text-white font-bold'}
+                            nextLabel={<ArrowForwardIosIcon style={{ fontSize: 20, width: 30 }} />}
+                            previousLabel={<ArrowBackIosIcon style={{ fontSize: 20, width: 30, paddingLeft: 5 }} />}
+                        />)
+                    }
+                </div>
             </div>
       </div>
     </div>
@@ -258,6 +292,11 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }: {req:
         trusted: boolean,
         inventory: number[]
     }
+
+    //TODO:
+    //set a field in user db for lastLogged as datetime
+    //sort matchedUsers by lastLogged
+    //this is to prevent users from having to scroll needlessly through inactive accounts
 
     const users: ParsedUser[] = await User.find({}, 'username rank invite social trusted inventory').exec();
     const matchedUsers: TradingUser[] = [];
