@@ -22,7 +22,7 @@ export const labelName = {
     email: "Email*",
     password: "Password*",
     username: "MonopolyGO! Username*",
-    rank: "MonopolyGO! Rank*",
+    rank: "MonopolyGO! Net Worth*",
     invite: "MonopolyGO! Invite Link",
     social: "Discord/Facebook/social link*",
 }
@@ -39,9 +39,9 @@ export const formCheck = (formData: FormData) => {
     }
 
     //Check password strength
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[a-zA-Z\d]{8,}$/;
     if (!formData.password || !passwordRegex.test(formData.password)) {
-        return "Please enter a strong password (at least 8 characters, 1 uppercase letter, 1 lowercase letter, and 1 number).";
+        return "Please enter a strong password (at least 8 characters, 1 letter and 1 number).";
     }
 
     //Validate rank

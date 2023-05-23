@@ -5,6 +5,7 @@ import { TextField } from '@mui/material';
 import { hasCookie, getCookie } from 'cookies-next';
 import emailjs from "@emailjs/browser";
 import { useState } from "react";
+import Link from 'next/link';
 
 function objectToForm(object: any) {
   const form = document.createElement('form');
@@ -71,7 +72,7 @@ export default function Home({ user }: { user: {email: string} }) {
             <div className="text-2xl">
               Feedback, suggestions, or found a bug?
             </div>
-            <div className="text-2xl pb-5">
+            <div className="text-2xl pb-4">
               Send a message here:
             </div>
             <TextField
@@ -94,6 +95,13 @@ export default function Home({ user }: { user: {email: string} }) {
             {result !== "" &&
               <p className="md:flex md:items-center text-teal-500 mb-4 justify-center pt-6">{result}</p>
             }
+            <div className="text-2xl pt-4">
+              or send a message through Discord 
+              <Link href="https://discord.gg/GsNxnVqJDc" className="mx-2 text-blue-600">
+                here
+              </Link>
+              in channel #website-chat
+            </div>
           </div>
         }
       </div>
