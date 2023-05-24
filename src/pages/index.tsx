@@ -1,35 +1,18 @@
 import { GetServerSideProps } from "next";
 import { useRouter } from 'next/router';
 import jwt from "jsonwebtoken";
-import { TextField } from '@mui/material';
+import { TextField, Grid } from '@mui/material';
 import { hasCookie, getCookie } from 'cookies-next';
 import emailjs from "@emailjs/browser";
 import { useState } from "react";
 import Link from 'next/link';
-
-function objectToForm(object: any) {
-  const form = document.createElement('form');
-
-  for (const key in object) {
-    if (object.hasOwnProperty(key)) {
-      const input = document.createElement('input');
-      input.setAttribute('type', 'text');
-      input.setAttribute('name', key);
-      input.setAttribute('value', object[key]);
-      form.appendChild(input);
-    }
-  }
-
-  document.body.appendChild(form);
-
-  return form;
-}
 
 export default function Home({ user }: { user: {email: string} }) {
   const router = useRouter();
 
   const [message, setMessage] = useState<string>("");
   const [result, setResult] = useState<string>("");
+  const [updates, setUpdates] = useState<boolean>(true);
 
   const handleClick = () => {
     router.push("/register");
@@ -60,10 +43,10 @@ export default function Home({ user }: { user: {email: string} }) {
   
   return (
     <>
-    <div className="items-center text-center justify-center h-screen space-y-4">
+    <div className="items-center text-center justify-center space-y-4">
       <div className="text-4xl pt-20">Welcome to the MonopolyGO trading website!</div>
       <div className="text-2xl">Trading stickers made easy</div>
-      <div className="pt-10 px-36">
+      <div className="py-5 px-36">
         {!user.email && 
           <button 
             onClick={handleClick}
@@ -71,6 +54,28 @@ export default function Home({ user }: { user: {email: string} }) {
             Get started now!
           </button>
         }
+      </div>
+        {updates &&
+          <div className="rounded bg-teal-600 p-6 text-white mx-32">
+            <Grid container className="flex text-left">
+              <Grid item xs={12}>
+                New Updates! Fixed a number of things:
+              </Grid>
+              <Grid item xs={12}>
+                <ul>
+                  <li className="ml-16">- changed Rank to Net Worth</li>
+                  <li className="ml-16">- fixed password bug that didn't allow users to use special characters</li>
+                  <li className="ml-16">- fixed update inventory bug for firefox users</li>
+                  <li className="ml-16">- fixed verify code bug for firefox users</li>
+                </ul>
+              </Grid>
+              <Grid item xs={12}>
+                Live Chat is coming up soon!
+              </Grid>
+            </Grid>
+          </div>
+        }
+        <div className="py-5 px-36">
         {user.email &&
           <div>
             <div className="text-2xl">
@@ -100,7 +105,7 @@ export default function Home({ user }: { user: {email: string} }) {
             {result !== "" &&
               <p className="md:flex md:items-center text-teal-500 mb-4 justify-center pt-6">{result}</p>
             }
-            <div className="text-2xl pt-4">
+            <div className="text-2xl py-4">
               or send a message through Discord 
               <Link 
                 href="https://discord.gg/GsNxnVqJDc" 
