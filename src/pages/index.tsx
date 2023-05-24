@@ -64,7 +64,7 @@ export default function Home({ user }: { user: {email: string} }) {
               <Grid item xs={12}>
                 <ul>
                   <li className="ml-16">- changed Rank to Net Worth</li>
-                  <li className="ml-16">- fixed password bug that didn't allow users to use special characters</li>
+                  <li className="ml-16">- fixed password bug that didn&apos;t allow users to use special characters</li>
                   <li className="ml-16">- fixed update inventory bug for firefox users</li>
                   <li className="ml-16">- fixed verify code bug for firefox users</li>
                 </ul>
