@@ -34,6 +34,7 @@ export default function InventoryModal({user}: {user: any}) {
     setInventoryState(user.inventory);
     setOpen(false);
   }
+  const [success, setSuccess] = useState<boolean>(false);
 
   const idStickers = stickers.map((obj, index) => ({
     ...obj,
@@ -60,6 +61,7 @@ export default function InventoryModal({user}: {user: any}) {
       const payload = {email: user.email, inventory: inventoryState}
       const response = await axios.post("/api/update-inventory", payload);
       console.log("updated user: ", response);
+      setSuccess(true);
     }
     catch (error) {
       console.error(error);
@@ -122,9 +124,15 @@ export default function InventoryModal({user}: {user: any}) {
             All stickers you currently have, including non-duplicates.
             </Typography>
             {renderInventory()}
-            <form method="POST" onSubmit={databaseUpdate}>
+            {success && (
+            <p className="md:flex md:items-center text-green-500 mb-4 justify-center pt-2">
+                Inventory update successful! Please refresh page to see changes.
+            </p>
+            )}
+            <form method="POST">
               <button 
-                type="submit" 
+                onClick={databaseUpdate}
+                type="button" 
                 className="border border-white bg-teal-500 hover:bg-teal-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
               >
                   Save Changes

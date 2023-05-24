@@ -39,7 +39,7 @@ export const formCheck = (formData: FormData) => {
     }
 
     //Check password strength
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[a-zA-Z\d!@#$%^&*()\-_=+{};:,<.>]{8,}$/;;
     if (!formData.password || !passwordRegex.test(formData.password)) {
         return "Please enter a strong password (at least 8 characters, 1 letter and 1 number).";
     }

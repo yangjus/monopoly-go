@@ -11,8 +11,7 @@ export default function Verify({ user }: { user: any }) {
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [success, setSuccess] = useState<boolean | null>(null);
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         setSubmitting(true);
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -62,24 +61,23 @@ export default function Verify({ user }: { user: any }) {
                 Enter Email Linked to Code:
             </div>
             <div>
-                <form onSubmit={handleSubmit}>
-                    <input
-                        type="text"
-                        name="Email"
-                        value={email}
-                        onChange={onChange}
-                        className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-teal-500"
-                    />
-                    <div className="flex justify-center">
-                        <button 
-                            type="submit"
-                            disabled={submitting}
-                            className="shadow bg-teal-500 mt-4 hover:bg-teal-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-                        >
-                            {submitting ? "Submitting..." : "Submit"}
-                        </button>
-                    </div>
-                </form>
+                <input
+                    type="text"
+                    name="Email"
+                    value={email}
+                    onChange={onChange}
+                    className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-teal-500"
+                />
+                <div className="flex justify-center">
+                    <button 
+                        onClick={handleSubmit}
+                        type="button"
+                        disabled={submitting}
+                        className="shadow bg-teal-500 mt-4 hover:bg-teal-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                    >
+                        {submitting ? "Submitting..." : "Submit"}
+                    </button>
+                </div>
             </div>
             {success && (
             <p className="md:flex md:items-center text-green-500 mb-4 justify-center pt-6">Your email is successfully verified! You can now login with your new account.</p>

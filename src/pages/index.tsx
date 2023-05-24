@@ -37,6 +37,10 @@ export default function Home({ user }: { user: {email: string} }) {
 
   const submitMessage = (e: any) => {
     e.preventDefault();
+    if (message === "") {
+      setResult("Please send a valid message.");
+      return;
+    }
     const sendData: {from_email: string, message: string} = {
       from_email: user.email,
       message: message
@@ -84,9 +88,10 @@ export default function Home({ user }: { user: {email: string} }) {
               value={message}
               onChange={(event) => setMessage(event.target.value)}
             />
-            <form method="POST" onSubmit={submitMessage}>
+            <form method="POST">
               <button
-                type="submit" 
+                onClick={submitMessage}
+                type="button" 
                 className="border border-white mt-5 bg-teal-500 hover:bg-teal-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
               >
                 Submit

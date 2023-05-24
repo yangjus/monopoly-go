@@ -213,9 +213,9 @@ export default function Trading({ user, matchedUsers }: { user: UserType, matche
                         selectedOption={selectedStar}
                     />
                 </div>
-                <div className="fixed bottom-4 left-4 flex items-center justify-center bg-blue-700 rounded-full">
+                {/*<div className="fixed bottom-4 left-4 flex items-center justify-center bg-blue-700 rounded-full">
                     <LiveChatWindow />
-                </div>
+                </div>*/}
             </div>
             <div className="col-span-2 rounded-md bg-teal-500 p-5">
                 <TableContainer component={Paper} className="px-2">
