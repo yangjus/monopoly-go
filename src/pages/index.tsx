@@ -97,7 +97,12 @@ export default function Home({ user }: { user: {email: string} }) {
             }
             <div className="text-2xl pt-4">
               or send a message through Discord 
-              <Link href="https://discord.gg/GsNxnVqJDc" className="mx-2 text-blue-600">
+              <Link 
+                href="https://discord.gg/GsNxnVqJDc" 
+                className="mx-2 text-blue-600" 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
                 here
               </Link>
               in channel #website-chat

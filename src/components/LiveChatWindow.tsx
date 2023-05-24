@@ -9,7 +9,7 @@ const style = {
     bottom: '20px',
     left: '20px',
     width: '500px',
-    height: '400px',
+    height: '500px',
     backgroundColor: 'white',
     padding: '16px',
     borderRadius: '8px',
@@ -75,7 +75,7 @@ const LiveChatWindow = () => {
             <CloseIcon />
         </IconButton>
         <Grid container>
-            <Grid item xs={2} className="flex justify-center overflow-y-auto max-h-[350px]">
+            <Grid item xs={2} className="flex justify-center overflow-y-auto max-h-[450px] border-r border-gray-500">
                 <Grid container>
                     <Grid item xs={12}>
                         <Typography variant="h6">
@@ -98,11 +98,11 @@ const LiveChatWindow = () => {
                         Chat with {currentUser}
                         </Typography>
                     </Grid>
-                    <Grid container className="overflow-y-auto max-h-[250px] p-6">
+                    <Grid container className="overflow-y-auto max-h-[350px] p-6">
                         {messages.map((m: Message) => 
                             (m.author == "You" ? (
                                 <Grid item xs={12}>
-                                <div className="flex justify-end">
+                                <div className="flex justify-end pt-1">
                                     <div className="text-sm text-gray-500 mt-1 mr-2">
                                         {m.date}
                                     </div>
@@ -110,16 +110,18 @@ const LiveChatWindow = () => {
                                         You
                                     </div>
                                 </div>
-                                <div className="rounded bg-orange-400 text-white my-1 px-4 pb-1">
-                                    <div className="flex justify-end">
-                                        <div className={rightTriangle}></div>
+                                <div className="flex justify-end">
+                                    <div className="rounded bg-orange-400 text-white my-1 px-4 pb-1 w-4/5">
+                                        <div className="flex justify-end">
+                                            <div className={rightTriangle}></div>
+                                        </div>
+                                        {m.content}
                                     </div>
-                                    {m.content}
                                 </div>
                                 </Grid>
                             ) : (
                                 <Grid item xs={12}>
-                                <div className="flex">
+                                <div className="flex pt-1">
                                     <div className="text-md">
                                         {m.author}
                                     </div>
@@ -127,7 +129,7 @@ const LiveChatWindow = () => {
                                         {m.date}
                                     </div>
                                 </div>
-                                <div className="rounded bg-teal-500 text-white my-1 px-4 pb-1">
+                                <div className="rounded bg-teal-500 text-white my-1 px-4 pb-1 w-4/5">
                                     <div className={leftTriangle}></div>
                                     {m.content}
                                 </div>
