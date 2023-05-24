@@ -83,7 +83,7 @@ const LiveChatWindow = () => {
                         </Typography>
                     </Grid>
                     {users.map((user: string) => 
-                        <Grid item xs={12}>
+                        <Grid item xs={12} key={user}>
                             <IconButton onClick={() => changeUser(user)}>
                                 <Avatar className="my-1">{user}</Avatar>
                             </IconButton>
@@ -101,7 +101,7 @@ const LiveChatWindow = () => {
                     <Grid container className="overflow-y-auto max-h-[350px] p-6">
                         {messages.map((m: Message) => 
                             (m.author == "You" ? (
-                                <Grid item xs={12}>
+                                <Grid item xs={12} key={m.content}>
                                 <div className="flex justify-end pt-1">
                                     <div className="text-sm text-gray-500 mt-1 mr-2">
                                         {m.date}
@@ -120,7 +120,7 @@ const LiveChatWindow = () => {
                                 </div>
                                 </Grid>
                             ) : (
-                                <Grid item xs={12}>
+                                <Grid item xs={12} key={m.content}>
                                 <div className="flex pt-1">
                                     <div className="text-md">
                                         {m.author}
