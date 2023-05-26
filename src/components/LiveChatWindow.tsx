@@ -3,6 +3,8 @@ import { IconButton, Box, Typography, Grid, Avatar, TextField } from '@mui/mater
 import ChatIcon from '@mui/icons-material/Chat';
 import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
+import axios from "axios";
+import { Chat } from '@component/pages/api/get-messages';
 
 const style = {
     position: 'fixed',
@@ -17,6 +19,18 @@ const style = {
     borderColor: 'teal'
 };
 
+function stringAvatar(name: string) {
+    const firstName = name.split(' ')[0];
+    const lastName = name.split(' ')[1];
+  
+    const firstInitial = firstName.substring(0, 1);
+    const secondInitial = lastName ? lastName.substring(0, 1) : '';
+  
+    return {
+      children: `${firstInitial}${secondInitial}`,
+    };
+}
+
 const leftTriangle: string = "relative top-0 left-0 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-teal-500 rotate-45";
 const rightTriangle: string = "relative top-0 right-0 transform -translate-y-1/2 w-2 h-2 bg-orange-400 rotate-45";
 
@@ -26,40 +40,77 @@ interface Message {
     date: string
 }
 
-const LiveChatWindow = () => {
-  const [open, setOpen] = useState<boolean>(false);
-  const [currentUser, setCurrentUser] = useState<string>("H");
-  const [message, setMessage] = useState<string>("");
+const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) => {
+    const [open, setOpen] = useState<boolean>(false);
+    const [currentChat, setCurrentChat] = useState<Chat>();
+    const [message, setMessage] = useState<string>("");
 
-  const [messages, setMessages] = useState<Message[]>([]);
+    const [messages, setMessages] = useState<Message[]>([]);
+    const [loadedMessages, setLoadedMessages] = useState<Chat[]>([]);
 
-  useEffect(() => {
-    const dummy: Message[] = [
-        {content: "yo hows it going", author: "Them", date: "Jan 11"},
-        {content: "its going well how about you this is a test to expand", author: "You", date: "Jan 11"},
-        {content: "nice me too", author: "Them", date: "Jan 11"},
-        {content: "thats awesome man", author: "You", date: "Jan 11"},
-        {content: "keep wrinting more text", author: "Them", date: "Jan 11"},
-        {content: "yep", author: "You", date: "Jan 11"}
-    ]
-    setMessages(dummy);
-  }, []);
+    useEffect(() => {
+        const dummy: Message[] = [
+            {content: "yo hows it going", author: "Them", date: "Jan 11"},
+            {content: "its going well how about you this is a test to expand", author: "You", date: "Jan 11"},
+            {content: "nice me too", author: "Them", date: "Jan 11"},
+            {content: "thats awesome man", author: "You", date: "Jan 11"},
+            {content: "keep wrinting more text", author: "Them", date: "Jan 11"},
+            {content: "yep", author: "You", date: "Jan 11"}
+        ]
+        setMessages(dummy);
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
+        const fetchData = async (payload: any) => {
+            try {
+                const response = await axios.post("/api/get-messages", payload);
+                console.log("data recieved: ", response.data)
+                setLoadedMessages(response.data.conversations);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+        fetchData({conversations: conversations, user_email: user.email});
+    }, []);
 
-  const users: string[] = ['H', 'S', 'V', 'T', 'W', 'Z'];
+    const submitMessage = async () => {
+        if (message === "") {
+            console.log("nothing sent.")
+            return;
+        }
+        const payload = {
+            conversationId: currentChat?.conversationId,
+            sender: user.username,
+            content: message,
+        }
+        try {
+            const response = await axios.post("/api/submit-chat-message", payload);
+            console.log("submit message response: ", response);
+            setMessage("");
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
-  const changeUser = (value: string) => {
-    setCurrentUser(value);
-  }
+    const handleOpen = () => {
+        setOpen(true);
+    };
 
-  return (
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    //const users: string[] = ['H', 'S', 'V', 'T', 'W', 'Z'];
+
+    const changeUser = (id: string) => {
+
+        function checkId(chat: Chat) {
+            return chat.conversationId === id;
+        }
+
+        setCurrentChat(loadedMessages.find(checkId));
+    }
+
+    return (
     <div>
     {!open && <IconButton 
         onClick={handleOpen} 
@@ -82,10 +133,10 @@ const LiveChatWindow = () => {
                             Users
                         </Typography>
                     </Grid>
-                    {users.map((user: string) => 
-                        <Grid item xs={12} key={user}>
-                            <IconButton onClick={() => changeUser(user)}>
-                                <Avatar className="my-1">{user}</Avatar>
+                    {loadedMessages.map((chat: Chat) => 
+                        <Grid item xs={12} key={chat.conversationId} className="my-1">
+                            <IconButton onClick={() => changeUser(chat.conversationId)}>
+                                <Avatar {...stringAvatar(chat.recipient_username)} />
                             </IconButton>
                         </Grid>
                     )}
@@ -95,7 +146,7 @@ const LiveChatWindow = () => {
                 <Grid container>
                     <Grid item xs={12} className="pl-4">
                         <Typography variant="h6">
-                        Chat with {currentUser}
+                        Chat with {currentChat?.recipient_username ? currentChat.recipient_username : "someone!"}
                         </Typography>
                     </Grid>
                     <Grid container className="overflow-y-auto max-h-[350px] p-6">
@@ -150,7 +201,7 @@ const LiveChatWindow = () => {
                         />
                     </Grid>
                     <Grid item xs={1} className="pt-2 flex justify-items">
-                        <IconButton>
+                        <IconButton onClick={submitMessage}>
                             <SendIcon />
                         </IconButton>
                     </Grid>
@@ -160,7 +211,7 @@ const LiveChatWindow = () => {
     </Box>
     }
     </div>
-  );
+    );
 };
 
 export default LiveChatWindow;
