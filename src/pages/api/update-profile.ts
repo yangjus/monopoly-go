@@ -15,7 +15,7 @@ export default async function UpdateProfile(req: any, res: any) {
              }},
             { new: true }
         ).then((updatedUser: any) => {
-            console.log(updatedUser);
+            //console.log(updatedUser);
             if (!updatedUser) return res.json({code:'user object not updated'}).end()
             return res.status(200).json({ updatedUser }).end();
         })

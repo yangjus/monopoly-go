@@ -5,13 +5,13 @@ connect();
 
 export default async function verifyEmail(req: any, res: any) {
     try {
-        console.log(req.body)
+        //console.log(req.body)
         Verify.findOneAndUpdate(
             { email: req.body.email, code: req.body.code },
             { $set: { email_verified: true }},
             { new: true }
         ).then((verifiedEmail: any) => {
-            console.log(verifiedEmail);
+            //console.log(verifiedEmail);
             if (!verifiedEmail) return res.status(400)
             return res.status(200).json({ verifiedEmail })
         })

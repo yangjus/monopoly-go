@@ -48,7 +48,7 @@ const GlobalChatWindow = ({user}: {user: any}) => {
         const channel = pusher.subscribe("global-chat");
     
         channel.bind("message-event", function (data: any) {
-          console.log(data);
+          //console.log(data);
           setCurrentChat((prevState: sentMessage[]) => [
             ...prevState,
             { sender: data.sender, content: data.message, timestamp: data.timestamp },
@@ -105,9 +105,9 @@ const GlobalChatWindow = ({user}: {user: any}) => {
         <IconButton 
             onClick={handleOpen} 
             size="large"
-            className="bg-blue-500 text-white"
+            className="bg-blue-500"
         >
-            <PublicIcon fontSize="large"/>
+            <PublicIcon fontSize="large" className="text-white"/>
         </IconButton>
     </Tooltip>
     }

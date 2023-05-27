@@ -10,7 +10,7 @@ interface BadgeProps {
 const Badge = ({name, album, star}: BadgeProps) => {
 
     const dummyFunction = () => {
-        console.log("dummy function")
+        //console.log("dummy function")
         return;
     }
 

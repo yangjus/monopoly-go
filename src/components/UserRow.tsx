@@ -20,14 +20,14 @@ const UserRow = ( {user, otherUser} : {user: UserType, otherUser: TradingUser} )
     const [open, setOpen] = useState<boolean>(false);
 
     const directMessage = async (email: string) => {
-        console.log("direct message with", email);
-        console.log("current user is: ", user.email);
+        //console.log("direct message with", email);
+        //console.log("current user is: ", user.email);
         try {
             const payload: {participants_email: string[]} = {
                 participants_email: [user.email, email]
             }
             const response = await axios.post("/api/create-conversation", payload);
-            console.log(response);
+            //console.log(response);
         } catch (error) {
             console.error(error);
         }

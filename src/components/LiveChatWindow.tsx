@@ -37,7 +37,7 @@ const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) 
     const [message, setMessage] = useState<string>("");
 
     const [loadedMessages, setLoadedMessages] = useState<Chat[]>([]);
-    const [pollingTime, setPollingTime] = useState<number>(100000);
+    const [pollingTime, setPollingTime] = useState<number>(5000);
 
     useEffect(() => {
         if (open) {
@@ -51,7 +51,7 @@ const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) 
         const fetchData = async (payload: any) => {
           try {
             const response = await axios.post("/api/get-messages", payload);
-            console.log("data received: ", response.data);
+            //console.log("data received: ", response.data);
             if (isSubscribed) {
                 const newArr: Chat[] = [...response.data.conversations];
                 setLoadedMessages(newArr);
@@ -77,12 +77,12 @@ const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) 
     }, []);
 
     useEffect(() => {
-        console.log("setting new loadedMessages...")
+        //console.log("setting new loadedMessages...")
     }, [loadedMessages])
 
     const submitMessage = async () => {
         if (message === "") {
-            console.log("nothing sent.")
+            //console.log("nothing sent.")
             return;
         }
         const payload = {
@@ -90,15 +90,15 @@ const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) 
             sender: user.username,
             content: filter.clean(message),
         }
-        console.log("message sent: ", payload);
+        //console.log("message sent: ", payload);
         try {
             const response = await axios.post("/api/submit-chat-message", payload);
-            console.log("submit message response: ", response);
+            //console.log("submit message response: ", response);
             setMessage("");
             try {
 
                 const response = await axios.post("/api/get-messages", { conversations, user_email: user.email });
-                console.log("data received: ", response.data);
+                //console.log("data received: ", response.data);
                 const newArr: Chat[] = [...response.data.conversations];
                 setLoadedMessages(newArr);
                 } catch (error) {
@@ -143,9 +143,9 @@ const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) 
         <IconButton 
             onClick={handleOpen} 
             size="large"
-            className="bg-blue-500 text-white"
+            className="bg-blue-500"
         >
-            <ChatIcon fontSize="large"/>
+            <ChatIcon fontSize="large" className="text-white"/>
         </IconButton>
     </Tooltip>
     }

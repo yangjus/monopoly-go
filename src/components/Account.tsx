@@ -55,7 +55,7 @@ export default function Account({user}: {user: any}) {
 
         try {
             const response = await axios.post("/api/update-profile", formData);
-            console.log(response.data); // log the response data for debugging
+            //console.log(response.data); // log the response data for debugging
             // Reset form after successful submission
             setSubmitting(false);
             setSuccess(true);

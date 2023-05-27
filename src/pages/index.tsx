@@ -59,18 +59,25 @@ export default function Home({ user }: { user: {email: string} }) {
           <div className="rounded bg-teal-600 p-6 text-white mx-32">
             <Grid container className="flex text-left">
               <Grid item xs={12}>
-                New Updates! Fixed a number of things:
+                New Updates! Added new features in the <b>Trading</b> page:
               </Grid>
               <Grid item xs={12}>
                 <ul>
-                  <li className="ml-16">- changed Rank to Net Worth</li>
-                  <li className="ml-16">- fixed password bug that didn&apos;t allow users to use special characters</li>
-                  <li className="ml-16">- fixed update inventory bug for firefox users</li>
-                  <li className="ml-16">- fixed verify code bug for firefox users</li>
+                  <li className="ml-8">- <b>Direct Messages!</b> Avoid the hassle of navigating to another platform.</li>
+                  <ul>
+                    <li className="ml-16">- To DM a user, click on the message bubble next to their name in the trading page</li>
+                    <li className="ml-16">Then refresh the page, and click the blue message button on the bottom left</li>
+                    <li className="ml-16">- Currently it is manual refresh to see latest direct messages, but will be updated in the future</li>
+                  </ul>
+                  <li className="ml-8">- <b>Global Chat!</b> Featuring live, auto updates! Converse with your fellow MGO traders!</li>
+                  <ul>
+                    <li className="ml-16">- Will only display the past two days of chat history</li>
+                    <li className="ml-16">- In the future, will be able to DM other users directly from global chat</li>
+                  </ul>
                 </ul>
               </Grid>
               <Grid item xs={12}>
-                Live Chat is coming up soon!
+                Mobile responsive version in the making!
               </Grid>
             </Grid>
           </div>

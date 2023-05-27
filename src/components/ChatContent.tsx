@@ -46,9 +46,11 @@ const ChatContent = ({user, currentChat}: {user: any, currentChat: sentMessage[]
                         {parseDate(m.timestamp)}
                     </div>
                 </div>
-                <div className="rounded bg-teal-500 text-white my-1 px-4 pb-1 max-w-4/5">
-                    <div className={leftTriangle}></div>
-                    {m.content}
+                <div className="flex justify-start">
+                    <div className="rounded bg-teal-500 text-white my-1 px-4 pb-1 max-w-4/5">
+                        <div className={leftTriangle}></div>
+                        {m.content}
+                    </div>
                 </div>
                 </Grid>
             ))}

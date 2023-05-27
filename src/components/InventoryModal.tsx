@@ -60,7 +60,7 @@ export default function InventoryModal({user}: {user: any}) {
     try {
       const payload = {email: user.email, inventory: inventoryState}
       const response = await axios.post("/api/update-inventory", payload);
-      console.log("updated user: ", response);
+      //console.log("updated user: ", response);
       setSuccess(true);
     }
     catch (error) {

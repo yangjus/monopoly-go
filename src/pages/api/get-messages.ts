@@ -31,7 +31,7 @@ export default async function getMessages(req: any, res: any) {
             const messages: sentMessage[] = await Message.find({ conversationId: chat._id }, query).exec();
             return { conversationId, recipient_email, recipient_username, user_email, messages };
         }))
-        console.log("input: ", response);
+        //console.log("input: ", response);
 
         res.json({ conversations: response });
     } catch (error) {
