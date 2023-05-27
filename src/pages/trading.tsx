@@ -5,6 +5,7 @@ import ReactPaginate from 'react-paginate';
 import { hasCookie, getCookie } from 'cookies-next';
 import connect from "@component/../lib/mongodb";
 import User from "@component/../model/user_schema";
+import Conversation from "@component/../model/conversation_schema";
 import { UserType } from "../../constants/users";
 import { FormGroup, FormControlLabel, Checkbox, SelectChangeEvent } from '@mui/material';
 import { Album, stickers } from "../../constants/stickers";
@@ -13,6 +14,7 @@ import UserRow from "@component/components/UserRow";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import LiveChatWindow from "@component/components/LiveChatWindow";
+import GlobalChatWindow from "@component/components/GlobalChatWindow";
 
 import {
     Table, 
@@ -29,6 +31,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import moment from "moment";
 
 export interface TradingUser {
+    email: string,
     username: string,
     rank: number,
     invite: string,
@@ -38,7 +41,13 @@ export interface TradingUser {
     needStickers: number[]
 }
 
-export default function Trading({ user, matchedUsers }: { user: UserType, matchedUsers: TradingUser[] }) {
+interface TradingPageType {
+    user: UserType,
+    matchedUsers: TradingUser[],
+    allConversations: any
+}
+
+export default function Trading({ user, matchedUsers, allConversations }: TradingPageType) {
 
     const [selectedAlbum, setSelectedAlbum] = useState<string>("New York");
     const [selectedStar, setSelectedStar] = useState<string>("1");
@@ -70,13 +79,13 @@ export default function Trading({ user, matchedUsers }: { user: UserType, matche
     const displayUsers = pageCount > maxDisplayedPages ?
         filteredUsers
             .slice(0, usersPerPage)
-            .map((user: TradingUser) => 
-                    <UserRow user={user} key={user.username + user.rank}/>
+            .map((otherUser: TradingUser) => 
+                    <UserRow user={user} otherUser={otherUser} key={otherUser.email}/>
             ) :
         filteredUsers
             .slice(pagesVisited, pagesVisited + usersPerPage)
-            .map((user: TradingUser) => 
-                    <UserRow user={user} key={user.username + user.rank}/>
+            .map((otherUser: TradingUser) => 
+                    <UserRow user={user} otherUser={otherUser} key={otherUser.email}/>
             );
 
     const handleAlbumSelectChange = (event: SelectChangeEvent) => {
@@ -213,9 +222,12 @@ export default function Trading({ user, matchedUsers }: { user: UserType, matche
                         selectedOption={selectedStar}
                     />
                 </div>
-                {/*<div className="fixed bottom-4 left-4 flex items-center justify-center bg-blue-700 rounded-full">
-                    <LiveChatWindow />
-                </div>*/}
+                <div className="fixed bottom-4 left-4 flex items-center z-20 justify-center bg-blue-700 rounded-full">
+                    <LiveChatWindow user={user} conversations={allConversations}/>
+                </div>
+                <div className="fixed bottom-4 left-24 flex items-center z-10 justify-center bg-blue-700 rounded-full">
+                    <GlobalChatWindow user={user} />
+                </div>
             </div>
             <div className="col-span-2 rounded-md bg-teal-500 p-5">
                 <TableContainer component={Paper} className="px-2">
@@ -284,13 +296,14 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }: {req:
       rank: parsedObject.rank,
       invite: parsedObject.invite,
       social: parsedObject.social,
-      trusted: true, //change this later
+      trusted: parsedObject.trusted,
       inventory: parsedObject.inventory
     }
 
     //find all users in db that have atleast 1 sticker user doesn't have,
     //and atleast 1 sticker they want that user does have
     interface ParsedUser {
+        email: string,
         username: string,
         rank: number,
         invite: string,
@@ -301,6 +314,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }: {req:
     }
 
     interface TradingUserDate {
+        email: string,
         username: string,
         rank: number,
         invite: string,
@@ -311,7 +325,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }: {req:
         needStickers: number[]
     }
 
-    const query: string = 'username rank invite social trusted inventory last_logged';
+    const query: string = 'email username rank invite social trusted inventory last_logged';
     const users: ParsedUser[] = await User.find({}, query).exec();
     const matchedUsersDate: TradingUserDate[] = [];
 
@@ -332,6 +346,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }: {req:
         }
         if (hasStickers.length > 0 && needStickers.length > 0) {
             const addUser: TradingUserDate = {
+                email: otherUser.email,
                 username: otherUser.username,
                 rank: otherUser.rank,
                 invite: otherUser.invite,
@@ -349,12 +364,19 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }: {req:
     //this is to prevent users from having to scroll needlessly through inactive accounts
     matchedUsersDate.sort((a, b) => moment(b.lastLogged).diff(moment(a.lastLogged)));
     const matchedUsers: TradingUser[] = matchedUsersDate.map(({ lastLogged, ...rest }) => rest);
+
+    //live chat logic
+    //find all conversation objects that contain user.email inside participants_email
+    //get all those objects
+    
+    const allConversations = await Conversation.find({ participants_email: user.email }).exec();
   
     if (user) {
       return {
         props: {
           user,
           matchedUsers,
+          allConversations: JSON.parse(JSON.stringify(allConversations))
         }
       }
     }
@@ -365,6 +387,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }: {req:
       props: {
         user: {},
         matchedUsers: [],
+        allConversations: []
       }
     }
   }
