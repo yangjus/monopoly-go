@@ -4,7 +4,7 @@ import User from "@component/../model/user_schema";
 
 connect();
 
-interface sentMessage {
+export interface sentMessage {
     sender: string,
     content: string,
     timestamp: Date

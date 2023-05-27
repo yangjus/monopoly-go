@@ -14,7 +14,7 @@ import UserRow from "@component/components/UserRow";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import LiveChatWindow from "@component/components/LiveChatWindow";
-import io from 'Socket.IO-client'
+import GlobalChatWindow from "@component/components/GlobalChatWindow";
 
 import {
     Table, 
@@ -222,8 +222,11 @@ export default function Trading({ user, matchedUsers, allConversations }: Tradin
                         selectedOption={selectedStar}
                     />
                 </div>
-                <div className="fixed bottom-4 left-4 flex items-center z-10 justify-center bg-blue-700 rounded-full">
+                <div className="fixed bottom-4 left-4 flex items-center z-20 justify-center bg-blue-700 rounded-full">
                     <LiveChatWindow user={user} conversations={allConversations}/>
+                </div>
+                <div className="fixed bottom-4 left-24 flex items-center z-10 justify-center bg-blue-700 rounded-full">
+                    <GlobalChatWindow user={user} />
                 </div>
             </div>
             <div className="col-span-2 rounded-md bg-teal-500 p-5">

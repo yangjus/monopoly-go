@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { IconButton, Box, Typography, Grid, Avatar, TextField } from '@mui/material';
+import React, { useState, useEffect, useRef } from 'react';
+import { IconButton, Box, Typography, Grid, Avatar, TextField, Tooltip } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
 import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
 import axios from "axios";
 import { Chat } from '@component/pages/api/get-messages';
+import ChatContent from './ChatContent';
 
 const style = {
     position: 'fixed',
@@ -19,58 +20,64 @@ const style = {
     borderColor: 'teal'
 };
 
-function stringAvatar(name: string) {
-    const firstName = name.split(' ')[0];
-    const lastName = name.split(' ')[1];
-  
-    const firstInitial = firstName.substring(0, 1);
-    const secondInitial = lastName ? lastName.substring(0, 1) : '';
-  
+function stringAvatar(name: string) { 
+    if (!name[1]) return { children: `${name[0]}`}
     return {
-      children: `${firstInitial}${secondInitial}`,
+      children: `${name[0]}${name[1]}`,
     };
 }
 
-const leftTriangle: string = "relative top-0 left-0 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-teal-500 rotate-45";
-const rightTriangle: string = "relative top-0 right-0 transform -translate-y-1/2 w-2 h-2 bg-orange-400 rotate-45";
-
-interface Message {
-    content: string,
-    author: string,
-    date: string
-}
-
 const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) => {
+    let Filter = require('bad-words');
+    const filter = new Filter();
+
     const [open, setOpen] = useState<boolean>(false);
     const [currentChat, setCurrentChat] = useState<Chat>();
     const [message, setMessage] = useState<string>("");
 
-    const [messages, setMessages] = useState<Message[]>([]);
     const [loadedMessages, setLoadedMessages] = useState<Chat[]>([]);
+    const [pollingTime, setPollingTime] = useState<number>(100000);
 
     useEffect(() => {
-        const dummy: Message[] = [
-            {content: "yo hows it going", author: "Them", date: "Jan 11"},
-            {content: "its going well how about you this is a test to expand", author: "You", date: "Jan 11"},
-            {content: "nice me too", author: "Them", date: "Jan 11"},
-            {content: "thats awesome man", author: "You", date: "Jan 11"},
-            {content: "keep wrinting more text", author: "Them", date: "Jan 11"},
-            {content: "yep", author: "You", date: "Jan 11"}
-        ]
-        setMessages(dummy);
+        if (open) {
+            setPollingTime(5000);
+        }
+    }, [open]);
 
+    useEffect(() => {
+        let isSubscribed = true; // Flag to indicate if the component is still subscribed
+      
         const fetchData = async (payload: any) => {
-            try {
-                const response = await axios.post("/api/get-messages", payload);
-                console.log("data recieved: ", response.data)
-                setLoadedMessages(response.data.conversations);
-            } catch (error) {
-                console.error('Error fetching data:', error);
+          try {
+            const response = await axios.post("/api/get-messages", payload);
+            console.log("data received: ", response.data);
+            if (isSubscribed) {
+                const newArr: Chat[] = [...response.data.conversations];
+                setLoadedMessages(newArr);
             }
+          } catch (error) {
+            console.error("Error fetching data:", error);
+          }
         };
-
-        fetchData({conversations: conversations, user_email: user.email});
+      
+        const pollData = async () => {
+          while (isSubscribed) {
+            await fetchData({ conversations, user_email: user.email });
+            await new Promise((resolve) => setTimeout(resolve, pollingTime)); // Wait for 5 seconds before polling again
+          }
+        };
+      
+        pollData();
+      
+        return () => {
+          // Cleanup function to unsubscribe when the component is unmounted
+          isSubscribed = false;
+        };
     }, []);
+
+    useEffect(() => {
+        console.log("setting new loadedMessages...")
+    }, [loadedMessages])
 
     const submitMessage = async () => {
         if (message === "") {
@@ -80,12 +87,22 @@ const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) 
         const payload = {
             conversationId: currentChat?.conversationId,
             sender: user.username,
-            content: message,
+            content: filter.clean(message),
         }
+        console.log("message sent: ", payload);
         try {
             const response = await axios.post("/api/submit-chat-message", payload);
             console.log("submit message response: ", response);
             setMessage("");
+            try {
+
+                const response = await axios.post("/api/get-messages", { conversations, user_email: user.email });
+                console.log("data received: ", response.data);
+                const newArr: Chat[] = [...response.data.conversations];
+                setLoadedMessages(newArr);
+                } catch (error) {
+                console.error("Error fetching data:", error);
+            }
         } catch (error) {
             console.error(error);
         }
@@ -99,8 +116,6 @@ const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) 
         setOpen(false);
     };
 
-    //const users: string[] = ['H', 'S', 'V', 'T', 'W', 'Z'];
-
     const changeUser = (id: string) => {
 
         function checkId(chat: Chat) {
@@ -110,15 +125,28 @@ const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) 
         setCurrentChat(loadedMessages.find(checkId));
     }
 
+    const messagesEndRef = useRef<any>(null)
+
+    const scrollToBottom = () => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "instant" })
+    }
+  
+    useEffect(() => {
+      scrollToBottom()
+    }, [currentChat, open]);
+
     return (
     <div>
-    {!open && <IconButton 
-        onClick={handleOpen} 
-        size="large"
-        className="bg-blue-500 text-white"
-    >
-        <ChatIcon fontSize="large"/>
-    </IconButton>
+    {!open && 
+    <Tooltip title="Direct Messages" placement='top'>
+        <IconButton 
+            onClick={handleOpen} 
+            size="large"
+            className="bg-blue-500 text-white"
+        >
+            <ChatIcon fontSize="large"/>
+        </IconButton>
+    </Tooltip>
     }
     {open && 
     <Box sx={style}>
@@ -149,44 +177,9 @@ const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) 
                         Chat with {currentChat?.recipient_username ? currentChat.recipient_username : "someone!"}
                         </Typography>
                     </Grid>
-                    <Grid container className="overflow-y-auto max-h-[350px] p-6">
-                        {messages.map((m: Message) => 
-                            (m.author == "You" ? (
-                                <Grid item xs={12} key={m.content}>
-                                <div className="flex justify-end pt-1">
-                                    <div className="text-sm text-gray-500 mt-1 mr-2">
-                                        {m.date}
-                                    </div>
-                                    <div className="text-md">
-                                        You
-                                    </div>
-                                </div>
-                                <div className="flex justify-end">
-                                    <div className="rounded bg-orange-400 text-white my-1 px-4 pb-1 w-4/5">
-                                        <div className="flex justify-end">
-                                            <div className={rightTriangle}></div>
-                                        </div>
-                                        {m.content}
-                                    </div>
-                                </div>
-                                </Grid>
-                            ) : (
-                                <Grid item xs={12} key={m.content}>
-                                <div className="flex pt-1">
-                                    <div className="text-md">
-                                        {m.author}
-                                    </div>
-                                    <div className="text-sm text-gray-500 mt-1 ml-2">
-                                        {m.date}
-                                    </div>
-                                </div>
-                                <div className="rounded bg-teal-500 text-white my-1 px-4 pb-1 w-4/5">
-                                    <div className={leftTriangle}></div>
-                                    {m.content}
-                                </div>
-                                </Grid>
-                            ))
-                        )}
+                    <Grid container className="overflow-y-auto min-h-[350px] max-h-[350px] p-6">
+                        <ChatContent user={user} currentChat={currentChat?.messages ?? []}/>
+                        <div ref={messagesEndRef} />
                     </Grid>
                     <Grid item xs={11} className="mt-2 pl-6 pr-4">
                         <TextField

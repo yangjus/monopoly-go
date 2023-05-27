@@ -1,11 +1,7 @@
 import mongoose from "mongoose";
 
 //conversation id is the unique _id default field for a conversation object
-const messageSchema = new mongoose.Schema({
-    conversationId: {
-        type: String,
-        required: true
-    },
+const globalChatSchema = new mongoose.Schema({
     sender: {
         type: String,
         required: true
@@ -21,5 +17,5 @@ const messageSchema = new mongoose.Schema({
 })
 
 //check if already schema, if not create a new schema
-const Message = mongoose.models.Message || mongoose.model('Message', messageSchema)
-export default Message;
+const GlobalChat = mongoose.models.GlobalChat || mongoose.model('global_chat', globalChatSchema)
+export default GlobalChat;
