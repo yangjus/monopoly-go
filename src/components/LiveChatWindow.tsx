@@ -3,6 +3,7 @@ import { IconButton, Box, Typography, Grid, Avatar, TextField, Tooltip } from '@
 import ChatIcon from '@mui/icons-material/Chat';
 import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
+import WarningIcon from '@mui/icons-material/Warning';
 import axios from "axios";
 import { Chat } from '@component/pages/api/get-messages';
 import ChatContent from './ChatContent';
@@ -175,6 +176,16 @@ const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) 
                     <Grid item xs={12} className="pl-4">
                         <Typography variant="h6">
                         Chat with {currentChat?.recipient_username ? currentChat.recipient_username : "someone!"}
+                        <Tooltip title="Manual refresh currently, please reload page or press user's avatar to see latest chat" placement='top'>
+                            <WarningIcon 
+                                style={{ 
+                                    color: 'red',
+                                    marginBottom: '4px',
+                                    marginLeft: '8px',
+                                    fontSize: '1.5rem'
+                                }}
+                            />
+                        </Tooltip>
                         </Typography>
                     </Grid>
                     <Grid container className="overflow-y-auto min-h-[350px] max-h-[350px] p-6">

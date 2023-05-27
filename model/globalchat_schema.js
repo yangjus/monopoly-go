@@ -17,5 +17,5 @@ const globalChatSchema = new mongoose.Schema({
 })
 
 //check if already schema, if not create a new schema
-const GlobalChat = mongoose.models.GlobalChat || mongoose.model('global_chat', globalChatSchema)
+const GlobalChat = mongoose.models.GlobalChat || mongoose.model('GlobalChat', globalChatSchema)
 export default GlobalChat;

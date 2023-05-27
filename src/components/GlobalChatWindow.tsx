@@ -3,6 +3,7 @@ import { IconButton, Box, Typography, Grid, TextField, Tooltip } from '@mui/mate
 import PublicIcon from '@mui/icons-material/Public';
 import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
+import InfoIcon from '@mui/icons-material/Info';
 import axios from "axios";
 import Pusher from "pusher-js";
 import { sentMessage } from '@component/pages/api/get-messages';
@@ -32,6 +33,14 @@ const GlobalChatWindow = ({user}: {user: any}) => {
     const [message, setMessage] = useState<string>("");
 
     useEffect(() => {
+
+        const fetchData = async () => {
+            const recentMessages = await axios.post("/api/get-global-chat");
+            setCurrentChat(recentMessages.data.conversations);
+        }
+
+        fetchData();
+
         const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
           cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
         });
@@ -113,6 +122,16 @@ const GlobalChatWindow = ({user}: {user: any}) => {
                     <Grid item xs={12} className="pl-4">
                         <Typography variant="h6">
                             Global Chat
+                            <Tooltip title="Past two days of chat history" placement='top'>
+                            <InfoIcon 
+                                style={{ 
+                                    color: 'teal',
+                                    marginBottom: '4px',
+                                    marginLeft: '8px',
+                                    fontSize: '1.5rem'
+                                }}
+                            />
+                            </Tooltip>
                         </Typography>
                     </Grid>
                     <Grid container className="overflow-y-auto min-h-[350px] max-h-[350px] p-6">
