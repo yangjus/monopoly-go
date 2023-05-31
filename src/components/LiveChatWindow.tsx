@@ -54,7 +54,6 @@ const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) 
             //console.log("data received: ", response.data);
             if (isSubscribed) {
                 const newArr: Chat[] = [...response.data.conversations];
-                console.log(newArr);
                 setLoadedMessages(newArr);
             }
           } catch (error) {
@@ -79,7 +78,7 @@ const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) 
 
     useEffect(() => {
         //console.log("setting new loadedMessages...")
-        console.log(loadedMessages);
+        //console.log(loadedMessages);
     }, [loadedMessages])
 
     const submitMessage = async () => {
@@ -137,6 +136,13 @@ const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) 
     useEffect(() => {
       scrollToBottom()
     }, [currentChat, open]);
+
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter' && !event.shiftKey) {
+          event.preventDefault();
+          submitMessage();
+        }
+    };
 
     return (
     <div>
@@ -204,6 +210,7 @@ const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) 
                             rows={2}
                             value={message}
                             onChange={(event) => setMessage(event.target.value)}
+                            onKeyDown={handleKeyDown}
                         />
                     </Grid>
                     <Grid item xs={1} className="pt-2 flex justify-items">
