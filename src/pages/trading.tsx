@@ -243,6 +243,11 @@ export default function Trading({ user, matchedUsers, allConversations }: Tradin
                         </TableBody>
                     </Table>
                 </TableContainer>
+                {filteredUsers.length === 0 &&
+                    <div className="text-center p-6 text-2xl text-white">
+                        No users matched, please fill or update inventory
+                    </div>
+                }
                 <div className="flex justify-center mt-4 bottom-0">
                     {pageCount > maxDisplayedPages ? (
                         <p className="text-white">Too many users to display. Filter users to display again.</p>
