@@ -54,6 +54,7 @@ const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) 
             //console.log("data received: ", response.data);
             if (isSubscribed) {
                 const newArr: Chat[] = [...response.data.conversations];
+                console.log(newArr);
                 setLoadedMessages(newArr);
             }
           } catch (error) {
@@ -78,6 +79,7 @@ const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) 
 
     useEffect(() => {
         //console.log("setting new loadedMessages...")
+        console.log(loadedMessages);
     }, [loadedMessages])
 
     const submitMessage = async () => {

@@ -20,7 +20,7 @@ export interface Chat {
 
 export default async function getMessages(req: any, res: any) {
     try {
-        const response: Chat[] = await Promise.all(req.body.conversations.map(async (chat: any) => {
+        const response: Chat[] = (await Promise.all(req.body.conversations.map(async (chat: any) => {
             const conversationId: string = chat._id;
             const recipient_email: string = 
                 chat.participants_email[0] === req.body.user_email ? chat.participants_email[1] : chat.participants_email[0];
@@ -29,8 +29,11 @@ export default async function getMessages(req: any, res: any) {
             const user_email: string = req.body.user_email;
             const query: string = 'sender content timestamp'
             const messages: sentMessage[] = await Message.find({ conversationId: chat._id }, query).exec();
+            if (messages.length === 0) {
+                return;
+            }
             return { conversationId, recipient_email, recipient_username, user_email, messages };
-        }))
+        }))).filter(item => item !== undefined);
         //console.log("input: ", response);
 
         res.json({ conversations: response });
