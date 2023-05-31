@@ -45,8 +45,8 @@ export const formCheck = (formData: FormData) => {
     }
 
     //Validate rank
-    if (!formData.rank || formData.rank < 0 || formData.rank > 20000) {
-        return "Please enter a valid numerical rank.";
+    if (!formData.rank || !Number.isInteger(formData.rank) || formData.rank < 0 || formData.rank > 20000) {
+        return "Please enter a valid numerical rank (only numbers allowed).";
     }
     
     const inviteRegex = /^https:\/\/s\.scope\.ly\/[a-zA-Z0-9]{11}$/;
