@@ -25,7 +25,8 @@ import {
     TableRow, 
     Paper, 
     Typography,
-    Tooltip
+    Tooltip,
+    Grid
 } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import moment from "moment";
@@ -56,6 +57,20 @@ export default function Trading({ user, matchedUsers, allConversations }: Tradin
     const [checkAllStar, setCheckAllStar] = useState<boolean>(true);
 
     const [filteredUsers, setFilteredUsers] = useState<TradingUser[]>(matchedUsers);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => {
+          setIsMobile(window.innerWidth < 768); // Adjust the breakpoint as needed
+        };
+    
+        handleResize(); // Check initial window size
+        window.addEventListener('resize', handleResize); // Add event listener for window resize
+    
+        return () => {
+          window.removeEventListener('resize', handleResize); // Clean up the event listener on component unmount
+        };
+    }, []);
 
     const albumOptions: {label: Album, value: Album}[] = Object.values(Album).map((album) => ({
         label: album,
@@ -70,9 +85,9 @@ export default function Trading({ user, matchedUsers, allConversations }: Tradin
         {label: "5", value: "5"}
     ]
 
-      const [pageNumber, setPageNumber] = useState(0);
+    const [pageNumber, setPageNumber] = useState(0);
     const usersPerPage = 5; // Number of users to display per page
-    const maxDisplayedPages = 20; // Maximum number of displayed pages
+    const maxDisplayedPages = isMobile ? 10 : 20; // Maximum number of displayed pages
     const pagesVisited = pageNumber * usersPerPage;
     const pageCount = Math.ceil(filteredUsers.length / usersPerPage);
 
@@ -80,12 +95,12 @@ export default function Trading({ user, matchedUsers, allConversations }: Tradin
         filteredUsers
             .slice(0, usersPerPage)
             .map((otherUser: TradingUser) => 
-                    <UserRow user={user} otherUser={otherUser} key={otherUser.email}/>
+                    <UserRow user={user} otherUser={otherUser} isMobile={isMobile} key={otherUser.email}/>
             ) :
         filteredUsers
             .slice(pagesVisited, pagesVisited + usersPerPage)
             .map((otherUser: TradingUser) => 
-                    <UserRow user={user} otherUser={otherUser} key={otherUser.email}/>
+                    <UserRow user={user} otherUser={otherUser} isMobile={isMobile} key={otherUser.email}/>
             );
 
     const handleAlbumSelectChange = (event: SelectChangeEvent) => {
@@ -153,8 +168,8 @@ export default function Trading({ user, matchedUsers, allConversations }: Tradin
         <div className="text-xl text-center justify-center">
             Finds other users who have what you need, and want what you have!
         </div>
-        <div className="grid grid-cols-3 gap-4 px-10 py-5">
-            <div className="col-span-1 rounded-md bg-teal-500 p-5 min-h-screen">
+        <Grid container className="p-2 sm:p-6 flex justify-between">
+            <Grid item xs={12} sm={2.5} className="rounded-md bg-teal-500 p-5 mb-4 sm:mb-0">
                 <div className="text-white text-2xl">
                     Filter
                     <Tooltip title="Filter based on stickers you need" placement='top'>
@@ -168,7 +183,7 @@ export default function Trading({ user, matchedUsers, allConversations }: Tradin
                         />
                     </Tooltip>
                 </div>
-                <div className="mb-10">
+                <div className="mb-4 sm:mb-10">
                     <FormGroup>
                         <FormControlLabel 
                             control={
@@ -228,14 +243,22 @@ export default function Trading({ user, matchedUsers, allConversations }: Tradin
                 <div className="fixed bottom-4 left-24 flex items-center z-10 justify-center bg-blue-700 rounded-full">
                     <GlobalChatWindow user={user} />
                 </div>
-            </div>
-            <div className="col-span-2 rounded-md bg-teal-500 p-5">
-                <TableContainer component={Paper} className="px-2">
-                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            </Grid>
+            <Grid item xs={12} sm={9} className="rounded-md bg-teal-500 p-5">
+                <TableContainer component={Paper} className="flex justify-center sm:px-2">
+                    <Table
+                        aria-label="simple table"
+                    >
                         <TableHead>
                             <TableRow>
-                                <TableCell><Typography variant='h6'>Username</Typography></TableCell>
-                                <TableCell align="left"><Typography variant='h6'>Net Worth</Typography></TableCell>
+                                <TableCell>
+                                    <Typography className="text-lg">
+                                        Username {isMobile ? String.fromCharCode(40) + "Net Worth" + String.fromCharCode(41) : ""}
+                                    </Typography>
+                                </TableCell>
+                                {!isMobile &&
+                                    <TableCell align="left"><Typography variant='h6'>Net Worth</Typography></TableCell>
+                                }
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -267,8 +290,8 @@ export default function Trading({ user, matchedUsers, allConversations }: Tradin
                         />)
                     }
                 </div>
-            </div>
-      </div>
+            </Grid>
+      </Grid>
     </div>
     );
 }

@@ -10,20 +10,6 @@ import { useEffect, useState } from 'react';
 const inter = Inter({ subsets: ['latin'] })
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768); // Adjust the breakpoint as needed
-    };
-
-    handleResize(); // Check initial window size
-    window.addEventListener('resize', handleResize); // Add event listener for window resize
-
-    return () => {
-      window.removeEventListener('resize', handleResize); // Clean up the event listener on component unmount
-    };
-  }, []);
 
   return (
     <main className={inter.className}>

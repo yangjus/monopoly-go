@@ -33,7 +33,7 @@ const style = {
     p: 4,
 };
 
-const UserRow = ( {user, otherUser} : {user: UserType, otherUser: TradingUser} ) => {
+const UserRow = ( {user, otherUser, isMobile} : {user: UserType, otherUser: TradingUser, isMobile: boolean} ) => {
     const [open, setOpen] = useState<boolean>(false);
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [selectedUser, setSelectedUser] = useState<{username: string, email: string}>({username: "", email: ""});
@@ -70,7 +70,7 @@ const UserRow = ( {user, otherUser} : {user: UserType, otherUser: TradingUser} )
     <>
     <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
         <TableCell component="th" scope="row">
-            {otherUser.username}
+            {`${otherUser.username}${isMobile ? ` (${otherUser.rank})` : ""}`}
             {otherUser.trusted &&
                 <Tooltip title="Trusted Trader" placement='top'>
                     <StarIcon 
@@ -82,7 +82,7 @@ const UserRow = ( {user, otherUser} : {user: UserType, otherUser: TradingUser} )
                     />
                 </Tooltip>
             }
-            <IconButton onClick={() => handleOpen(otherUser.username, otherUser.email)} className="ml-1">
+            <IconButton onClick={() => handleOpen(otherUser.username, otherUser.email)} className="sm:ml-1">
                 <Tooltip title="Direct Message" placement='top'>
                     <ChatIcon className="text-teal-500"/>
                 </Tooltip>
@@ -119,9 +119,11 @@ const UserRow = ( {user, otherUser} : {user: UserType, otherUser: TradingUser} )
                 </Box>
             </Modal>
         </TableCell>
-        <TableCell align="left">
-            {otherUser.rank}
-        </TableCell>
+        {!isMobile && 
+            <TableCell align="left">
+                {otherUser.rank}
+            </TableCell>
+        }
         <TableCell align="right">
             <IconButton
                 aria-label="expand row"

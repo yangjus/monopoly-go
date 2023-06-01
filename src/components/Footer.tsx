@@ -7,9 +7,6 @@ export default function Footer() {
         <div className="block sm:inline-block sm:mt-0 text-white mr-4">
             <Grid container>
                 <Grid item xs={12}>
-                    Use a desktop and the latest Chrome browser version for best user experience.
-                </Grid>
-                <Grid item xs={12}>
                     This website is not affiliated with the official MonopolyGO creators. 
                     <Link href="/privacy" className="ml-4 text-blue-600">
                         Privacy Policy
@@ -18,7 +15,7 @@ export default function Footer() {
             </Grid>
         </div>
         <div className="block mt-4 sm:inline-block sm:mt-0 text-white mr-4">
-            Ver 1.5.1
+            Ver 2.0.0
         </div>
     </div>
     )
