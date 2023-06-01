@@ -5,7 +5,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
 import WarningIcon from '@mui/icons-material/Warning';
 import axios from "axios";
-import { Chat } from '@component/pages/api/get-messages';
+import Pusher from "pusher-js";
+import { Chat, sentMessage } from '@component/pages/api/get-messages';
 import ChatContent from './ChatContent';
 
 const style = {
@@ -35,55 +36,72 @@ const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) 
     const [open, setOpen] = useState<boolean>(false);
     const [currentChat, setCurrentChat] = useState<Chat>();
     const [message, setMessage] = useState<string>("");
-
     const [loadedMessages, setLoadedMessages] = useState<Chat[]>([]);
-    const [pollingTime, setPollingTime] = useState<number>(5000);
 
     useEffect(() => {
-        if (open) {
-            setPollingTime(5000);
-        }
-    }, [open]);
 
-    useEffect(() => {
-        let isSubscribed = true; // Flag to indicate if the component is still subscribed
-      
-        const fetchData = async (payload: any) => {
-          try {
-            const response = await axios.post("/api/get-messages", payload);
-            //console.log("data received: ", response.data);
-            if (isSubscribed) {
-                const newArr: Chat[] = [...response.data.conversations];
-                setLoadedMessages(newArr);
+        const fetchData = async() => {
+            try {
+              const response = await axios.post("/api/get-messages", { conversations, user_email: user.email });
+              //console.log("data received: ", response.data);
+              setLoadedMessages(response.data.conversations);
+            } catch (error) {
+              console.error("Error fetching data:", error);
             }
-          } catch (error) {
-            console.error("Error fetching data:", error);
-          }
         };
+
+        fetchData();
+
+        const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
+            cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
+        });
       
-        const pollData = async () => {
-          while (isSubscribed) {
-            await fetchData({ conversations, user_email: user.email });
-            await new Promise((resolve) => setTimeout(resolve, pollingTime)); // Wait for 5 seconds before polling again
-          }
-        };
+        const channel = pusher.subscribe("direct-chat");
       
-        pollData();
+        channel.bind("message-event", function (data: any) {
+            //console.log(data); {conversationId, sender, content, timestamp}
+            //matching data send from pusher to add to the messages: sentMessages[] array
+            //based on the conversationID
+            console.log(data);
+            console.log("current chat: ", loadedMessages);
+            setLoadedMessages((prevLoadedMessages: Chat[]) => {
+                return prevLoadedMessages.map((chat: Chat) =>
+                  chat.conversationId === data.payload.conversationId ? {
+                    ...chat,
+                    messages: [
+                      ...chat.messages,
+                      {
+                        sender: data.payload.sender,
+                        content: data.payload.content,
+                        timestamp: data.payload.timestamp,
+                        _id: "temp_id"
+                      }
+                    ]
+                  } : chat
+                );
+            });
+            // const tempMessages: sentMessage[] = [...currentChat!.messages, {
+            //     sender: data.payload.sender,
+            //     content: data.payload.content,
+            //     timestamp: data.payload.timestamp
+            //     }]
+            // setCurrentChat({
+            //     conversationId: currentChat!.conversationId,
+            //     recipient_email: currentChat!.recipient_email,
+            //     recipient_username: currentChat!.recipient_username,
+            //     user_email: currentChat!.user_email,
+            //     messages: tempMessages
+            // });
+            console.log("updated current chat: ", loadedMessages);
+        });
       
         return () => {
-          // Cleanup function to unsubscribe when the component is unmounted
-          isSubscribed = false;
+            pusher.unsubscribe("direct-chat");
         };
     }, []);
 
-    useEffect(() => {
-        //console.log("setting new loadedMessages...")
-        //console.log(loadedMessages);
-    }, [loadedMessages])
-
     const submitMessage = async () => {
         if (message === "") {
-            //console.log("nothing sent.")
             return;
         }
         const payload = {
@@ -91,23 +109,12 @@ const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) 
             sender: user.username,
             content: filter.clean(message),
         }
-        //console.log("message sent: ", payload);
         try {
-            const response = await axios.post("/api/submit-chat-message", payload);
-            //console.log("submit message response: ", response);
-            setMessage("");
-            try {
-
-                const response = await axios.post("/api/get-messages", { conversations, user_email: user.email });
-                //console.log("data received: ", response.data);
-                const newArr: Chat[] = [...response.data.conversations];
-                setLoadedMessages(newArr);
-                } catch (error) {
-                console.error("Error fetching data:", error);
-            }
+            await axios.post("/api/submit-chat-message", payload);
         } catch (error) {
             console.error(error);
         }
+        setMessage("");
     };
 
     const handleOpen = () => {

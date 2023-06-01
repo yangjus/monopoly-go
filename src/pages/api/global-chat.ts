@@ -1,4 +1,5 @@
 import Pusher from "pusher";
+import connect from "@component/../lib/mongodb";
 import GlobalChat from "@component/../model/globalchat_schema";
 
 export const pusher = new Pusher({
@@ -8,6 +9,8 @@ export const pusher = new Pusher({
   cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
   useTLS: true,
 });
+
+connect();
 
 export default async function handler(req: any, res: any) {
   const { message, sender, timestamp } = req.body;
