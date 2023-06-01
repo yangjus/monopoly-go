@@ -108,7 +108,6 @@ export default function InventoryModal({user}: {user: any}) {
     >
       View/Edit Inventory
     </button>
-
     <Modal
         open={open}
         onClose={handleClose}

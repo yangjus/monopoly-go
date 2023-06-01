@@ -1,7 +1,7 @@
 import { useState, useEffect, ChangeEvent } from "react";
 import FilterSelect from "./FilterSelect";
 import { Sticker, Album, stickers } from "../../constants/stickers";
-import { IconButton, SelectChangeEvent, Modal, Box } from "@mui/material";
+import { IconButton, SelectChangeEvent, Modal, Box, Grid } from "@mui/material";
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
@@ -24,7 +24,7 @@ const style = {
     p: 4,
 };
 
-export default function Stickers({user }: {user: any }) {
+export default function Stickers({user, isMobile}: {user: any, isMobile: boolean }) {
     const [selectedAlbum, setSelectedAlbum] = useState<string>("New York");
     const [selectedStar, setSelectedStar] = useState<string>("1");
 
@@ -115,8 +115,8 @@ export default function Stickers({user }: {user: any }) {
     };
 
     return (
-    <div>
-        <div className="text-2xl text-white pb-5 mr-4">
+    <div className="mx-1 sm:mx-0">
+        <div className="text-2xl text-white pb-5 ml-6 sm:mr-4">
             Tradeable Stickers
             <IconButton onClick={handleOpen} className="mb-1">
                 <InfoIcon />
@@ -135,89 +135,96 @@ export default function Stickers({user }: {user: any }) {
                 />
             </Box>
         </Modal>
-        <div className="grid grid-rows-8 gap-4 text-left">
-            <div className="row-span-1 rounded-md text-white">
-                <div className="grid grid-cols-3 gap-4">
-                    <div className="col-span-1">
-                        <FormGroup>
-                            <FormControlLabel 
-                                control={
-                                    <Checkbox
-                                        checked={checkAllAlbum}
-                                        onChange={handleCheckAlbum}
-                                        sx={{
-                                            color: "white",
-                                            '&.Mui-checked': {
-                                            color: "white",
-                                            },
-                                        }}
-                                    />
-                                } 
-                                labelPlacement="start" 
-                                label="All" 
-                            />
-                        </FormGroup>
-                        <FilterSelect 
-                            title="Album"
-                            disabled={checkAllAlbum}
-                            options={albumOptions} 
-                            onChange={handleAlbumSelectChange} 
-                            selectedOption={selectedAlbum}
+        {isMobile && <div className="flex items-center justify-center">
+                <InventoryModal user={user} />
+        </div>}
+        <div className="sm:flex sm:justify-between sm:mx-2 lg:mx-6">
+            <Grid container spacing={1}>
+                <Grid item xs={12} sm={6} className="text-white">
+                    <FormGroup>
+                        <FormControlLabel 
+                            control={
+                                <Checkbox
+                                    checked={checkAllAlbum}
+                                    onChange={handleCheckAlbum}
+                                    sx={{
+                                        color: "white",
+                                        '&.Mui-checked': {
+                                        color: "white",
+                                        },
+                                    }}
+                                />
+                            } 
+                            labelPlacement="start" 
+                            label="All" 
                         />
-                    </div>
-                    <div className="col-span-1">
-                        <FormGroup>
-                            <FormControlLabel 
-                                control={
-                                    <Checkbox
-                                        checked={checkAllStar}
-                                        onChange={handleCheckStar}
-                                        sx={{
-                                            color: "white",
-                                            '&.Mui-checked': {
-                                            color: "white",
-                                            },
-                                        }}
-                                    />
-                                } 
-                                labelPlacement="start" 
-                                label="All" 
-                            />
-                        </FormGroup>
-                        <FilterSelect 
-                            title="Star"
-                            disabled={checkAllStar}
-                            options={starOptions} 
-                            onChange={handleStarSelectChange} 
-                            selectedOption={selectedStar}
+                    </FormGroup>
+                    <FilterSelect 
+                        title="Album"
+                        disabled={checkAllAlbum}
+                        options={albumOptions} 
+                        onChange={handleAlbumSelectChange} 
+                        selectedOption={selectedAlbum}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={3} className="text-white">
+                    <FormGroup>
+                        <FormControlLabel 
+                            control={
+                                <Checkbox
+                                    checked={checkAllStar}
+                                    onChange={handleCheckStar}
+                                    sx={{
+                                        color: "white",
+                                        '&.Mui-checked': {
+                                        color: "white",
+                                        },
+                                    }}
+                                />
+                            } 
+                            labelPlacement="start" 
+                            label="All" 
                         />
-                    </div>
-                    <div className="col-span-1 flex justify-center mt-12">
-                        <InventoryModal user={user} />
-                    </div>
-                </div>
-            </div>
-            <div className="row-span-1 text-2xl text-white">
-                Extras:
-            </div>
-            <div className="row-span-3 flex flex-wrap overflow-auto rounded-md bg-white p-3 h-64">
-                {extraStickers?.map((sticker: Sticker) => (
-                    <div className="p-1" key={sticker.name}>
-                        <Badge name={sticker.name} album={sticker.album} star={sticker.star}/>
-                    </div>
-                ))}
-            </div>
-            <div className="row-span-1 text-2xl text-white">
-                Missing:
-            </div>
-            <div className="row-span-2 flex flex-wrap overflow-auto rounded-md bg-white p-3 h-64">
-                {missingStickers?.map((sticker: Sticker) => (
-                    <div className="p-1" key={sticker.name}>
-                        <Badge name={sticker.name} album={sticker.album} star={sticker.star}/>
-                    </div>
-                ))}
-            </div>
+                    </FormGroup>
+                    <FilterSelect 
+                        title="Star"
+                        disabled={checkAllStar}
+                        options={starOptions} 
+                        onChange={handleStarSelectChange} 
+                        selectedOption={selectedStar}
+                    />
+                </Grid>
+            </Grid>
+            {!isMobile && <div className="flex items-center sm:mt-8">
+                <InventoryModal user={user} />
+            </div>}
         </div>
+        <Grid container className="text-white text-2xl my-2">
+            <Grid item xs={12} sm={12} className="my-2 text-left">
+                Extras:
+            </Grid>
+            <Grid item xs={12} sm={12}>
+                <div className="flex flex-wrap overflow-auto rounded-md bg-white p-1 sm:p-3 h-64">
+                    {extraStickers?.map((sticker: Sticker) => (
+                        <div className="p-1" key={sticker.name}>
+                            <Badge name={sticker.name} album={sticker.album} star={sticker.star}/>
+                        </div>
+                    ))}
+                </div>
+            </Grid>
+            <Grid item xs={12} sm={12} className="mb-2 mt-4 text-left">
+                Missing:
+            </Grid>
+            <Grid item xs={12} sm={12}>
+                <div className="flex flex-wrap overflow-auto rounded-md bg-white p-1 sm:p-3 h-64">
+                    {missingStickers?.map((sticker: Sticker) => (
+                        <div className="p-1" key={sticker.name}>
+                            <Badge name={sticker.name} album={sticker.album} star={sticker.star}/>
+                        </div>
+                    ))}
+                </div>
+            </Grid>
+        </Grid>
     </div>
     );
 };

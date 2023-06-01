@@ -72,7 +72,7 @@ export default function Profile({ user }: { user: UserType }) {
           </Grid>
           <Grid item xs={12}>
           <div className="bg-teal-500 mx-1 my-2 p-4 rounded-lg">
-            <Stickers user={user} />
+            <Stickers user={user} isMobile={isMobile}/>
           </div>
           </Grid>
         </Grid>)
@@ -83,7 +83,7 @@ export default function Profile({ user }: { user: UserType }) {
             <Account user={user}/>
           </div>
           <div className="col-span-2 rounded-md bg-teal-500 p-5">
-            <Stickers user={user} />
+            <Stickers user={user} isMobile={isMobile}/>
           </div>
         </div>)
       }
