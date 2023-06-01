@@ -24,29 +24,29 @@ export default function Navbar() {
         </div>
         { !loading &&
         <div className="justify-end">
-            <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-                <Link href="/" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+            <div className="w-full block flex-grow sm:flex sm:items-center sm:w-auto">
+                <Link href="/" className="block mt-4 sm:inline-block sm:mt-0 text-teal-200 hover:text-white mr-4">
                     Home
                 </Link>
                 {!getCookie('session') && 
                 <>
-                    <Link href="/register" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+                    <Link href="/register" className="block mt-4 sm:inline-block sm:mt-0 text-teal-200 hover:text-white mr-4">
                         Register
                     </Link>
-                    <Link href="/login" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
+                    <Link href="/login" className="block mt-4 sm:inline-block sm:mt-0 text-teal-200 hover:text-white">
                         Login
                     </Link>
                 </>}
                 {getCookie('session') && 
                 <>
-                    <Link href="/trading" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+                    <Link href="/trading" className="block mt-4 sm:inline-block sm:mt-0 text-teal-200 hover:text-white mr-4">
                         Trading
                     </Link>
-                    <Link href="/profile" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-10">
+                    <Link href="/profile" className="block mt-4 sm:inline-block sm:mt-0 text-teal-200 hover:text-white mr-10">
                         Profile
                     </Link>
                     <form method="POST" action="/api/logout">
-                        <button type="submit" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
+                        <button type="submit" className="block mt-4 sm:inline-block sm:mt-0 text-teal-200 hover:text-white">
                             Logout
                         </button>
                     </form>

@@ -157,7 +157,7 @@ export default function Register({ user }: { user: any }) {
     <>
     <div className="flex justify-center py-4">
         <form className="min-h-screen w-full max-w-sm" onSubmit={handleSubmit}>
-            <div className="text-4xl py-4">Register Account</div>
+            <div className="text-4xl sm:py-4 text-center sm:text-left pb-6 sm:pb-2">Register Account</div>
             {formKeys.map((key: keyof FormData) => (
                 <div className="mb-4" key={key}>
                     <label htmlFor={key} className="block capitalize text-gray-500 font-bold mb-2 flex justify-between">
@@ -197,7 +197,7 @@ export default function Register({ user }: { user: any }) {
                 </div>
             ))}
             <div className="flex mb-4">A verification email will be sent to you shortly after submission.</div>
-            <div className="md:flex md:items-center justify-center">
+            <div className="flex items-center justify-center">
                 <button 
                     type="submit"
                     disabled={submitting}
@@ -207,12 +207,12 @@ export default function Register({ user }: { user: any }) {
                 </button>
             </div>
             {success && (
-            <p className="md:flex md:items-center text-green-500 mb-4 justify-center pt-6">
+            <p className="flex items-center text-green-500 mb-4 justify-center pt-6">
                 Registration successful! Check your email for a verification code.
             </p>
             )}
             {error && (
-            <p className="md:flex md:items-center text-red-500 mb-4 justify-center pt-6">{message}</p>
+            <p className="flex items-center text-red-500 mb-4 justify-center pt-6">{message}</p>
             )}
         </form>
     </div>
