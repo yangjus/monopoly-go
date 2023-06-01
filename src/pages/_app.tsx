@@ -32,21 +32,25 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <NextNProgress />
       <Navbar />
-      {isMobile ? (
-        <div className="mobile-screen text-2xl m-6 h-screen">
-          This page is not available on mobile and other small screen devices.
-          Stay tuned for a mobile-responsive update!
+        <div className="px-4 py-2">
+          <Component {...pageProps} />
         </div>
-      ) : (
-        <>
-          <div className="px-4 py-2">
-            <Component {...pageProps} />
-          </div>
-        </>
-      )}
       <div className="bottom-0">
         <Footer />
       </div>
     </main>
   )
 }
+
+// {isMobile ? (
+//   <div className="mobile-screen text-2xl m-6 h-screen">
+//     This page is not available on mobile and other small screen devices.
+//     Stay tuned for a mobile-responsive update!
+//   </div>
+// ) : (
+//   <>
+//     <div className="px-4 py-2">
+//       <Component {...pageProps} />
+//     </div>
+//   </>
+// )}

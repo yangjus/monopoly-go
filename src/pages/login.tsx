@@ -67,7 +67,7 @@ export default function Register({ user }: { user: any }) {
     <>
     <div className="flex justify-center py-4">
         <form className="min-h-screen w-full max-w-sm" onSubmit={handleSubmit}>
-            <div className="text-4xl py-4">Login</div>
+            <div className="text-4xl py-2 sm:py-4 text-center sm:text-left">Login</div>
             {formKeys.map((key: keyof FormData) => (
                 <div className="mb-4" key={key}>
                     <label htmlFor={key} className="block capitalize text-gray-500 font-bold mb-2 flex justify-between">
@@ -106,7 +106,7 @@ export default function Register({ user }: { user: any }) {
                     />
                 </div>
             ))}
-            <div className="md:flex md:items-center justify-center">
+            <div className="flex items-center justify-center">
                 <button 
                     type="submit"
                     disabled={submitting}
