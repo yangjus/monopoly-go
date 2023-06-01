@@ -106,7 +106,7 @@ export default function Verify({ user }: { user: any }) {
                     <input key={key} className="m-1 sm:m-2 border h-8 sm:h-12 bg-teal-200 w-8 sm:w-12 text-center form-control rounded" type="text" id={value.toString()} maxLength={1} />
                 )}
             </div>
-            <div className="text-2xl py-4">
+            <div className="text-lg text-center sm:text-left sm:text-2xl py-4">
                 Enter Email Linked to Code:
             </div>
             <div>
