@@ -13,7 +13,7 @@ export default async function updateInventory(req: any, res: any) {
         ).then((updatedUser: any) => {
             //console.log(updatedUser);
             if (!updatedUser) return res.json({code:'user object not updated'}).end()
-            return res.status(200).json({ updatedUser }).end();
+            return res.status(200).json({ updatedUser });
         })
     } catch (error) {
         res.status(400).json({status: 'Cannot update user object.'})

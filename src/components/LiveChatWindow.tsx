@@ -3,10 +3,9 @@ import { IconButton, Box, Typography, Grid, Avatar, TextField, Tooltip } from '@
 import ChatIcon from '@mui/icons-material/Chat';
 import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
-import WarningIcon from '@mui/icons-material/Warning';
 import axios from "axios";
 import Pusher from "pusher-js";
-import { Chat, sentMessage } from '@component/pages/api/get-messages';
+import { Chat } from '@component/pages/api/get-messages';
 import ChatContent from './ChatContent';
 
 const style = {
@@ -62,8 +61,6 @@ const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) 
             //console.log(data); {conversationId, sender, content, timestamp}
             //matching data send from pusher to add to the messages: sentMessages[] array
             //based on the conversationID
-            console.log(data);
-            console.log("current chat: ", loadedMessages);
             setLoadedMessages((prevLoadedMessages: Chat[]) => {
                 return prevLoadedMessages.map((chat: Chat) =>
                   chat.conversationId === data.payload.conversationId ? {
@@ -80,7 +77,6 @@ const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) 
                   } : chat
                 );
             });
-            console.log("updated current chat: ", loadedMessages);
         });
       
         return () => {
@@ -179,16 +175,6 @@ const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) 
                     <Grid item xs={12} className="pl-4">
                         <Typography variant="h6">
                         Chat with {currentChat?.recipient_username ? currentChat.recipient_username : "someone!"}
-                        <Tooltip title="Manual refresh currently, please reload page or press user's avatar to see latest chat" placement='top'>
-                            <WarningIcon 
-                                style={{ 
-                                    color: 'red',
-                                    marginBottom: '4px',
-                                    marginLeft: '8px',
-                                    fontSize: '1.5rem'
-                                }}
-                            />
-                        </Tooltip>
                         </Typography>
                     </Grid>
                     <Grid container className="overflow-y-auto min-h-[330px] max-h-[330px] p-6">
