@@ -44,9 +44,9 @@ export default function Home({ user }: { user: {email: string} }) {
   return (
     <>
     <div className="items-center text-center justify-center space-y-4">
-      <div className="text-4xl pt-20">Welcome to the MonopolyGO trading website!</div>
+      <div className="text-4xl pt-6 sm:pt-20">Welcome to the MonopolyGO trading website!</div>
       <div className="text-2xl">Trading stickers made easy</div>
-      <div className="py-5 px-36">
+      <div className="py-5">
         {!user.email && 
           <button 
             onClick={handleClick}
@@ -56,7 +56,7 @@ export default function Home({ user }: { user: {email: string} }) {
         }
       </div>
         {updates &&
-          <div className="rounded bg-teal-600 p-6 text-white mx-32">
+          <div className="rounded bg-teal-600 p-6 text-white">
             <Grid container className="flex text-left">
               <Grid item xs={12}>
                 Bug Fixes and Other New Features:
@@ -76,7 +76,7 @@ export default function Home({ user }: { user: {email: string} }) {
             </Grid>
           </div>
         }
-        <div className="py-5 px-36">
+        <div className="py-5 sm:px-36">
         {user.email &&
           <div>
             <div className="text-2xl">
