@@ -1,8 +1,18 @@
 import { useState, ChangeEvent } from 'react';
-import { Box, Button, Grid, Typography, Modal, IconButton } from '@mui/material';
-import { stickers, Sticker, Album } from '../../constants/stickers';
+import { Box, Grid, Typography, Modal, IconButton } from '@mui/material';
+import { stickers, Album } from '../../constants/stickers';
 import CloseIcon from '@mui/icons-material/Close';
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 import axios from "axios";
+
+interface StickerID {
+    name: string,
+    album: Album,
+    star: number,
+    tradeable: boolean,
+    id: number
+};
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -19,15 +29,22 @@ const style = {
   textAlign: "center"
 };
 
-interface StickerID {
-    name: string,
-    album: Album,
-    star: number,
-    tradeable: boolean,
-    id: number
-};
+const mobileStyle = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '90%',
+  height: '95%',
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  overflow: 'auto',
+  boxShadow: 24,
+  p: 2,
+  textAlign: "center"
+}
 
-export default function InventoryModal({user}: {user: any}) {
+export default function InventoryModal({user, isMobile}: {user: any, isMobile: boolean}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -68,33 +85,63 @@ export default function InventoryModal({user}: {user: any}) {
     }
   }
 
+  const incrementSticker = (stickerId: number, isAdd: boolean) => {
+    setInventoryState((prevState: number[]) => {
+      const counter: number = isAdd ? 1 : -1;
+      const updatedState: number[] = [...prevState];
+      updatedState[stickerId] += counter;
+      if (updatedState[stickerId] < 0) {
+        updatedState[stickerId] = 0;
+      }
+      if (updatedState[stickerId] > 99) {
+        updatedState[stickerId] = 99;
+      }
+      return updatedState;
+    });
+  };
+
   const renderInventory = () => {
     //logic: split up stickers by album
 
     return (
     <Grid container spacing={1} className="justify-center">
-            {Object.values(Album).map((album) => (
-            <div key={album}>
-            <Grid item xs={12} className="border border-teal-500 justify-center ml-3 mr-3 mt-3 mb-3 p-2">
-                <div className="text-teal-500 font-bold text-2xl">{album}</div>
-                {idStickers.filter((sticker) => sticker.album === album).map((sticker: StickerID) => (
-                    <div className="flex justify-between py-1 text-sm" key={sticker.id}>
-                        <label className="mr-1">{sticker.name}</label>
-                        <input
-                            type="number"
-                            value={inventoryState[sticker.id]}
-                            onChange={(e) => handleInventoryChange(e, sticker.id)}
-                            min={0}
-                            max={99}
-                            onKeyDown={handleKeyPress}
-                            className="border border-black p-1 w-16"
-                        />
-                    {/*<p>Current value: {inventoryState[sticker.id]}</p>*/}
-                    </div>
-                ))}
-            </Grid>
+      {Object.values(Album).map((album) => (
+      <div key={album}>
+      <Grid item xs={12} className="border border-teal-500 justify-center m-3 p-2">
+        <div className="text-teal-500 font-bold text-3xl sm:text-2xl mb-2">{album}</div>
+          {idStickers.filter((sticker) => sticker.album === album).map((sticker: StickerID) => (
+            <div className="py-1 text-xl sm:text-sm m-1 sm:m-0" key={sticker.id}>
+              <Grid container spacing={1} justifyContent="space-between">
+                <Grid item xs={6} md={8} className="flex text-left">
+                      <label className="sm:mr-1 mt-2 sm:mt-1">{sticker.name}</label>
+                </Grid>
+                <Grid item xs={6} md={4} className="flex justify-right">
+                  {isMobile &&
+                    <IconButton color="error" onClick={() => incrementSticker(sticker.id, false)}>
+                      <IndeterminateCheckBoxIcon fontSize="large"/>
+                    </IconButton>
+                  }
+                  <input
+                      type="number"
+                      value={inventoryState[sticker.id]}
+                      onChange={(e) => handleInventoryChange(e, sticker.id)}
+                      min={0}
+                      max={99}
+                      onKeyDown={handleKeyPress}
+                      className="border border-black p-1 w-10 sm:w-12"
+                  />
+                  {isMobile &&
+                    <IconButton color="primary" onClick={() => incrementSticker(sticker.id, true)}>
+                      <AddBoxIcon fontSize="large"/>
+                    </IconButton>
+                  }
+                </Grid>
+              </Grid>
             </div>
-            ))}
+          ))}
+      </Grid>
+      </div>
+      ))}
     </Grid>
     )
   };
@@ -112,31 +159,31 @@ export default function InventoryModal({user}: {user: any}) {
         open={open}
         onClose={handleClose}
     >
-        <Box sx={style}>
-            <IconButton onClick={handleClose} size="small" sx={{ position: 'absolute', top: 0, right: 0 }}>
-                <CloseIcon />
-            </IconButton>
-            <Typography variant="h5">
-            Your Inventory
-            </Typography>
-            <Typography sx={{ mt: 1, mb: 2 }}>
-            All stickers you currently have, including non-duplicates.
-            </Typography>
-            {renderInventory()}
-            {success && (
-            <p className="md:flex md:items-center text-green-500 mb-4 justify-center pt-2">
-                Inventory update successful! Please refresh page to see changes.
-            </p>
-            )}
-            <form method="POST">
-              <button 
-                onClick={databaseUpdate}
-                type="button" 
-                className="border border-white bg-teal-500 hover:bg-teal-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-              >
-                  Save Changes
-              </button>
-            </form>
+        <Box sx={isMobile ? mobileStyle : style}>
+          <IconButton onClick={handleClose} sx={{ position: 'absolute', top: 0, right: 0 }}>
+              <CloseIcon fontSize="large"/>
+          </IconButton>
+          <Typography variant="h4">
+          Your Inventory
+          </Typography>
+          <Typography sx={{ mt: 1, mb: 2 }}>
+          All stickers you currently have, including non-duplicates.
+          </Typography>
+          {renderInventory()}
+          {success && (
+          <p className="md:flex md:items-center text-green-500 mb-4 justify-center pt-2">
+              Inventory update successful! Please refresh page to see changes.
+          </p>
+          )}
+          <form method="POST">
+            <button 
+              onClick={databaseUpdate}
+              type="button" 
+              className="border border-white bg-teal-500 hover:bg-teal-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+            >
+                Save Changes
+            </button>
+          </form>
         </Box>
     </Modal>
     </div>

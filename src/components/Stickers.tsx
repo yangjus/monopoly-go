@@ -136,12 +136,12 @@ export default function Stickers({user, isMobile}: {user: any, isMobile: boolean
             </Box>
         </Modal>
         {isMobile && <div className="flex items-center justify-center">
-                <InventoryModal user={user} />
+                <InventoryModal user={user} isMobile={isMobile}/>
         </div>}
         <div className="sm:flex sm:justify-between sm:mx-2 lg:mx-6">
             <Grid container spacing={1}>
-                <Grid item xs={12} sm={6} className="text-white">
-                    <FormGroup>
+                <Grid item xs={12} sm={6} md={5} className="text-white">
+                    <FormGroup className="flex justify-end">
                         <FormControlLabel 
                             control={
                                 <Checkbox
@@ -167,7 +167,7 @@ export default function Stickers({user, isMobile}: {user: any, isMobile: boolean
                         selectedOption={selectedAlbum}
                     />
                 </Grid>
-                <Grid item xs={12} sm={3} className="text-white">
+                <Grid item xs={12} sm={3} md={4} className="text-white">
                     <FormGroup>
                         <FormControlLabel 
                             control={
@@ -196,7 +196,7 @@ export default function Stickers({user, isMobile}: {user: any, isMobile: boolean
                 </Grid>
             </Grid>
             {!isMobile && <div className="flex items-center sm:mt-8">
-                <InventoryModal user={user} />
+                <InventoryModal user={user} isMobile={isMobile}/>
             </div>}
         </div>
         <Grid container className="text-white text-2xl my-2">
