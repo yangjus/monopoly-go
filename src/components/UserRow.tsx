@@ -26,7 +26,19 @@ const style = {
     top: '50%', 
     left: '50%', 
     width: '40%',
-    height: '30%',
+    height: '40%',
+    transform: 'translate(-50%, -50%)', 
+    bgcolor: 'background.paper', 
+    boxShadow: 24, 
+    p: 4,
+};
+
+const mobileStyle = {
+    position: 'absolute', 
+    top: '50%', 
+    left: '50%', 
+    width: '80%',
+    height: '50%',
     transform: 'translate(-50%, -50%)', 
     bgcolor: 'background.paper', 
     boxShadow: 24, 
@@ -88,11 +100,11 @@ const UserRow = ( {user, otherUser, isMobile} : {user: UserType, otherUser: Trad
                 </Tooltip>
             </IconButton>
             <Modal open={modalOpen} onClose={handleClose}>
-                <Box sx={style}>
-                    <IconButton onClick={handleClose} size="small" sx={{ position: 'absolute', top: 0, right: 0 }}>
-                        <CloseIcon />
+                <Box sx={isMobile ? mobileStyle : style}>
+                    <IconButton onClick={handleClose} sx={{ position: 'absolute', top: 0, right: 0 }}>
+                        <CloseIcon fontSize="large"/>
                     </IconButton>
-                    <Typography>
+                    <Typography className="text-xl mb-4">
                         Send {selectedUser.username} a Direct Message:
                     </Typography>
                     <TextField
@@ -101,12 +113,12 @@ const UserRow = ( {user, otherUser, isMobile} : {user: UserType, otherUser: Trad
                         placeholder='Type your message...'
                         size="small"
                         multiline
-                        rows={3}
+                        rows={isMobile ? 6 : 4}
                         value={message}
                         onChange={(event) => setMessage(event.target.value)}
                     />
                     <form onSubmit={() => directMessage(selectedUser.email)}>
-                        <div className="md:flex md:items-center justify-center pt-2">
+                        <div className="flex items-center justify-center pt-4">
                             <button 
                                 type="submit"
                                 disabled={submitting}

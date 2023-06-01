@@ -40,7 +40,7 @@ export default function Profile({ user }: { user: UserType }) {
   }, [user.inventory]);
 
   return (
-  <div className="items-center text-center justify-center space-y-4">
+  <div className="items-center text-center justify-center space-y-4 min-h-screen">
       <div className="text-4xl pt-5">Your Profile</div>
       {noStickers && 
         <div className="text-xl">
@@ -78,7 +78,7 @@ export default function Profile({ user }: { user: UserType }) {
         </Grid>)
         : 
         (<div className="grid grid-cols-3 gap-4 px-10 py-5">
-          <div className="col-span-1 rounded-md bg-teal-500 p-5 min-h-screen">
+          <div className="col-span-1 rounded-md bg-teal-500 p-5">
             <div className="text-2xl text-white">Account Info</div>
             <Account user={user}/>
           </div>

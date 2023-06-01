@@ -163,7 +163,7 @@ export default function Trading({ user, matchedUsers, allConversations }: Tradin
     }, [selectedAlbum, selectedStar, checkAllAlbum, checkAllStar, matchedUsers]);
 
     return (
-    <div className="items-center space-y-4">
+    <div className="items-center space-y-4 min-h-screen">
         <div className="text-4xl pt-5 text-center justify-center">Marketplace</div>
         <div className="text-xl text-center justify-center">
             Finds other users who have what you need, and want what you have!
@@ -244,7 +244,7 @@ export default function Trading({ user, matchedUsers, allConversations }: Tradin
                     <GlobalChatWindow user={user} />
                 </div>
             </Grid>
-            <Grid item xs={12} sm={9} className="rounded-md bg-teal-500 p-5">
+            <Grid item xs={12} sm={9} className="rounded-md bg-teal-500 p-5 mb-2">
                 <TableContainer component={Paper} className="flex justify-center sm:px-2">
                     <Table
                         aria-label="simple table"

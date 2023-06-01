@@ -71,7 +71,7 @@ export default function Account({user}: {user: any}) {
 
     return (
     <div>
-        <form className="min-h-screen w-full max-w-sm pt-5 mx-auto" onSubmit={handleSubmit}>
+        <form className="w-full max-w-sm pt-5 mx-auto" onSubmit={handleSubmit}>
             {formKeys.map((key: keyof FormData) => (
                 <div className="mb-4" key={key}>
                     <label htmlFor={key} className="block capitalize text-white font-bold mb-2 flex justify-between">
