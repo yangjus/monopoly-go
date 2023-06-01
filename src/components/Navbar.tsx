@@ -23,8 +23,7 @@ export default function Navbar() {
             <span className="font-semibold text-xl tracking-tight">MonopolyGO Trading</span>
         </div>
         { !loading &&
-        <div className="justify-end">
-            <div className="w-full block flex-grow sm:flex sm:items-center sm:w-auto">
+            <div className="flex justify-between sm:justify-end w-full block flex-grow sm:flex sm:items-center sm:w-auto">
                 <Link href="/" className="block mt-4 sm:inline-block sm:mt-0 text-teal-200 hover:text-white mr-4">
                     Home
                 </Link>
@@ -53,7 +52,7 @@ export default function Navbar() {
                 </>
                 }
             </div>
-        </div> }
+        }
     </nav>
     )
 }
