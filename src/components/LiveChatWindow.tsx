@@ -80,18 +80,6 @@ const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) 
                   } : chat
                 );
             });
-            // const tempMessages: sentMessage[] = [...currentChat!.messages, {
-            //     sender: data.payload.sender,
-            //     content: data.payload.content,
-            //     timestamp: data.payload.timestamp
-            //     }]
-            // setCurrentChat({
-            //     conversationId: currentChat!.conversationId,
-            //     recipient_email: currentChat!.recipient_email,
-            //     recipient_username: currentChat!.recipient_username,
-            //     user_email: currentChat!.user_email,
-            //     messages: tempMessages
-            // });
             console.log("updated current chat: ", loadedMessages);
         });
       
@@ -203,9 +191,12 @@ const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) 
                         </Tooltip>
                         </Typography>
                     </Grid>
-                    <Grid container className="overflow-y-auto min-h-[350px] max-h-[350px] p-6">
+                    <Grid container className="overflow-y-auto min-h-[330px] max-h-[330px] p-6">
                         <ChatContent user={user} currentChat={currentChat?.messages ?? []}/>
                         <div ref={messagesEndRef} />
+                    </Grid>
+                    <Grid item xs={12} className="flex justify-center">
+                        Press user's icon to see the latest message
                     </Grid>
                     <Grid item xs={11} className="mt-2 pl-6 pr-4">
                         <TextField

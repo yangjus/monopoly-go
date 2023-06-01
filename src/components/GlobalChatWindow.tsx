@@ -122,7 +122,7 @@ const GlobalChatWindow = ({user}: {user: any}) => {
                     <Grid item xs={12} className="pl-4">
                         <Typography variant="h6">
                             Global Chat
-                            <Tooltip title="Past two days of chat history" placement='top'>
+                            <Tooltip title="Past week of chat history" placement='top'>
                             <InfoIcon 
                                 style={{ 
                                     color: 'teal',
