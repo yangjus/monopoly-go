@@ -139,7 +139,7 @@ const UserRow = ( {user, otherUser, isMobile} : {user: UserType, otherUser: Trad
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
             <Collapse in={open} timeout="auto" unmountOnExit>
                 <Box sx={{ margin: 1 }}>
-                    <UserDropdown user={otherUser}/>
+                    <UserDropdown user={otherUser} isMobile={isMobile}/>
                 </Box>
             </Collapse>
         </TableCell>

@@ -1,13 +1,14 @@
-import { Chip } from '@mui/material';
+import { Chip, Box } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 
 interface BadgeProps {
     name: string;
     album: string;
     star: number;
+    isMobile: boolean;
 }
 
-const Badge = ({name, album, star}: BadgeProps) => {
+const Badge = ({name, album, star, isMobile}: BadgeProps) => {
 
     const dummyFunction = () => {
         //console.log("dummy function")
@@ -15,6 +16,22 @@ const Badge = ({name, album, star}: BadgeProps) => {
     }
 
     return (
+        <>
+        {isMobile ? (
+            <Box style={{ backgroundColor: "teal" }} className="flex justify-center rounded-xl p-2 text-white">
+                <div className="pt-1">
+                    {name}
+                </div>
+                <Box style={{ backgroundColor: "#4fd1c5" }} className="rounded-xl p-1 text-white mx-2">
+                    {album}
+                </Box>
+                <Box style={{ backgroundColor: "#4fd1c5" }} className="rounded-xl p-1 text-white">
+                    {star.toString()}
+                    <StarIcon style={{ color: '#FFD60B' }} />
+                </Box>
+            </Box>
+        ) 
+        : (
         <Chip 
             label={name} 
             color='primary' 
@@ -49,6 +66,8 @@ const Badge = ({name, album, star}: BadgeProps) => {
                 </div>
             }
         />
+        )}
+        </>
     );
 };
   

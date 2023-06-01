@@ -207,7 +207,7 @@ export default function Stickers({user, isMobile}: {user: any, isMobile: boolean
                 <div className="flex flex-wrap overflow-auto rounded-md bg-white p-1 sm:p-3 h-64">
                     {extraStickers?.map((sticker: Sticker) => (
                         <div className="p-1" key={sticker.name}>
-                            <Badge name={sticker.name} album={sticker.album} star={sticker.star}/>
+                            <Badge name={sticker.name} album={sticker.album} star={sticker.star} isMobile={false}/>
                         </div>
                     ))}
                 </div>
@@ -219,7 +219,7 @@ export default function Stickers({user, isMobile}: {user: any, isMobile: boolean
                 <div className="flex flex-wrap overflow-auto rounded-md bg-white p-1 sm:p-3 h-64">
                     {missingStickers?.map((sticker: Sticker) => (
                         <div className="p-1" key={sticker.name}>
-                            <Badge name={sticker.name} album={sticker.album} star={sticker.star}/>
+                            <Badge name={sticker.name} album={sticker.album} star={sticker.star} isMobile={false}/>
                         </div>
                     ))}
                 </div>

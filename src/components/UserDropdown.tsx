@@ -12,7 +12,7 @@ import { TradingUser } from "@component/pages/trading";
 import Badge from "./Badge";
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 
-const UserDropdown = ({ user }: { user: TradingUser }) => {
+const UserDropdown = ({ user, isMobile }: { user: TradingUser, isMobile: boolean }) => {
 
     const [socialCopied, setSocialCopied] = useState<boolean>(false);
     const [inviteCopied, setInviteCopied] = useState<boolean>(false);
@@ -36,7 +36,7 @@ const UserDropdown = ({ user }: { user: TradingUser }) => {
     return (
     <Grid container spacing={1}>
         {/*They Want*/}
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
             <Typography sx={{marginBottom: "10px"}}>
                 {user.username}&apos;s Inventory
                 <Tooltip title="Based on what they have that you need" placement='top'>
@@ -50,16 +50,21 @@ const UserDropdown = ({ user }: { user: TradingUser }) => {
                     />
                 </Tooltip>
             </Typography>
-            <div className="row-span-3 flex flex-wrap overflow-auto rounded-md bg-gray-200 p-3 h-64">
+            <div className="sm:row-span-3 flex flex-wrap overflow-auto rounded-md bg-gray-200 p-1 sm:p-3 h-64">
                 {user.hasStickers?.map((index: number) => (
-                    <div className="p-1 " key={stickers[index].name}>
-                        <Badge name={stickers[index].name} album={stickers[index].album} star={stickers[index].star}/>
+                    <div className="p-1" key={stickers[index].name}>
+                        <Badge 
+                            name={stickers[index].name} 
+                            album={stickers[index].album} 
+                            star={stickers[index].star} 
+                            isMobile={isMobile}
+                        />
                     </div>
                 ))}
             </div>
         </Grid>
         {/*They Have*/}
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
             <Typography sx={{marginBottom: "10px"}}>
                 Your Inventory
                 <Tooltip title="Based on what you have that they need" placement='top'>
@@ -73,15 +78,20 @@ const UserDropdown = ({ user }: { user: TradingUser }) => {
                     />
                 </Tooltip>
             </Typography>
-            <div className="row-span-3 flex flex-wrap overflow-auto rounded-md bg-gray-200 p-3 h-64">
+            <div className="sm:row-span-3 flex flex-wrap overflow-auto rounded-md bg-gray-200 p-1 sm:p-3 h-64">
                 {user.needStickers?.map((index: number) => (
                     <div className="p-1" key={stickers[index].name}>
-                        <Badge name={stickers[index].name} album={stickers[index].album} star={stickers[index].star}/>
+                        <Badge 
+                            name={stickers[index].name} 
+                            album={stickers[index].album} 
+                            star={stickers[index].star} 
+                            isMobile={isMobile}
+                        />
                     </div>
                 ))}
             </div>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
             <div className="flex items-center">
                 <TextField
                     variant="filled"
@@ -101,7 +111,7 @@ const UserDropdown = ({ user }: { user: TradingUser }) => {
                 </Button>
             </div>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
             <div className="flex items-center">
                 <TextField
                     variant="filled"

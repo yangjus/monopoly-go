@@ -168,7 +168,7 @@ export default function Trading({ user, matchedUsers, allConversations }: Tradin
         <div className="text-xl text-center justify-center">
             Finds other users who have what you need, and want what you have!
         </div>
-        <Grid container className="p-2 sm:p-6 flex justify-between">
+        <Grid container className="sm:p-6 flex justify-between">
             <Grid item xs={12} sm={2.5} className="rounded-md bg-teal-500 p-5 mb-4 sm:mb-0">
                 <div className="text-white text-2xl">
                     Filter
