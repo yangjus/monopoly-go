@@ -66,7 +66,7 @@ export default function Home({ user }: { user: {email: string} }) {
                   <li className="ml-8">- Added a direct message pop up feature next to username</li>
                   <li className="ml-8">- Fixed bug where user could not create a new DM with another user</li>
                   <li className="ml-8">- Fixed bug where there would be multiple conversations between the same two users</li>
-                  <li className="ml-8">- Added text to tell user if they didn't match with any users in the trading page</li>
+                  <li className="ml-8">- Added text to tell user if they didn&apos;t match with any users in the trading page</li>
                   <li className="ml-8">- Other small UI and bug changes</li>
                 </ul>
               </Grid>

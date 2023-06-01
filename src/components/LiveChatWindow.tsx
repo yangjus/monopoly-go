@@ -82,7 +82,7 @@ const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) 
         return () => {
             pusher.unsubscribe("direct-chat");
         };
-    }, []);
+    }, [conversations, user.email]);
 
     const submitMessage = async () => {
         if (message === "") {
@@ -182,7 +182,7 @@ const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) 
                         <div ref={messagesEndRef} />
                     </Grid>
                     <Grid item xs={12} className="flex justify-center">
-                        Press user's icon to see the latest message
+                        Press user&apos;s icon to see the latest message
                     </Grid>
                     <Grid item xs={11} className="mt-2 pl-6 pr-4">
                         <TextField
