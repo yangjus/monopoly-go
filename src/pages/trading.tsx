@@ -240,7 +240,7 @@ export default function Trading({ user, matchedUsers, allConversations }: Tradin
                     />
                 </div>
                 <div className="fixed bottom-4 left-4 flex items-center z-20 justify-center bg-blue-700 rounded-full">
-                    <LiveChatWindow user={user} conversations={allConversations}/>
+                    <LiveChatWindow user={user} conversations={allConversations} isMobile={isMobile}/>
                 </div>
                 <div className="fixed bottom-4 left-24 flex items-center z-10 justify-center bg-blue-700 rounded-full">
                     <GlobalChatWindow user={user} isMobile={isMobile} windowHeight={windowHeight}/>

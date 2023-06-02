@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { IconButton, Box, Typography, Grid, Avatar, TextField, Tooltip } from '@mui/material';
+import { IconButton, Box, Typography, Grid, Avatar, TextField, Tooltip, Modal } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
 import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
@@ -21,6 +21,18 @@ const style = {
     borderColor: 'teal'
 };
 
+const mobileStyle = {
+    position: 'absolute', 
+    top: '50%', 
+    left: '50%', 
+    width: '90%',
+    height: '95%',
+    transform: 'translate(-50%, -50%)', 
+    bgcolor: 'background.paper', 
+    boxShadow: 24, 
+    p: 2,
+};
+
 function stringAvatar(name: string) { 
     if (!name[1]) return { children: `${name[0]}`}
     return {
@@ -28,7 +40,7 @@ function stringAvatar(name: string) {
     };
 }
 
-const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) => {
+const LiveChatWindow = ({user, conversations, isMobile}: {user: any, conversations: any, isMobile: boolean}) => {
     let Filter = require('bad-words');
     const filter = new Filter();
 
@@ -148,65 +160,65 @@ const LiveChatWindow = ({user, conversations}: {user: any, conversations: any}) 
         </IconButton>
     </Tooltip>
     }
-    {open && 
-    <Box sx={style}>
-        <IconButton onClick={handleClose} size="small" sx={{ position: 'absolute', top: 0, right: 0 }}>
-            <CloseIcon />
-        </IconButton>
-        <Grid container>
-            <Grid item xs={2} className="flex justify-center overflow-y-auto max-h-[450px] border-r border-gray-500">
-                <Grid container>
-                    <Grid item xs={12}>
-                        <Typography variant="h6">
-                            Users
-                        </Typography>
-                    </Grid>
-                    {loadedMessages.map((chat: Chat) => 
-                        <Grid item xs={12} key={chat.conversationId} className="my-1">
-                            <IconButton onClick={() => changeUser(chat.conversationId)}>
-                                <Avatar {...stringAvatar(chat.recipient_username)} />
-                            </IconButton>
+    <Modal open={open} onClose={handleClose}>
+        <Box sx={isMobile ? mobileStyle : style}>
+            <IconButton onClick={handleClose} sx={{ position: 'absolute', top: 0, right: 0 }}>
+                <CloseIcon fontSize="large"/>
+            </IconButton>
+            <Grid container>
+                <Grid item xs={3} sm={2} className="flex justify-center overflow-y-auto max-h-[70vh] sm:max-h-[450px] border-r border-gray-500">
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <Typography variant="h6">
+                                Users
+                            </Typography>
                         </Grid>
-                    )}
-                </Grid>
-            </Grid>
-            <Grid item xs={10} className="flex justify-center pl-1">
-                <Grid container>
-                    <Grid item xs={12} className="pl-4">
-                        <Typography variant="h6">
-                        Chat with {currentChat?.recipient_username ? currentChat.recipient_username : "someone!"}
-                        </Typography>
-                    </Grid>
-                    <Grid container className="overflow-y-auto min-h-[330px] max-h-[330px] p-6">
-                        <ChatContent user={user} currentChat={currentChat?.messages ?? []}/>
-                        <div ref={messagesEndRef} />
-                    </Grid>
-                    <Grid item xs={12} className="flex justify-center">
-                        Press user&apos;s icon to see the latest message
-                    </Grid>
-                    <Grid item xs={11} className="mt-2 pl-6 pr-4">
-                        <TextField
-                            hiddenLabel
-                            fullWidth
-                            placeholder='Type your message...'
-                            size="small"
-                            multiline
-                            rows={2}
-                            value={message}
-                            onChange={(event) => setMessage(event.target.value)}
-                            onKeyDown={handleKeyDown}
-                        />
-                    </Grid>
-                    <Grid item xs={1} className="pt-2 flex justify-items">
-                        <IconButton onClick={submitMessage}>
-                            <SendIcon />
-                        </IconButton>
+                        {loadedMessages.map((chat: Chat) => 
+                            <Grid item xs={12} key={chat.conversationId} className="my-1">
+                                <IconButton onClick={() => changeUser(chat.conversationId)}>
+                                    <Avatar {...stringAvatar(chat.recipient_username)} />
+                                </IconButton>
+                            </Grid>
+                        )}
                     </Grid>
                 </Grid>
+                <Grid item xs={9} sm={10} className="flex justify-center pl-1">
+                    <Grid container>
+                        <Grid item xs={12} className="pl-4">
+                            <Typography variant="h6">
+                            Chat with {currentChat?.recipient_username ? currentChat.recipient_username : "someone!"}
+                            </Typography>
+                        </Grid>
+                        <Grid container className="overflow-y-auto min-h-[65vh] sm:min-h-[330px] max-h-[65vh] sm:max-h-[330px] p-1 mt-2 sm:mt-0 sm:p-6">
+                            <ChatContent user={user} currentChat={currentChat?.messages ?? []}/>
+                            <div ref={messagesEndRef} />
+                        </Grid>
+                        <Grid item xs={12} className="flex justify-center pl-2 sm:pl-0">
+                            Press user&apos;s icon to see the latest message
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid item xs={10} className="mt-2 pl-2 sm:pl-6 sm:pr-4">
+                            <TextField
+                                hiddenLabel
+                                fullWidth
+                                placeholder='Type your message...'
+                                size="small"
+                                multiline
+                                rows={2}
+                                value={message}
+                                onChange={(event) => setMessage(event.target.value)}
+                                onKeyDown={handleKeyDown}
+                            />
+                        </Grid>
+                <Grid item xs={2} className="pt-2 flex justify-items">
+                    <IconButton onClick={submitMessage}>
+                        <SendIcon fontSize="large"/>
+                    </IconButton>
+                </Grid>
             </Grid>
-        </Grid>
-    </Box>
-    }
+        </Box>
+    </Modal>
     </div>
     );
 };
