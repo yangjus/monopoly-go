@@ -156,7 +156,7 @@ export default function Register({ user }: { user: any }) {
     return (
     <>
     <div className="flex justify-center py-4">
-        <form className="min-h-screen w-full max-w-sm" onSubmit={handleSubmit}>
+        <form className="min-h-screen w-full max-w-sm" method="POST">
             <div className="text-4xl sm:py-4 text-center sm:text-left pb-6 sm:pb-2">Register Account</div>
             {formKeys.map((key: keyof FormData) => (
                 <div className="mb-4" key={key}>
@@ -199,8 +199,9 @@ export default function Register({ user }: { user: any }) {
             <div className="flex mb-4">A verification email will be sent to you shortly after submission.</div>
             <div className="flex items-center justify-center">
                 <button 
-                    type="submit"
+                    type="button"
                     disabled={submitting}
+                    onClick={() => handleSubmit}
                     className="shadow bg-teal-500 hover:bg-teal-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
                 >
                     {submitting ? "Submitting..." : "Submit"}

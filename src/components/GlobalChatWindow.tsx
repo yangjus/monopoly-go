@@ -167,13 +167,15 @@ const GlobalChatWindow = ({user, isMobile, windowHeight}: {user: any, isMobile: 
                         </Grid>
                         {isMobile && 
                             <Grid item className="pt-2 flex items-center justify-center">
+                                <form method="POST">
                                     <button 
-                                        type="submit"
-                                        className="shadow bg-teal-500 text-white font-bold py-2 px-4 rounded"
-                                        onClick={submitMessage}
-                                    >
-                                        Send
+                                            type="button"
+                                            className="shadow bg-teal-500 text-white font-bold py-2 px-4 rounded"
+                                            onClick={submitMessage}
+                                        >
+                                            Send
                                     </button>
+                                </form>
                             </Grid>
                         }
                         {!isMobile && 

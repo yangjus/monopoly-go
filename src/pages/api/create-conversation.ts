@@ -10,7 +10,7 @@ export default async function createConversation(req: any, res: any) {
         //check if conversation is already created
         let convo = await Conversation.findOne({ participants_email: req.body.participants_email }).exec();
         if (!convo) {
-            //console.log("creating a new conversation")
+            console.log("creating a new conversation")
             convo = await Conversation.create({participants_email: req.body.participants_email});
             if (!convo) {
                 return res.json({code:'Conversation not created'}).end()

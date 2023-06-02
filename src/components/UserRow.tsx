@@ -51,6 +51,7 @@ const UserRow = ( {user, otherUser, isMobile} : {user: UserType, otherUser: Trad
     const [selectedUser, setSelectedUser] = useState<{username: string, email: string}>({username: "", email: ""});
     const [message, setMessage] = useState<string>("");
     const [submitting, setSubmitting] = useState<boolean>(false);
+    const [success, setSuccess] = useState<boolean>(false);
 
     const directMessage = async (email: string) => {
         setSubmitting(true);
@@ -61,6 +62,9 @@ const UserRow = ( {user, otherUser, isMobile} : {user: UserType, otherUser: Trad
                 content: message
             }
             const response = await axios.post("/api/create-conversation", payload);
+            if (response) {
+                setSuccess(true);
+            }
             //console.log(response);
         } catch (error) {
             console.error(error);
@@ -117,17 +121,23 @@ const UserRow = ( {user, otherUser, isMobile} : {user: UserType, otherUser: Trad
                         value={message}
                         onChange={(event) => setMessage(event.target.value)}
                     />
-                    <form onSubmit={() => directMessage(selectedUser.email)}>
+                    {success &&
+                        <p className="md:flex md:items-center text-green-500 mb-4 justify-center pt-2">
+                            DM sent successfully! Please refresh page to see changes.
+                        </p>
+                    }
+                    {!success && <form method="POST">
                         <div className="flex items-center justify-center pt-4">
                             <button 
-                                type="submit"
+                                type="button"
                                 disabled={submitting}
+                                onClick={() => directMessage(selectedUser.email)}
                                 className="shadow bg-teal-500 hover:bg-teal-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
                             >
                                 {submitting ? "Submitting..." : "Submit"}
                             </button>
                         </div>
-                    </form>
+                    </form>}
                 </Box>
             </Modal>
         </TableCell>
