@@ -21,7 +21,7 @@ export default async function login(req: any, res: any) {
                 //update user's lastLogged to reflect current time
                 const currentDate: moment.Moment = moment();
                 await User.findOneAndUpdate(
-                    { email: req.body.email },
+                    { email: req.body.email.toLowerCase() },
                     { $set: { last_logged: currentDate, email: req.body.email.toLowerCase() }}
                 );
     

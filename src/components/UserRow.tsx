@@ -11,7 +11,8 @@ import {
     Modal,
     Typography,
     Grid,
-    TextField
+    TextField,
+    Button
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -71,6 +72,7 @@ const UserRow = ( {user, otherUser, isMobile} : {user: UserType, otherUser: Trad
         }
         setMessage("");
         setSubmitting(false);
+        return false;
     }
 
     const handleOpen = (user: string, email: string) => {
@@ -126,17 +128,17 @@ const UserRow = ( {user, otherUser, isMobile} : {user: UserType, otherUser: Trad
                             DM sent successfully! Please refresh page to see changes.
                         </p>
                     }
-                    {!success && <form onSubmit={() => directMessage(selectedUser.email)}>
+                    {!success &&
                         <div className="flex items-center justify-center pt-4">
-                            <button 
-                                type="submit"
+                            <Button
+                                onClick={() => directMessage(selectedUser.email)}
                                 disabled={submitting}
                                 className="shadow bg-teal-500 hover:bg-teal-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
                             >
                                 {submitting ? "Submitting..." : "Submit"}
-                            </button>
+                            </Button>
                         </div>
-                    </form>}
+                    }
                 </Box>
             </Modal>
         </TableCell>
