@@ -16,7 +16,7 @@ export default async function login(req: any, res: any) {
         }
         else {
             //check if email is verified
-            const isVerified = await Verify.findOne({email: email});
+            const isVerified = await Verify.findOne({email: email.toLowerCase()});
             if (isVerified && isVerified.email_verified) {
                 //update user's lastLogged to reflect current time
                 const currentDate: moment.Moment = moment();

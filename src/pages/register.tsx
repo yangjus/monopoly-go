@@ -30,7 +30,6 @@ export const labelName = {
 export const formCheck = (formData: FormData) => {
     //Validate email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    console.log(formData.email);
     if (!formData.email || !emailRegex.test(formData.email)) {
         return "Please enter a valid email address.";
     }
@@ -47,7 +46,7 @@ export const formCheck = (formData: FormData) => {
 
     //Validate rank
     if (!formData.rank || !Number.isInteger(Number(formData.rank)) || Number(formData.rank) < 0 || Number(formData.rank) > 20000) {
-        return "Please enter a valid numerical rank (only numbers allowed).";
+        return "Please enter a valid numerical net worth (only numbers allowed).";
     }
     
     const inviteRegex = /^https:\/\/s\.scope\.ly\/[a-zA-Z0-9_]{11}$/;

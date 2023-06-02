@@ -37,6 +37,6 @@ export default async function handler(req: any, res: any) {
         }
         res.end(JSON.stringify(user));
     } catch (error) {
-        res.status(400).json({status: error}).end()
+        res.status(400).json({status: error})
     }
 }
