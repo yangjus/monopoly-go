@@ -22,11 +22,12 @@ export default async function login(req: any, res: any) {
                 const currentDate: moment.Moment = moment();
                 await User.findOneAndUpdate(
                     { email: req.body.email },
-                    { $set: { last_logged: currentDate }}
+                    { $set: { last_logged: currentDate, email: req.body.email.toLowerCase() }}
                 );
     
                 const token = jwt.sign({email: email}, process.env.JWT_TOKEN!);
                 setCookie('session', token, { req, res, maxAge: 60 * 60 * 24 })
+
                 res.status(200).json({ token });
             }
             else {

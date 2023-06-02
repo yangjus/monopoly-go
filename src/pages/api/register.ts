@@ -8,7 +8,7 @@ connect()
 export default async function handler(req: any, res: any) {
     try {
         const payload = {
-            email: req.body.email,
+            email: req.body.email.toLowerCase(),
             password: req.body.password,
             username: req.body.username,
             rank: Number(req.body.rank),
@@ -24,7 +24,7 @@ export default async function handler(req: any, res: any) {
         }
 
         const verify = await Verify.create({
-            email: req.body.email,
+            email: req.body.email.toLowerCase(),
             code: req.body.code,
             email_verified: false
         });

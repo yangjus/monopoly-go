@@ -38,6 +38,6 @@ export default async function getMessages(req: any, res: any) {
 
         res.json({ conversations: response });
     } catch (error) {
-        res.status(400).json({status: 'Cannot get messages.'})
+        res.status(400).json({status: error})
     }
 };

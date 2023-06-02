@@ -126,12 +126,11 @@ const UserRow = ( {user, otherUser, isMobile} : {user: UserType, otherUser: Trad
                             DM sent successfully! Please refresh page to see changes.
                         </p>
                     }
-                    {!success && <form method="POST">
+                    {!success && <form onSubmit={() => directMessage(selectedUser.email)}>
                         <div className="flex items-center justify-center pt-4">
                             <button 
-                                type="button"
+                                type="submit"
                                 disabled={submitting}
-                                onClick={() => directMessage(selectedUser.email)}
                                 className="shadow bg-teal-500 hover:bg-teal-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
                             >
                                 {submitting ? "Submitting..." : "Submit"}

@@ -8,8 +8,9 @@ connect()
 export default async function createConversation(req: any, res: any) {
     try {
         //check if conversation is already created
-        let convo = await Conversation.findOne({ participants_email: req.body.participants_email }).exec();
-        if (!convo) {
+        let convo = await Conversation.findOne({ participants_email: [req.body.participants_email[0], req.body.participants_email[1]] }).exec();
+        let convo2 = await Conversation.findOne({ participants_email: [req.body.participants_email[1], req.body.participants_email[0]] }).exec();
+        if (!convo && !convo2) {
             console.log("creating a new conversation")
             convo = await Conversation.create({participants_email: req.body.participants_email});
             if (!convo) {
@@ -17,8 +18,14 @@ export default async function createConversation(req: any, res: any) {
             }
         }
         //then just submit the message into the chat
-        //console.log(convo);
-        const conversationId: string = convo._id.toString();
+        console.log("through");
+        let conversationId: string = "";
+        if (!convo2) {
+            conversationId = convo._id.toString();
+        }
+        if (!convo) {
+            conversationId = convo2._id.toString();
+        }
         const currentDate: moment.Moment = moment();
 
         const payload = {
@@ -36,6 +43,6 @@ export default async function createConversation(req: any, res: any) {
 
         res.end(JSON.stringify(response));
     } catch (error) {
-        res.status(400).json({status: error}).end()
+        res.status(400).json({status: error})
     }
 }
