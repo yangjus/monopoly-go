@@ -59,19 +59,17 @@ export default function Home({ user }: { user: {email: string} }) {
           <div className="rounded bg-teal-600 p-6 text-white">
             <Grid container className="flex text-left">
               <Grid item xs={12}>
-                Bug Fixes and Other New Features:
+                The biggest update yet: <b>Mobile</b> version is now out!
               </Grid>
               <Grid item xs={12}>
                 <ul>
-                  <li className="ml-8">- Added a direct message pop up feature next to username</li>
-                  <li className="ml-8">- Fixed bug where user could not create a new DM with another user</li>
-                  <li className="ml-8">- Fixed bug where there would be multiple conversations between the same two users</li>
-                  <li className="ml-8">- Added text to tell user if they didn&apos;t match with any users in the trading page</li>
+                  <li className="ml-8">- Lots of UI changes to cater towards mobile users!</li>
+                  <li className="ml-8">- Fixed bug where user could not register due to rank field</li>
                   <li className="ml-8">- Other small UI and bug changes</li>
                 </ul>
               </Grid>
               <Grid item xs={12}>
-                Mobile responsive version in the making!
+                Website will be updated on the newest Album release!
               </Grid>
             </Grid>
           </div>

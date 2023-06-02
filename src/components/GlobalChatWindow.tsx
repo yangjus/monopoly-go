@@ -147,7 +147,7 @@ const GlobalChatWindow = ({user, isMobile, windowHeight}: {user: any, isMobile: 
                             </Typography>
                         </Grid>
                         <Grid container className={
-                           `overflow-y-auto min-h-[60vh] max-h-[60vh] sm:min-h-[300px] sm:max-h-[300px] p-4 m-2`
+                           `overflow-y-auto min-h-[55vh] max-h-[55vh] sm:min-h-[300px] sm:max-h-[300px] p-4 m-2`
                         }>
                             <ChatContent user={user} currentChat={currentChat}/>
                             <div ref={messagesEndRef} />
@@ -170,6 +170,7 @@ const GlobalChatWindow = ({user, isMobile, windowHeight}: {user: any, isMobile: 
                                     <button 
                                         type="submit"
                                         className="shadow bg-teal-500 text-white font-bold py-2 px-4 rounded"
+                                        onClick={submitMessage}
                                     >
                                         Send
                                     </button>

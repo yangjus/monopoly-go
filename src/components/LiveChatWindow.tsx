@@ -166,7 +166,7 @@ const LiveChatWindow = ({user, conversations, isMobile}: {user: any, conversatio
                 <CloseIcon fontSize="large"/>
             </IconButton>
             <Grid container>
-                <Grid item xs={3} sm={2} className="flex justify-center overflow-y-auto max-h-[70vh] sm:max-h-[450px] border-r border-gray-500">
+                <Grid item xs={3} sm={2} className="flex justify-center overflow-y-auto max-h-[65vh] sm:max-h-[450px] border-r border-gray-500">
                     <Grid container>
                         <Grid item xs={12}>
                             <Typography variant="h6">
@@ -189,7 +189,7 @@ const LiveChatWindow = ({user, conversations, isMobile}: {user: any, conversatio
                             Chat with {currentChat?.recipient_username ? currentChat.recipient_username : "someone!"}
                             </Typography>
                         </Grid>
-                        <Grid container className="overflow-y-auto min-h-[65vh] sm:min-h-[330px] max-h-[65vh] sm:max-h-[330px] p-1 mt-2 sm:mt-0 sm:p-6">
+                        <Grid container className="overflow-y-auto min-h-[60vh] sm:min-h-[330px] max-h-[60vh] sm:max-h-[330px] p-1 mt-2 sm:mt-0 sm:p-6">
                             <ChatContent user={user} currentChat={currentChat?.messages ?? []}/>
                             <div ref={messagesEndRef} />
                         </Grid>
