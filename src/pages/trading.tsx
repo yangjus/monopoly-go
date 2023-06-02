@@ -58,10 +58,12 @@ export default function Trading({ user, matchedUsers, allConversations }: Tradin
 
     const [filteredUsers, setFilteredUsers] = useState<TradingUser[]>(matchedUsers);
     const [isMobile, setIsMobile] = useState(false);
+    const [windowHeight, setWindowHeight] = useState<number>(0);
 
     useEffect(() => {
         const handleResize = () => {
           setIsMobile(window.innerWidth < 768); // Adjust the breakpoint as needed
+          setWindowHeight(Math.floor(window.innerHeight / 50) * 50 - 250);
         };
     
         handleResize(); // Check initial window size
@@ -241,7 +243,7 @@ export default function Trading({ user, matchedUsers, allConversations }: Tradin
                     <LiveChatWindow user={user} conversations={allConversations}/>
                 </div>
                 <div className="fixed bottom-4 left-24 flex items-center z-10 justify-center bg-blue-700 rounded-full">
-                    <GlobalChatWindow user={user} />
+                    <GlobalChatWindow user={user} isMobile={isMobile} windowHeight={windowHeight}/>
                 </div>
             </Grid>
             <Grid item xs={12} sm={9} className="rounded-md bg-teal-500 p-5 mb-2">

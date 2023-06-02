@@ -18,7 +18,7 @@ const Badge = ({name, album, star, isMobile}: BadgeProps) => {
     return (
         <>
         {isMobile ? (
-            <Box style={{ backgroundColor: "teal" }} className="flex justify-center rounded-xl p-2 text-white">
+            <Box style={{ backgroundColor: "teal" }} className="flex justify-center rounded-xl py-2 px-3 text-white">
                 <div className="pt-1">
                     {name}
                 </div>

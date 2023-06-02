@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { IconButton, Box, Typography, Grid, TextField, Tooltip } from '@mui/material';
+import { IconButton, Box, Typography, Grid, TextField, Tooltip, Modal } from '@mui/material';
 import PublicIcon from '@mui/icons-material/Public';
 import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
@@ -23,7 +23,19 @@ const style = {
     borderColor: 'teal'
 };
 
-const GlobalChatWindow = ({user}: {user: any}) => {
+const mobileStyle = {
+    position: 'absolute', 
+    top: '50%', 
+    left: '50%', 
+    width: '90%',
+    height: '95%',
+    transform: 'translate(-50%, -50%)', 
+    bgcolor: 'background.paper', 
+    boxShadow: 24, 
+    p: 2,
+};
+
+const GlobalChatWindow = ({user, isMobile, windowHeight}: {user: any, isMobile: boolean, windowHeight: number}) => {
 
     let Filter = require('bad-words');
     const filter = new Filter();
@@ -111,56 +123,70 @@ const GlobalChatWindow = ({user}: {user: any}) => {
         </IconButton>
     </Tooltip>
     }
-    {open && 
-    <Box sx={style}>
-        <IconButton onClick={handleClose} size="small" sx={{ position: 'absolute', top: 0, right: 0 }}>
-            <CloseIcon />
-        </IconButton>
-        <Grid container>
-            <Grid item xs={12} className="flex justify-center pl-1">
-                <Grid container>
-                    <Grid item xs={12} className="pl-4">
-                        <Typography variant="h6">
-                            Global Chat
-                            <Tooltip title="Past week of chat history" placement='top'>
-                            <InfoIcon 
-                                style={{ 
-                                    color: 'teal',
-                                    marginBottom: '4px',
-                                    marginLeft: '8px',
-                                    fontSize: '1.5rem'
-                                }}
+    <Modal open={open} onClose={handleClose}>
+        <Box sx={isMobile ? mobileStyle : style}>
+            <IconButton onClick={handleClose} sx={{ position: 'absolute', top: 0, right: 0 }}>
+                <CloseIcon fontSize="large"/>
+            </IconButton>
+            <Grid container>
+                <Grid item xs={12} className="flex justify-center pl-1">
+                    <Grid container className="flex justify-center">
+                        <Grid item xs={12} className="pl-4">
+                            <Typography className="text-2xl mb-2">
+                                Global Chat
+                                <Tooltip title="Past week of chat history" placement='top'>
+                                <InfoIcon 
+                                    style={{ 
+                                        color: 'teal',
+                                        marginBottom: '4px',
+                                        marginLeft: '8px',
+                                        fontSize: '1.5rem'
+                                    }}
+                                />
+                                </Tooltip>
+                            </Typography>
+                        </Grid>
+                        <Grid container className={
+                           `overflow-y-auto min-h-[60vh] max-h-[60vh] sm:min-h-[300px] sm:max-h-[300px] p-4 m-2`
+                        }>
+                            <ChatContent user={user} currentChat={currentChat}/>
+                            <div ref={messagesEndRef} />
+                        </Grid>
+                        <Grid item xs={12} sm={10} className="sm:mt-2 sm:pl-6 sm:pr-4">
+                            <TextField
+                                hiddenLabel
+                                fullWidth
+                                placeholder='Type your message...'
+                                size="small"
+                                multiline
+                                rows={isMobile ? 3 : 2}
+                                value={message}
+                                onChange={(event) => setMessage(event.target.value)}
+                                onKeyDown={handleKeyDown}
                             />
-                            </Tooltip>
-                        </Typography>
-                    </Grid>
-                    <Grid container className="overflow-y-auto min-h-[350px] max-h-[350px] p-6">
-                        <ChatContent user={user} currentChat={currentChat}/>
-                        <div ref={messagesEndRef} />
-                    </Grid>
-                    <Grid item xs={11} className="mt-2 pl-6 pr-4">
-                        <TextField
-                            hiddenLabel
-                            fullWidth
-                            placeholder='Type your message...'
-                            size="small"
-                            multiline
-                            rows={2}
-                            value={message}
-                            onChange={(event) => setMessage(event.target.value)}
-                            onKeyDown={handleKeyDown}
-                        />
-                    </Grid>
-                    <Grid item xs={1} className="pt-2 flex justify-items">
-                        <IconButton onClick={submitMessage}>
-                            <SendIcon />
-                        </IconButton>
+                        </Grid>
+                        {isMobile && 
+                            <Grid item className="pt-2 flex items-center justify-center">
+                                    <button 
+                                        type="submit"
+                                        className="shadow bg-teal-500 text-white font-bold py-2 px-4 rounded"
+                                    >
+                                        Send
+                                    </button>
+                            </Grid>
+                        }
+                        {!isMobile && 
+                            <Grid item className="pt-2 flex justify-items">
+                                <IconButton onClick={submitMessage}>
+                                    <SendIcon />
+                                </IconButton>
+                            </Grid>
+                        }
                     </Grid>
                 </Grid>
             </Grid>
-        </Grid>
-    </Box>
-    }
+        </Box>
+    </Modal>
     </div>
     );
 };
