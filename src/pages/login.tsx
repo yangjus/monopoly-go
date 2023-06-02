@@ -119,7 +119,7 @@ export default function Register({ user }: { user: any }) {
             <p className="flex items-center text-green-500 mb-4 justify-center pt-6">Login successful!</p>
             )}
             {success === false && (
-            <p className="flex items-center text-red-500 mb-4 justify-center pt-6">Login unsuccessful. Did you verify your email?</p>
+            <p className="flex items-center text-red-500 mb-4 justify-center pt-6">Login unsuccessful. Email is case sensitive.</p>
             )}
         </form>
     </div>
