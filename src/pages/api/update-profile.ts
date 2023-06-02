@@ -9,7 +9,7 @@ export default async function UpdateProfile(req: any, res: any) {
             { email: req.body.email },
             { $set: { 
                 password: req.body.password,
-                rank: req.body.rank,
+                rank: Number(req.body.rank),
                 invite: req.body.invite,
                 social: req.body.social
              }},

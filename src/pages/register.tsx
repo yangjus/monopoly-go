@@ -45,7 +45,7 @@ export const formCheck = (formData: FormData) => {
     }
 
     //Validate rank
-    if (!formData.rank || !Number.isInteger(formData.rank) || formData.rank < 0 || formData.rank > 20000) {
+    if (!formData.rank || !Number.isInteger(Number(formData.rank)) || Number(formData.rank) < 0 || Number(formData.rank) > 20000) {
         return "Please enter a valid numerical rank (only numbers allowed).";
     }
     

@@ -11,7 +11,7 @@ export default async function handler(req: any, res: any) {
             email: req.body.email,
             password: req.body.password,
             username: req.body.username,
-            rank: req.body.rank,
+            rank: Number(req.body.rank),
             invite: req.body.invite,
             social: req.body.social,
             trusted: req.body.trusted, 
