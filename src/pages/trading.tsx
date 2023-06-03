@@ -89,7 +89,7 @@ export default function Trading({ user, matchedUsers, allConversations }: Tradin
 
     const [pageNumber, setPageNumber] = useState(0);
     const usersPerPage = 5; // Number of users to display per page
-    const maxDisplayedPages = isMobile ? 10 : 20; // Maximum number of displayed pages
+    const maxDisplayedPages = isMobile ? 20 : 40; // Maximum number of displayed pages
     const pagesVisited = pageNumber * usersPerPage;
     const pageCount = Math.ceil(filteredUsers.length / usersPerPage);
 
