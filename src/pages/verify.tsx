@@ -132,7 +132,7 @@ export default function Verify({ user }: { user: any }) {
             <p className="flex items-center text-green-500 mb-4 justify-center pt-6">Your email is successfully verified! You can now login with your new account.</p>
             )}
             {success === false && (
-            <p className="flex items-center text-red-500 mb-4 justify-center pt-6">Verification unsuccessful. You may be verified already. If still trouble verifying, reply to the verification email sent to you.</p>
+            <p className="flex items-center text-red-500 mb-4 justify-center pt-6">Verification unsuccessful. You may be verified already. Verifying on Android device may not work. If still trouble verifying, reply to the verification email sent to you.</p>
             )}
         </div>
     </div>
