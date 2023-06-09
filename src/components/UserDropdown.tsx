@@ -6,7 +6,7 @@ import {
   Button,
   TextField
 } from "@mui/material";
-import { stickers } from "../../constants/stickers";
+import { stickers } from "../../constants/old_stickers";
 import InfoIcon from '@mui/icons-material/Info';
 import { TradingUser } from "@component/pages/trading";
 import Badge from "./Badge";

@@ -25,7 +25,7 @@ const style = {
 };
 
 export default function Stickers({user, isMobile}: {user: any, isMobile: boolean }) {
-    const [selectedAlbum, setSelectedAlbum] = useState<string>("New York");
+    const [selectedAlbum, setSelectedAlbum] = useState<string>("Midsummer Meadows");
     const [selectedStar, setSelectedStar] = useState<string>("1");
 
     const [extraStickers, setExtraStickers] = useState<Sticker[]>();

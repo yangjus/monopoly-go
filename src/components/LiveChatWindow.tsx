@@ -7,6 +7,7 @@ import axios from "axios";
 import Pusher from "pusher-js";
 import { Chat } from '@component/pages/api/get-messages';
 import ChatContent from './ChatContent';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const style = {
     position: 'fixed',
@@ -48,6 +49,7 @@ const LiveChatWindow = ({user, conversations, isMobile}: {user: any, conversatio
     const [currentChat, setCurrentChat] = useState<Chat>();
     const [message, setMessage] = useState<string>("");
     const [loadedMessages, setLoadedMessages] = useState<Chat[]>([]);
+    const [toggleDelete, setToggleDelete] = useState<boolean>(false);
 
     useEffect(() => {
 
@@ -147,6 +149,14 @@ const LiveChatWindow = ({user, conversations, isMobile}: {user: any, conversatio
         }
     };
 
+    const openPopup = () => {
+        setToggleDelete(true);
+    }
+
+    const closePopup = () => {
+        setToggleDelete(false);
+    }
+
     return (
     <div>
     {!open && 
@@ -184,10 +194,13 @@ const LiveChatWindow = ({user, conversations, isMobile}: {user: any, conversatio
                 </Grid>
                 <Grid item xs={9} sm={10} className="flex justify-center pl-1">
                     <Grid container>
-                        <Grid item xs={12} className="pl-4">
+                        <Grid item xs={12} className="pl-4 flex justify items-center">
                             <Typography variant="h6">
                             Chat with {currentChat?.recipient_username ? currentChat.recipient_username : "someone!"}
                             </Typography>
+                            <IconButton onClick={openPopup}>
+                                <DeleteIcon />
+                            </IconButton>
                         </Grid>
                         <Grid container className="overflow-y-auto min-h-[60vh] sm:min-h-[330px] max-h-[60vh] sm:max-h-[330px] p-1 mt-2 sm:mt-0 sm:p-6">
                             <ChatContent user={user} currentChat={currentChat?.messages ?? []}/>

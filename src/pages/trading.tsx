@@ -50,7 +50,7 @@ interface TradingPageType {
 
 export default function Trading({ user, matchedUsers, allConversations }: TradingPageType) {
 
-    const [selectedAlbum, setSelectedAlbum] = useState<string>("New York");
+    const [selectedAlbum, setSelectedAlbum] = useState<string>("Midsummer Meadows");
     const [selectedStar, setSelectedStar] = useState<string>("1");
 
     const [checkAllAlbum, setCheckAllAlbum] = useState<boolean>(true);

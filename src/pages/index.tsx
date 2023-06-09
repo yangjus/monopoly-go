@@ -48,28 +48,42 @@ export default function Home({ user }: { user: {email: string} }) {
       <div className="text-2xl">Trading stickers made easy</div>
       <div className="py-5">
         {!user.email && 
+        <div className="text-2xl">
           <button 
             onClick={handleClick}
             className="mx-auto bg-teal-500 hover:bg-teal-700 text-white text-2xl font-bold py-6 px-10 rounded">
             Get started now!
           </button>
+                      <div className="pt-4">
+                      Join our Discord 
+                      <Link 
+                        href="https://discord.gg/EaTfg29rPF" 
+                        className="mx-2 text-blue-600" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                      >
+                        here
+                      </Link>
+                      in channel #mgo-website-chat
+                    </div>
+          </div>
         }
       </div>
         {updates &&
           <div className="rounded bg-teal-600 p-6 text-white">
             <Grid container className="flex text-left">
               <Grid item xs={12}>
-                The biggest update yet: <b>Mobile</b> version is now out!
+                Website is now updated to have the new <b>Wildlife</b> albums!
               </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <ul>
                   <li className="ml-8">- Lots of UI changes to cater towards mobile users!</li>
                   <li className="ml-8">- Fixed bug where user could not register due to rank field</li>
                   <li className="ml-8">- Other small UI and bug changes</li>
                 </ul>
-              </Grid>
+              </Grid> */}
               <Grid item xs={12}>
-                Website will be updated on the newest Album release!
+                New Features coming up soon!
               </Grid>
             </Grid>
           </div>
@@ -107,14 +121,14 @@ export default function Home({ user }: { user: {email: string} }) {
             <div className="text-2xl py-4">
               or send a message through Discord 
               <Link 
-                href="https://discord.gg/GsNxnVqJDc" 
+                href="https://discord.gg/EaTfg29rPF" 
                 className="mx-2 text-blue-600" 
                 target="_blank" 
                 rel="noopener noreferrer"
               >
                 here
               </Link>
-              in channel #website-chat
+              in channel #mgo-website-chat
             </div>
           </div>
         }
