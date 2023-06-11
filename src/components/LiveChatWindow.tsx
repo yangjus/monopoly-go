@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { IconButton, Box, Typography, Grid, Avatar, TextField, Tooltip, Modal } from '@mui/material';
+import { IconButton, Box, Typography, Grid, Avatar, TextField, Tooltip, Modal, Button } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
 import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
@@ -28,6 +28,31 @@ const mobileStyle = {
     left: '50%', 
     width: '90%',
     height: '95%',
+    transform: 'translate(-50%, -50%)', 
+    bgcolor: 'background.paper', 
+    boxShadow: 24, 
+    p: 2,
+};
+
+const deleteStyle = {
+    position: 'fixed',
+    bottom: '200px',
+    left: '180px',
+    width: '200px',
+    height: '200px',
+    backgroundColor: 'white',
+    padding: '16px',
+    borderRadius: '8px',
+    borderWidth: '4px',
+    borderColor: 'teal'
+};
+
+const mobileDeleteStyle = {
+    position: 'absolute', 
+    top: '50%', 
+    left: '50%', 
+    width: '50%',
+    height: '20%',
     transform: 'translate(-50%, -50%)', 
     bgcolor: 'background.paper', 
     boxShadow: 24, 
@@ -157,8 +182,45 @@ const LiveChatWindow = ({user, conversations, isMobile}: {user: any, conversatio
         setToggleDelete(false);
     }
 
+    const deleteConversation = async (deletedChat: Chat) => {
+
+        const prevLoadedMessages: Chat[] = loadedMessages.filter(
+            (chat: Chat) => deletedChat.conversationId !== chat.conversationId
+        )
+        setLoadedMessages(prevLoadedMessages);
+        setCurrentChat(undefined);
+        setToggleDelete(false);
+
+        try {
+            await axios.post("/api/delete-chat", {id: deletedChat.conversationId, email: user.email});
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (
     <div>
+    <Modal open={toggleDelete} onClose={closePopup}>
+        <Box sx={isMobile ? mobileDeleteStyle : deleteStyle} className="flex items-center justify-center">
+            <Grid container>
+                <Grid item xs={12}>
+                    <Typography>
+                        Confirm Deletion of Conversation? All Messages Will Be Deleted.
+                    </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                    <Button onClick={() => deleteConversation(currentChat!)} className='text-white bg-blue-400 hover:bg-blue-600'>
+                        Yes
+                    </Button>
+                </Grid>
+                <Grid item xs={6}>
+                    <Button onClick={closePopup} className='text-white bg-red-400 hover:bg-red-600'>
+                        No
+                    </Button>
+                </Grid>
+            </Grid>
+        </Box>
+    </Modal>
     {!open && 
     <Tooltip title="Direct Messages" placement='top'>
         <IconButton 
@@ -176,7 +238,7 @@ const LiveChatWindow = ({user, conversations, isMobile}: {user: any, conversatio
                 <CloseIcon fontSize="large"/>
             </IconButton>
             <Grid container>
-                <Grid item xs={3} sm={2} className="flex justify-center overflow-y-auto max-h-[65vh] sm:max-h-[450px] border-r border-gray-500">
+                <Grid item xs={3} sm={2} className="flex justify-center overflow-y-auto max-h-[65vh] sm:max-h-[350px] border-r border-gray-500">
                     <Grid container>
                         <Grid item xs={12}>
                             <Typography variant="h6">
@@ -197,12 +259,13 @@ const LiveChatWindow = ({user, conversations, isMobile}: {user: any, conversatio
                         <Grid item xs={12} className="pl-4 flex justify items-center">
                             <Typography variant="h6">
                             Chat with {currentChat?.recipient_username ? currentChat.recipient_username : "someone!"}
-                            </Typography>
+                            {currentChat && 
                             <IconButton onClick={openPopup}>
                                 <DeleteIcon />
-                            </IconButton>
+                            </IconButton>}
+                            </Typography>
                         </Grid>
-                        <Grid container className="overflow-y-auto min-h-[60vh] sm:min-h-[330px] max-h-[60vh] sm:max-h-[330px] p-1 mt-2 sm:mt-0 sm:p-6">
+                        <Grid container className="overflow-y-auto min-h-[60vh] sm:min-h-[250px] max-h-[60vh] sm:max-h-[250px] p-1 mt-2 sm:mt-0 sm:p-6">
                             <ChatContent user={user} currentChat={currentChat?.messages ?? []}/>
                             <div ref={messagesEndRef} />
                         </Grid>

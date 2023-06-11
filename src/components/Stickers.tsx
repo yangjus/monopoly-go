@@ -9,7 +9,7 @@ import Badge from "./Badge";
 import InventoryModal from "./InventoryModal";
 import InfoIcon from '@mui/icons-material/Info';
 import CloseIcon from '@mui/icons-material/Close';
-import untradeableStickers from "../../images/untradeable_stickers.jpg";
+import untradeableStickers from "../../images/untradeable_stickers.png";
 import Image from "next/image";
 
 const style = {

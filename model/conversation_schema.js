@@ -4,6 +4,10 @@ const conversationSchema = new mongoose.Schema({
     participants_email: {
         type: [String],
         required: true
+    },
+    hide: {
+        type: [String],
+        required: true
     }
 })
 

@@ -5,68 +5,69 @@ import { useState, useEffect } from "react";
 
 export default function Verify({ user }: { user: any }) {
 
-    const [code, setCode] = useState<string>("");
+    const [code, setCode] = useState<number>(0);
     const [email, setEmail] = useState<string>("");
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [success, setSuccess] = useState<boolean | null>(null);
 
-    useEffect(() => {
-        const handleKeyDown = (event: any) => {
-          const inputs = document.querySelectorAll("#otp > *[id]");
-          const currentIndex = Array.from(inputs).findIndex((input) => input === event.target);
+    // useEffect(() => {
+    //     const handleKeyDown = (event: any) => {
+    //       const inputs = document.querySelectorAll("#otp > *[id]");
+    //       const currentIndex = Array.from(inputs).findIndex((input) => input === event.target);
     
-          if (event.key === "Backspace") {
-            const currentInput = inputs[currentIndex] as HTMLInputElement;
-            currentInput.value = "";
-            if (currentIndex !== 0) {
-              const previousInput = inputs[currentIndex - 1] as HTMLInputElement;
-              previousInput.focus();
-            }
-          } else {
-            if (currentIndex === inputs.length - 1 && (inputs[currentIndex] as HTMLInputElement).value !== "") {
-                return true;
-            } else if ((event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 64 && event.keyCode < 91)) {
-                const currentInput = inputs[currentIndex] as HTMLInputElement;
-                currentInput.value = event.key;
-                if (currentIndex !== inputs.length - 1) {
-                  const nextInput = inputs[currentIndex + 1] as HTMLInputElement;
-                  nextInput.focus();
-                }
-                event.preventDefault();
-            }
-          }
-            let otpCode = "";
-            const codeArray = Array.from(inputs);
-            codeArray.map((input: any) => {
-                otpCode += input.value;
-            })
-            setCode(otpCode);
+    //       if (event.key === "Backspace") {
+    //         const currentInput = inputs[currentIndex] as HTMLInputElement;
+    //         currentInput.value = "";
+    //         if (currentIndex !== 0) {
+    //           const previousInput = inputs[currentIndex - 1] as HTMLInputElement;
+    //           previousInput.focus();
+    //         }
+    //       } else {
+    //         if (currentIndex === inputs.length - 1 && (inputs[currentIndex] as HTMLInputElement).value !== "") {
+    //             return true;
+    //         } else if ((event.keyCode > 47 && event.keyCode < 58) || (event.keyCode > 64 && event.keyCode < 91)) {
+    //             const currentInput = inputs[currentIndex] as HTMLInputElement;
+    //             currentInput.value = event.key;
+    //             if (currentIndex !== inputs.length - 1) {
+    //               const nextInput = inputs[currentIndex + 1] as HTMLInputElement;
+    //               nextInput.focus();
+    //             }
+    //             event.preventDefault();
+    //         }
+    //       }
+    //         let otpCode = "";
+    //         const codeArray = Array.from(inputs);
+    //         codeArray.map((input: any) => {
+    //             otpCode += input.value;
+    //         })
+    //         setCode(otpCode);
 
-        };
+    //     };
     
-        const inputs = document.querySelectorAll("#otp > *[id]");
-        inputs.forEach((input) => {
-          input.addEventListener("keydown", handleKeyDown);
-        });
+    //     const inputs = document.querySelectorAll("#otp > *[id]");
+    //     inputs.forEach((input) => {
+    //       input.addEventListener("keydown", handleKeyDown);
+    //     });
     
-        return () => {
-          inputs.forEach((input) => {
-            input.removeEventListener("keydown", handleKeyDown);
-          });
-        };
-    }, []);
+    //     return () => {
+    //       inputs.forEach((input) => {
+    //         input.removeEventListener("keydown", handleKeyDown);
+    //       });
+    //     };
+    // }, []);
 
     const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         setSubmitting(true);
+        console.log(code)
+        console.log(email)
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const codeRegex = /^\d+$/;
         if (email && emailRegex.test(email) &&
-            code && codeRegex.test(code) && 
-            Number(code) >= 10000000 && Number(code) <= 99999999) {
+            code && code >= 10000000 && code <= 99999999) {
             console.log("regex success")
         }
         else {
+            console.log("regex incorrect")
             setSuccess(false);
             setSubmitting(false);
             return;
@@ -93,6 +94,13 @@ export default function Verify({ user }: { user: any }) {
         setEmail(e.target.value);
     }
 
+    const onChangeCode = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const codeRegex = /^\d+$/;
+        if (codeRegex.test(e.target.value)) {
+            setCode(Number(e.target.value));
+        }
+    }
+
     const otpArr = Array.from(Array(8).keys());
 
     return (
@@ -101,11 +109,18 @@ export default function Verify({ user }: { user: any }) {
             <div className="text-lg text-center sm:text-left sm:text-2xl pb-4">
                 Enter 8-Digit Email Verification Code:
             </div>
-            <div id="otp" className="flex flex-row justify-center text-center">
+            {/* <div id="otp" className="flex flex-row justify-center text-center">
                 {otpArr.map((value: number, key: number) => 
                     <input key={key} className="m-1 sm:m-2 border h-8 sm:h-12 bg-teal-200 w-8 sm:w-12 text-center form-control rounded" type="text" id={value.toString()} maxLength={1} />
                 )}
-            </div>
+            </div> */}
+            <input
+                type="number"
+                name="Code"
+                value={code}
+                onChange={onChangeCode}
+                className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-teal-500"
+            />
             <div className="text-lg text-center sm:text-left sm:text-2xl py-4">
                 Enter Email Linked to Code:
             </div>

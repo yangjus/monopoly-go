@@ -399,7 +399,10 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }: {req:
     //find all conversation objects that contain user.email inside participants_email
     //get all those objects
     
-    const allConversations = await Conversation.find({ participants_email: user.email }).exec();
+    const allConversations = await Conversation.find({
+        participants_email: user.email,
+        hide: { $nin: [user.email] }
+    }).exec();
   
     if (user) {
       return {
