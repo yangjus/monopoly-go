@@ -146,9 +146,7 @@ const GlobalChatWindow = ({user, isMobile, windowHeight}: {user: any, isMobile: 
                                 </Tooltip>
                             </Typography>
                         </Grid>
-                        <Grid container className={
-                           `overflow-y-auto min-h-[55vh] max-h-[55vh] sm:min-h-[300px] sm:max-h-[300px] p-4 m-2`
-                        }>
+                        <Grid container className="overflow-y-auto min-h-[55vh] max-h-[55vh] sm:min-h-[300px] sm:max-h-[300px] p-4 m-2">
                             <ChatContent user={user} currentChat={currentChat}/>
                             <div ref={messagesEndRef} />
                         </Grid>
