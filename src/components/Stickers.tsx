@@ -192,11 +192,11 @@ export default function Stickers({user, isMobile}: {user: any, isMobile: boolean
         {isMobile && <div className="flex items-center justify-center">
                 <InventoryModal user={user} isMobile={isMobile}/>
         </div>}
-        <div className="sm:flex sm:justify-between sm:mx-2 lg:mx-6">
-            <Grid container spacing={1}>
-                <Grid item xs={12} sm={11} md={10} className="flex items-center justify-center ml-2 border border-white rounded-lg border-2 p-2 mt-6 sm:mt-0">
-                    <div className="flex items-center">
-                    <div>
+        <div className="sm:flex sm:justify-around">
+            <Grid container spacing={1} className="mr-2">
+                <Grid item xs={12} sm={11} md={10} className="flex items-center justify-around border border-white rounded-lg border-2 ml-2 p-2 mt-6 sm:mt-0">
+                    <div className="flex items-center justify-evenly">
+                    <div className="mr-4">
                         <Typography className='text-white'>
                             Copy Inventory to Clipboard:
                         </Typography>
@@ -213,8 +213,8 @@ export default function Stickers({user, isMobile}: {user: any, isMobile: boolean
                     <Grid container>
                         <Grid item xs={12}>
                         <Button
-                            sx={{borderColor: 'white'}}
-                            className='text-white ml-4 border border-opacity-100 border-white bg-teal-500 p-2 mb-2'
+                            sx={{borderColor: 'white', color: 'white', marginBottom: '16px', }}
+                            className='border border-opacity-100 border-white bg-teal-500'
                             variant='outlined'
                             startIcon={<FileCopyIcon />}
                             onClick={handleInventoryFirstCopy}
@@ -224,8 +224,8 @@ export default function Stickers({user, isMobile}: {user: any, isMobile: boolean
                         </Grid>
                         <Grid item xs={12}>
                         <Button
-                            sx={{borderColor: 'white'}}
-                            className='text-white ml-4 border border-opacity-100 border-white bg-teal-500 p-2'
+                            sx={{borderColor: 'white', color: 'white'}}
+                            className='border border-opacity-100 border-white bg-teal-500'
                             variant='outlined'
                             startIcon={<FileCopyIcon />}
                             onClick={handleInventorySecondCopy}

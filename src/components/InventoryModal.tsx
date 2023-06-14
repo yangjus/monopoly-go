@@ -151,7 +151,7 @@ export default function InventoryModal({user, isMobile}: {user: any, isMobile: b
     <button 
       type="submit"
       onClick={handleOpen}
-      className="border border-white bg-teal-500 hover:bg-teal-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+      className="border border-white bg-teal-500 hover:bg-teal-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mb-4"
     >
       View/Edit Inventory
     </button>
