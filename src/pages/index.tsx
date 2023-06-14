@@ -75,13 +75,21 @@ export default function Home({ user }: { user: {email: string} }) {
               <Grid item xs={12}>
                 Website is now updated to have the new <b>Wildlife</b> albums!
               </Grid>
-              {/* <Grid item xs={12}>
+              <Grid item xs={12}>
                 <ul>
-                  <li className="ml-8">- Lots of UI changes to cater towards mobile users!</li>
-                  <li className="ml-8">- Fixed bug where user could not register due to rank field</li>
+                  <li className="ml-8">- <b>Remove Direct Message</b> feature added</li>
+                  <ul>
+                    <li className="ml-16">- Trash button next to name in Direct Messages under trading page</li>
+                    <li className="ml-16">- Conversation history will not be deleted! Can remessage</li>
+                  </ul>
+                  <li className="ml-8">- <b>Copy Inventory to Clipboard</b> feature added</li>
+                  <ul>
+                    <li className="ml-16">- Located in the profile page</li>
+                    <li className="ml-16">- Please give credit to mgo-trading.com for the template when posting</li>
+                  </ul>
                   <li className="ml-8">- Other small UI and bug changes</li>
                 </ul>
-              </Grid> */}
+              </Grid>
               <Grid item xs={12}>
                 New Features coming up soon!
               </Grid>
