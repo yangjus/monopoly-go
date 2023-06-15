@@ -121,7 +121,7 @@ export default function Stickers({user, isMobile}: {user: any, isMobile: boolean
             const needFirstTemp = missing.filter((sticker: Sticker) => sticker.album === (Album as any)[albumEnum] && 
                 sticker.tradeable && sticker.star < 4);
             const extraSecondTemp = extra.filter((sticker: Sticker) => sticker.album === (Album as any)[albumEnum] && 
-                sticker.tradeable && sticker.star < 3);
+                sticker.tradeable && sticker.star > 3);
             const needSecondTemp = missing.filter((sticker: Sticker) => sticker.album === (Album as any)[albumEnum] && 
                 sticker.tradeable && sticker.star > 3);
 
