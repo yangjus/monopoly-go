@@ -17,7 +17,7 @@ export interface ChangeLog {
 */}
 export const changelog: ChangeLog[] = [
     {
-        date: "June 16, 2023",
+        date: "May 24, 2023",
         content: [
             {
                 main: "Direct Messages feature added",
