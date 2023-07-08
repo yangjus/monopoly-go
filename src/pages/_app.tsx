@@ -5,11 +5,13 @@ import Head from 'next/head';
 import Footer from '@component/components/Footer'
 import Navbar from '@component/components/Navbar';
 import NextNProgress from 'nextjs-progressbar';
-import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+  const isHomePage = router.pathname === '/';
 
   return (
     <main className={inter.className}>
@@ -18,25 +20,12 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <NextNProgress />
       <Navbar />
-        <div className="px-4 py-2">
-          <Component {...pageProps} />
-        </div>
+      <div className={`${isHomePage ? 'py-0 px-0' : 'py-2 px-4'}`}>
+        <Component {...pageProps} />
+      </div>
       <div className="bottom-0">
         <Footer />
       </div>
     </main>
   )
 }
-
-// {isMobile ? (
-//   <div className="mobile-screen text-2xl m-6 h-screen">
-//     This page is not available on mobile and other small screen devices.
-//     Stay tuned for a mobile-responsive update!
-//   </div>
-// ) : (
-//   <>
-//     <div className="px-4 py-2">
-//       <Component {...pageProps} />
-//     </div>
-//   </>
-// )}

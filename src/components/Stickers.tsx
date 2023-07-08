@@ -124,7 +124,6 @@ export default function Stickers({user, isMobile}: {user: any, isMobile: boolean
                 sticker.tradeable && sticker.star > 3);
             const needSecondTemp = missing.filter((sticker: Sticker) => sticker.album === (Album as any)[albumEnum] && 
                 sticker.tradeable && sticker.star > 3);
-
         
             let temp: string = `-Set ${counter} (${albumString})-\n`;
             temp += `HAVE: [${extraFirstTemp.map((sticker: Sticker) => `${sticker.name}${"⭐".repeat(sticker.star)}`).join(", ")}]\n`;
