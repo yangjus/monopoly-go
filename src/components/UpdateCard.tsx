@@ -4,7 +4,7 @@ import { ChangeLog } from '../../constants/changelog';
 const UpdateCard = ({update}: {update: ChangeLog}) => {
 
     return (
-        <Card className="px-8 mx-8 mt-4 bg-gray-100 h-full">
+        <Card className="px-8 mx-8 mt-4 bg-white h-full">
             <CardContent>
                 <Typography className="w-full my-2 text-2xl font-bold leading-tight text-left">
                     {update.date}

@@ -55,7 +55,7 @@ export default function Navbar() {
                     onClose={handleClose}
                     keepMounted
                 >
-                    <MenuItem>
+                    <MenuItem onClick={handleClose}>
                         <Link href="/">
                             Home
                         </Link>
@@ -63,12 +63,12 @@ export default function Navbar() {
                     <Divider sx={{ my: 0.5 }} />
                     {!getCookie('session') && 
                         <>
-                        <MenuItem>
+                        <MenuItem onClick={handleClose}>
                             <Link href="/register">
                                 Register
                             </Link>
                         </MenuItem>
-                        <MenuItem>
+                        <MenuItem onClick={handleClose}>
                             <Link href="/login">
                                 Login
                             </Link>
@@ -77,18 +77,18 @@ export default function Navbar() {
                     }
                     {getCookie('session') &&
                     <>
-                        <MenuItem>
+                        <MenuItem onClick={handleClose}>
                             <Link href="/trading">
                                 Trading
                             </Link>
                         </MenuItem>
-                        <MenuItem>
+                        <MenuItem onClick={handleClose}>
                             <Link href="/profile">
                                 Profile
                             </Link>
                         </MenuItem>
                         <Divider sx={{ my: 0.5 }} />
-                        <MenuItem>
+                        <MenuItem onClick={handleClose}>
                             <form method="POST" action="/api/logout">
                                 <button type="submit" className="block sm:inline-block hover:text-white">
                                     Logout

@@ -34,6 +34,7 @@ export default function Home({ user }: { user: {email: string} }) {
   }, []);
 
   const [message, setMessage] = useState<string>("");
+  const [contactEmail, setContactEmail] = useState<string>(user.email ? user.email : "");
   const [result, setResult] = useState<string>("");
 
   const handleClick = () => {
@@ -46,8 +47,13 @@ export default function Home({ user }: { user: {email: string} }) {
       setResult("Please send a valid message.");
       return;
     }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!contactEmail || contactEmail === "" || !emailRegex.test(contactEmail)) {
+      setResult("Please enter a valid email address.");
+      return;
+    }
     const sendData: {from_email: string, message: string} = {
-      from_email: user.email,
+      from_email: contactEmail,
       message: message
     }
 
@@ -90,7 +96,7 @@ export default function Home({ user }: { user: {email: string} }) {
         <Image alt="top-wave" src={TopWave} />
       </section>
       {/* Features */}
-      <section className="bg-white pt-8">
+      <section className="bg-white mt-4">
         <div className="container max-w-5xl mx-auto m-8">
           <h2 className="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
             Features
@@ -175,7 +181,7 @@ export default function Home({ user }: { user: {email: string} }) {
         </div>
       </section>
       {/* Recent Changelog */}
-      <section className="bg-white pt-4">
+      <section className="bg-gray-100 pt-4">
         <div className="container mx-auto flex flex-wrap pt-4 pb-12">
           <h2 className="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
             Recent Changelog
@@ -200,9 +206,8 @@ export default function Home({ user }: { user: {email: string} }) {
           </Grid>
         </div>
       </section>
-      {/* Feedback */}
-      <section className="text-center bg-gradient-to-b from-teal-100 to-teal-500">
-        <Image alt="bot-wave" src={BottomWave} />
+      {/* Community */}
+      <section className="text-center bg-white mt-8">
         <h2 className="w-full my-2 text-5xl font-bold leading-tight text-center">
           Community
         </h2>
@@ -217,7 +222,7 @@ export default function Home({ user }: { user: {email: string} }) {
             Join our Discord and find channel <u>#mgo-website-chat</u>
           </div>
         </h3>
-        <button className="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+        <button className="mx-auto lg:mx-0 hover:underline bg-teal-500 text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
           <Link 
             href="https://discord.gg/EaTfg29rPF" 
             className="mx-2" 
@@ -227,7 +232,10 @@ export default function Home({ user }: { user: {email: string} }) {
             Join Us Now
           </Link>
         </button>
-        { user.email && 
+      </section>
+      {/* Feedback */}
+      <section className="text-center bg-gradient-to-b from-teal-100 to-teal-500">
+        <Image alt="bot-wave" src={BottomWave} />
         <div className="py-6 px-12 sm:px-24">
           <h2 className="w-full my-2 text-5xl font-bold leading-tight text-center">
             Contact Us
@@ -245,20 +253,47 @@ export default function Home({ user }: { user: {email: string} }) {
             onChange={(event) => setMessage(event.target.value)}
             className="bg-white rounded-lg"
           />
-          <form method="POST">
-            <button 
-              onClick={submitMessage}
-              type="button" 
-              className="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
-            >
-              Submit Message
-            </button>
-          </form>
+          <Grid 
+            container   
+            direction="row"
+            alignItems="center"
+            className="my-2"
+            rowSpacing={3}
+          >
+              <Grid item xs={12} md={8}>
+                  <Grid container rowSpacing={1} alignItems="center">
+                    <Grid item xs={12} sm={5} md={4} lg={3}>
+                      <div className="text-xl text-gray-100 font-semibold flex items-center leading-tight mr-4 whitespace-nowrap">
+                        Email Address<span className="text-red-500">*</span>:
+                      </div>
+                    </Grid>
+                    <Grid item xs={12} sm={7} md={8} lg={9}>
+                      <TextField
+                        label="Email"
+                        value={contactEmail}
+                        onChange={(event) => setContactEmail(event.target.value)}
+                        fullWidth
+                        className="bg-white rounded-lg"
+                      />
+                    </Grid>
+                  </Grid>
+              </Grid>
+              <Grid item xs={12} md={4} className="flex justify-center md:justify-end">
+                <form method="POST">
+                  <button 
+                    onClick={submitMessage}
+                    type="button" 
+                    className="hover:underline bg-white text-gray-800 font-bold rounded-full py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
+                  >
+                    Submit Message
+                  </button>
+                </form>
+              </Grid>
+          </Grid>
           {result !== "" &&
-            <p className="md:flex md:items-center text-white mb-4 justify-center pt-6">{result}</p>
+            <p className="md:flex md:items-center text-white justify-center pt-6">{result}</p>
           }
         </div>
-        }
       </section>
     </div>
   )
