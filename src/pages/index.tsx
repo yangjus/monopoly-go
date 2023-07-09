@@ -7,6 +7,7 @@ import emailjs from "@emailjs/browser";
 import { useState, useEffect } from "react";
 import Link from 'next/link';
 import Image from 'next/image';
+import User from "../../model/user_schema";
 import DevicesIcon from '../../images/devices-filled.png';
 import TopWave from '../styles/top-wave.svg';
 import BottomWave from '../styles/bottom-wave.svg';
@@ -16,7 +17,7 @@ import Feature3 from "../styles/feature-3.svg";
 import UpdateCard from "@component/components/UpdateCard";
 import { changelog } from "../../constants/changelog";
 
-export default function Home({ user }: { user: {email: string} }) {
+export default function Home({ user, count }: { user: {email: string}, count: number }) {
   const router = useRouter();
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
@@ -33,6 +34,7 @@ export default function Home({ user }: { user: {email: string} }) {
     };
   }, []);
 
+  const [userCount, setUserCount] = useState<number>(count - 1);
   const [message, setMessage] = useState<string>("");
   const [contactEmail, setContactEmail] = useState<string>(user.email ? user.email : "");
   const [result, setResult] = useState<string>("");
@@ -207,31 +209,43 @@ export default function Home({ user }: { user: {email: string} }) {
         </div>
       </section>
       {/* Community */}
-      <section className="text-center bg-white mt-8">
+      <section className="text-center bg-white mt-8 mb-4">
         <h2 className="w-full my-2 text-5xl font-bold leading-tight text-center">
           Community
         </h2>
         <div className="w-full mb-4">
           <div className="h-1 mx-auto bg-white opacity-50 w-1/6 my-0 py-0 rounded-t"></div>
         </div>
-        <h3 className="my-4 text-3xl leading-tight mx-4">
-          <div>
-            Feedback, suggestions, or want to chat with other MonopolyGO players?
-          </div>
-          <div>
-            Join our Discord and find channel <u>#mgo-website-chat</u>
-          </div>
-        </h3>
-        <button className="mx-auto lg:mx-0 hover:underline bg-teal-500 text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
-          <Link 
-            href="https://discord.gg/EaTfg29rPF" 
-            className="mx-2" 
-            target="_blank" 
-            rel="noopener noreferrer"
-          >
-            Join Us Now
-          </Link>
-        </button>
+        <Grid container className="px-0 md:px-10">
+            <Grid item xs={12} md={5}>
+              <div className="text-2xl font-bold">
+                Number of Registered MGOTrading Users
+              </div>
+              <div className="flex justify-center items-center align-center border-4 border-teal-300 rounded-lg text-6xl font-bold pl-8 p-4 m-8 text-teal-300">
+                {userCount}+
+              </div>
+            </Grid>
+            <Grid item xs={12} md={7}>
+              <h3 className="text-2xl leading-tight mx-4">
+                <div>
+                  Feedback, suggestions, or want to chat with other MonopolyGO players?
+                </div>
+                <div>
+                  Join our Discord and find channel <u>#mgo-website-chat</u>
+                </div>
+              </h3>
+              <button className="mx-auto lg:mx-0 hover:underline bg-teal-500 text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+                <Link 
+                  href="https://discord.gg/EaTfg29rPF" 
+                  className="mx-2" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                >
+                  Join Us Now
+                </Link>
+              </button>
+            </Grid>
+        </Grid>
       </section>
       {/* Feedback */}
       <section className="text-center bg-gradient-to-b from-teal-100 to-teal-500">
@@ -301,10 +315,13 @@ export default function Home({ user }: { user: {email: string} }) {
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }: {req: any, res: any }) => {
 
+  const userCount: number = await User.countDocuments();
+
   if (!hasCookie('session', { req, res })) {
     return {
       props: {
-        user: {}
+        user: {},
+        count: userCount
       }
     }
   }
@@ -315,7 +332,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }: {req:
 
   return {
     props: {
-      user: decodedToken
+      user: decodedToken,
+      count: userCount
     }
   }
 }
