@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import Link from 'next/link';
 import Image from 'next/image';
 import User from "../../model/user_schema";
+import connect from "../../lib/mongodb";
 import DevicesIcon from '../../images/devices-filled.png';
 import TopWave from '../styles/top-wave.svg';
 import BottomWave from '../styles/bottom-wave.svg';
@@ -315,6 +316,7 @@ export default function Home({ user, count }: { user: {email: string}, count: nu
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }: {req: any, res: any }) => {
 
+  connect();
   const userCount: number = await User.countDocuments();
 
   if (!hasCookie('session', { req, res })) {

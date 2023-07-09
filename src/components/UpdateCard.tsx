@@ -14,8 +14,8 @@ const UpdateCard = ({update}: {update: ChangeLog}) => {
                         <div key={i}>
                             <Typography className="font-bold">{desc.main}</Typography>
                             <ul className="list-disc ml-4">
-                                {desc.sub.map((content) => (
-                                    <li>{content}</li>
+                                {desc.sub.map((content, i) => (
+                                    <li key={i}>{content}</li>
                                 ))}
                             </ul>
                         </div>

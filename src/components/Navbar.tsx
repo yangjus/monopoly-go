@@ -62,7 +62,7 @@ export default function Navbar() {
                     </MenuItem>
                     <Divider sx={{ my: 0.5 }} />
                     {!getCookie('session') && 
-                        <>
+                        <div>
                         <MenuItem onClick={handleClose}>
                             <Link href="/register">
                                 Register
@@ -73,10 +73,10 @@ export default function Navbar() {
                                 Login
                             </Link>
                         </MenuItem>
-                        </>
+                        </div>
                     }
                     {getCookie('session') &&
-                    <>
+                        <div>
                         <MenuItem onClick={handleClose}>
                             <Link href="/trading">
                                 Trading
@@ -95,7 +95,7 @@ export default function Navbar() {
                                 </button>
                             </form>
                         </MenuItem>
-                    </>
+                        </div>
                     }
                 </Menu>
             </Toolbar>
