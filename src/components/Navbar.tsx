@@ -35,20 +35,21 @@ export default function Navbar() {
     return (
     <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6">
         <div className="flex items-center flex-shrink-0 text-white">
-            <span className="font-semibold text-xl tracking-tight">MonopolyGO Trading</span>
+            <span className="font-semibold text-xl tracking-tight mx-4">MonopolyGO Trading</span>
         </div>
         { isMobile &&
-            <Toolbar className="p-0">
-                <IconButton
-                    edge="start"
-                    color="inherit"
-                    onClick={handleClick}
-                    sx={{ color: "white" }}
-                    size="large"
-                    className="m-0 p-0"
-                >
-                    <MenuIcon fontSize="inherit"/>
-                </IconButton>
+            <Toolbar className="m-0 p-0">
+                <div className="flex justify-end items-center align-center mr-0">
+                    <IconButton
+                        edge="start"
+                        color="inherit"
+                        onClick={handleClick}
+                        sx={{ color: "white" }}
+                        size="large"
+                    >
+                        <MenuIcon fontSize="inherit" className="flex justify-end"/>
+                    </IconButton>
+                </div>
                 <Menu
                     anchorEl={anchorEl}
                     open={Boolean(anchorEl)}
