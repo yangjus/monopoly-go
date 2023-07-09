@@ -17,21 +17,39 @@ export interface ChangeLog {
 */}
 export const changelog: ChangeLog[] = [
     {
-        date: "May 24, 2023",
+        date: "July 9, 2023",
         content: [
             {
-                main: "Direct Messages feature added",
+                main: "Revamped homepage to give site visitors a greater UX experience",
                 sub: [
-                    "Avoid the hassle of navigating to another platform",
-                    "To DM a user, click on the message bubble next to their name in the trading page"
+                    "Hero, feature, changelog, and community sections added",
                 ]
             },
             {
-                main: "Global Chat feature added",
+                main: "Changed to hamburger menu navigation in navbar for mobile users",
+                sub: []
+            }
+        ]
+    },
+    {
+        date: "June 16, 2023",
+        content: [
+            {
+                main: "Remove Direct Message feature added",
                 sub: [
-                    "Converse with your fellow MGO tradings, with live auto updates",
-                    "Will display the past week of chat history"
+                    "Trash button next to name in Direct Messages under trading page",
+                    "Conversation history will not be deleted! Can remessage"
                 ]
+            },
+            {
+                main: "Copy Inventory to Clipboard feature added",
+                sub: [
+                    "User can copy 1-3 star or 4-5 star stickers of what they need and what they have"
+                ]
+            },
+            {
+                main: "Other small UI and bug changes",
+                sub: []
             }
         ]
     },
@@ -55,24 +73,21 @@ export const changelog: ChangeLog[] = [
         ]
     },
     {
-        date: "June 16, 2023",
+        date: "May 24, 2023",
         content: [
             {
-                main: "Remove Direct Message feature added",
+                main: "Direct Messages feature added",
                 sub: [
-                    "Trash button next to name in Direct Messages under trading page",
-                    "Conversation history will not be deleted! Can remessage"
+                    "Avoid the hassle of navigating to another platform",
+                    "To DM a user, click on the message bubble next to their name in the trading page"
                 ]
             },
             {
-                main: "Copy Inventory to Clipboard feature added",
+                main: "Global Chat feature added",
                 sub: [
-                    "User can copy 1-3 star or 4-5 star stickers of what they need and what they have"
+                    "Converse with your fellow MGO tradings, with live auto updates",
+                    "Will display the past week of chat history"
                 ]
-            },
-            {
-                main: "Other small UI and bug changes",
-                sub: []
             }
         ]
     },

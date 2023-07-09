@@ -186,9 +186,17 @@ export default function Home({ user }: { user: {email: string} }) {
             <div className="w-full mb-4">
               <div className="h-1 mx-auto bg-gradient-to-r from-teal-500 to-teal-100 w-64 my-0 py-0 rounded-t"></div>
             </div>
-            <Grid container>
+            <Grid container
+              style={{
+                maxHeight: "100vh",
+                overflowY: "auto",
+                overflowX: "hidden",
+                height: "400px",
+                overflow: "auto",
+              }}
+            >
               {changelog.map((item, i) => (
-                <Grid item key={i} xs={12} md={4} className="mb-8 lg:mb-0">
+                <Grid item key={i} xs={12} md={4} className="mb-8 lg:mb-4">
                     <UpdateCard update={item} />
                 </Grid>
               ))}
@@ -196,7 +204,7 @@ export default function Home({ user }: { user: {email: string} }) {
           </div>
         </section>
         {/* Feedback */}
-        <section className="container text-center bg-gradient-to-b from-teal-100 to-teal-500">
+        <section className="text-center bg-gradient-to-b from-teal-100 to-teal-500">
           <Image alt="bot-wave" src={BottomWave} />
           <h2 className="w-full my-2 text-5xl font-bold leading-tight text-center">
             Community
