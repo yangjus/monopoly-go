@@ -200,6 +200,7 @@ export default function Home({ user, count }: { user: {email: string}, count: nu
               height: "400px",
               overflow: "auto",
             }}
+            rowSpacing={4}
           >
             {changelog.map((item, i) => (
               <Grid item key={i} xs={12} md={4} className="mb-8 lg:mb-4">
@@ -266,7 +267,7 @@ export default function Home({ user, count }: { user: {email: string}, count: nu
             placeholder="feedback..."
             value={message}
             onChange={(event) => setMessage(event.target.value)}
-            className="bg-white rounded-lg"
+            className="bg-white rounded-lg mb-4"
           />
           <Grid 
             container   
