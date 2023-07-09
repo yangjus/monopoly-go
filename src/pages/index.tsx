@@ -267,13 +267,13 @@ export default function Home({ user, count }: { user: {email: string}, count: nu
             placeholder="feedback..."
             value={message}
             onChange={(event) => setMessage(event.target.value)}
-            className="bg-white rounded-lg mb-4"
+            className="bg-white rounded-lg my-4"
           />
+          <div className="my-2">
           <Grid 
             container   
             direction="row"
             alignItems="center"
-            className="my-2"
             rowSpacing={3}
           >
               <Grid item xs={12} md={8}>
@@ -306,6 +306,7 @@ export default function Home({ user, count }: { user: {email: string}, count: nu
                 </form>
               </Grid>
           </Grid>
+          </div>
           {result !== "" &&
             <p className="md:flex md:items-center text-white justify-center pt-6">{result}</p>
           }
