@@ -7,7 +7,7 @@ import emailjs from "@emailjs/browser";
 import { useState, useEffect } from "react";
 import Link from 'next/link';
 import Image from 'next/image';
-import DevicesIcon from '../styles/devices.svg';
+import DevicesIcon from '../../images/devices-filled.png';
 import TopWave from '../styles/top-wave.svg';
 import BottomWave from '../styles/bottom-wave.svg';
 import Feature1 from "../styles/feature-1.svg";
@@ -104,11 +104,11 @@ export default function Home({ user }: { user: {email: string} }) {
             <Grid container rowSpacing={isMobile ? 4 : 8} columnSpacing={3} className="p-6 justify justify-center items-center">
               {/* First Feature */}
               { isMobile && 
-                <Grid item xs={12} md={6} className="flex justify-center items-center">
+                <Grid item xs={12} sm={6} className="flex justify-center items-center">
                   <Image alt="first-feature" src={Feature1} style={{ width: '90%', height: 'auto' }}/>
                 </Grid>
               }
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} sm={6}>
                 <h3 className="text-3xl text-gray-800 font-bold leading-none mb-4">
                   Keep Track of Your Stickers
                 </h3>
@@ -126,15 +126,15 @@ export default function Home({ user }: { user: {email: string} }) {
                 }
               </Grid>
               { !isMobile && 
-                <Grid item xs={12} md={6} className="flex justify-center items-center">
+                <Grid item xs={12} sm={6} className="flex justify-center items-center">
                   <Image alt="first-feature" src={Feature1} style={{ width: '90%', height: 'auto' }}/>
                 </Grid>
               }
               {/* Second Feature */}
-              <Grid item xs={12} md={6} className="flex justify-center items-center">
+              <Grid item xs={12} sm={6} className="flex justify-center items-center">
                 <Image alt="second-feature" src={Feature2} style={{ width: '90%', height: 'auto' }}/>
               </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} sm={6}>
                 <h3 className="text-3xl text-gray-800 font-bold leading-none mb-4">
                   MGOTrading Sticker Marketplace
                 </h3>
@@ -153,11 +153,11 @@ export default function Home({ user }: { user: {email: string} }) {
               </Grid>
               {/* Third Feature */}
               { isMobile && 
-                <Grid item xs={12} md={6} className="flex justify-center items-center">
+                <Grid item xs={12} sm={6} className="flex justify-center items-center">
                   <Image alt="third-feature" src={Feature3} style={{ width: '80%', height: 'auto' }}/>
                 </Grid>
               }
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} sm={6}>
                 <h3 className="text-3xl text-gray-800 font-bold leading-none mb-4">
                   Chat with Others
                 </h3>
@@ -170,7 +170,7 @@ export default function Home({ user }: { user: {email: string} }) {
                 </div>
               </Grid>
               { !isMobile && 
-                <Grid item xs={12} md={6} className="flex justify-center items-center">
+                <Grid item xs={12} sm={6} className="flex justify-center items-center">
                   <Image alt="third-feature" src={Feature3} style={{ width: '80%', height: 'auto' }}/>
                 </Grid>
               }

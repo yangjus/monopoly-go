@@ -14,7 +14,10 @@
                 <path d="M640.812,31.01 L51.288,31.01 C20.641,31.01 0,20.494 0,16.022 L0,2.428 C0,1.084 1.335,0 2.995,0 L689.104,0 C690.766,0 692.103,1.084 692.103,2.428 L692.103,16.557 C692.096,20.092 676.112,31.01 640.812,31.01 Z" id="Shape" stroke-width="2" fill="#FDFDFD"></path>
                 <path d="M0.5,14.5 L690.242676,14.5" id="Line" stroke-linecap="square"></path>
             </g>
-            <rect id="screen" fill="#FFFFFF" sketch:type="MSShapeGroup" x="95" y="39" width="501.073853" height="292.009"></rect>
+            <rect id="screen" fill="#FFFFFF" sketch:type="MSShapeGroup" x="95" y="39" width="501.073853" height="292.009">
+                
+            </rect>
+            
             <path d="M421,352 L421,355.087 C421,357.288 416.666719,357.952714 413.386719,357.952714 L278.815286,357.952714 C275.364286,357.952714 271,357.289 271,355.087 L271,352" id="touchpad" fill="#FFFFFF" sketch:type="MSShapeGroup"></path>
         </g>
         <g id="iphone" sketch:type="MSLayerGroup" transform="translate(576.000000, 177.000000)" stroke="#7E89A3">
