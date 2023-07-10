@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getCookie } from "cookies-next";
 import Link from "next/link";
-import { Toolbar, IconButton, Menu, MenuItem, Divider } from "@mui/material";
+import { Toolbar, IconButton, Menu, MenuItem, Divider, Box } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
 
 export default function Navbar() {
@@ -39,7 +39,14 @@ export default function Navbar() {
         </div>
         { isMobile &&
             <Toolbar className="m-0 p-0">
-                <div className="flex justify-end items-center align-center mr-0">
+                <Box 
+                    sx={{
+                        position: "absolute",
+                        display: "flex",
+                        alignItems: "center",
+                        right: "2px"
+                    }}
+                >
                     <IconButton
                         edge="start"
                         color="inherit"
@@ -49,56 +56,56 @@ export default function Navbar() {
                     >
                         <MenuIcon fontSize="inherit" className="flex justify-end"/>
                     </IconButton>
-                </div>
-                <Menu
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
-                    keepMounted
-                >
-                    <MenuItem onClick={handleClose}>
-                        <Link href="/">
-                            Home
-                        </Link>
-                    </MenuItem>
-                    <Divider sx={{ my: 0.5 }} />
-                    {!getCookie('session') && 
-                        <div>
+                    <Menu
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl)}
+                        onClose={handleClose}
+                        keepMounted
+                    >
                         <MenuItem onClick={handleClose}>
-                            <Link href="/register">
-                                Register
-                            </Link>
-                        </MenuItem>
-                        <MenuItem onClick={handleClose}>
-                            <Link href="/login">
-                                Login
-                            </Link>
-                        </MenuItem>
-                        </div>
-                    }
-                    {getCookie('session') &&
-                        <div>
-                        <MenuItem onClick={handleClose}>
-                            <Link href="/trading">
-                                Trading
-                            </Link>
-                        </MenuItem>
-                        <MenuItem onClick={handleClose}>
-                            <Link href="/profile">
-                                Profile
+                            <Link href="/">
+                                Home
                             </Link>
                         </MenuItem>
                         <Divider sx={{ my: 0.5 }} />
-                        <MenuItem onClick={handleClose}>
-                            <form method="POST" action="/api/logout">
-                                <button type="submit" className="block sm:inline-block hover:text-white">
-                                    Logout
-                                </button>
-                            </form>
-                        </MenuItem>
-                        </div>
-                    }
-                </Menu>
+                        {!getCookie('session') && 
+                            <div>
+                            <MenuItem onClick={handleClose}>
+                                <Link href="/register">
+                                    Register
+                                </Link>
+                            </MenuItem>
+                            <MenuItem onClick={handleClose}>
+                                <Link href="/login">
+                                    Login
+                                </Link>
+                            </MenuItem>
+                            </div>
+                        }
+                        {getCookie('session') &&
+                            <div>
+                            <MenuItem onClick={handleClose}>
+                                <Link href="/trading">
+                                    Trading
+                                </Link>
+                            </MenuItem>
+                            <MenuItem onClick={handleClose}>
+                                <Link href="/profile">
+                                    Profile
+                                </Link>
+                            </MenuItem>
+                            <Divider sx={{ my: 0.5 }} />
+                            <MenuItem onClick={handleClose}>
+                                <form method="POST" action="/api/logout">
+                                    <button type="submit" className="block sm:inline-block hover:text-white">
+                                        Logout
+                                    </button>
+                                </form>
+                            </MenuItem>
+                            </div>
+                        }
+                    </Menu>
+                </Box>
             </Toolbar>
         }
         { !isMobile &&
