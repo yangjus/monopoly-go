@@ -35,7 +35,7 @@ export default function Home({ user, count }: { user: {email: string}, count: nu
     };
   }, []);
 
-  const [userCount, setUserCount] = useState<number>(count - 1);
+  const [userCount, setUserCount] = useState<number>(Math.floor((count - 1) / 10) * 10);
   const [message, setMessage] = useState<string>("");
   const [contactEmail, setContactEmail] = useState<string>(user.email ? user.email : "");
   const [result, setResult] = useState<string>("");
@@ -122,8 +122,7 @@ export default function Home({ user, count }: { user: {email: string}, count: nu
                 Effortlessly log and track your MonopolyGO sticker inventory on your MGOTrading Profile and 
                 instantly view stickers you need and have extras of.
                 <br/><br/>
-                Easily filter your stickers by album and star type, and conveniently copy a trading 
-                list to your clipboard for seamless sharing on any platform!
+                Conveniently copy a trading list to your clipboard for seamless sharing on any platform!
               </div>
               { isMobile &&
                 <div className="w-full mt-4">
@@ -148,7 +147,7 @@ export default function Home({ user, count }: { user: {email: string}, count: nu
                 After logging your stickers, our marketplace system matches you with other registered MGOTrading 
                 users who have what you need, and want what you have.
                 <br/><br/>
-                Easily filter the desired stickers based on album and star type, and conveniently access 
+                Easily filter your desired stickers based on album and star type and access 
                 their social platform and MonopolyGO invite link to initiate trading!
               </div>
               { isMobile &&
