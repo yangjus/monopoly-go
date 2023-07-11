@@ -96,7 +96,7 @@ export default function Home({ user, count }: { user: {email: string}, count: nu
             <Image alt="devices" src={DevicesIcon} />
           </div>
         </div>
-        <Image alt="top-wave" src={TopWave} />
+        <Image alt="top-wave" className="w-full" src={TopWave} />
       </section>
       {/* Features */}
       <section className="bg-white mt-4">
@@ -250,7 +250,7 @@ export default function Home({ user, count }: { user: {email: string}, count: nu
       </section>
       {/* Feedback */}
       <section className="text-center bg-gradient-to-b from-teal-100 to-teal-500">
-        <Image alt="bot-wave" src={BottomWave} />
+        <Image alt="bot-wave" className="w-full" src={BottomWave} />
         <div className="py-6 px-12 sm:px-24">
           <h2 className="w-full my-2 text-5xl font-bold leading-tight text-center">
             Contact Us
