@@ -8,6 +8,7 @@ import Pusher from "pusher-js";
 import { Chat } from '@component/pages/api/get-messages';
 import ChatContent from './ChatContent';
 import DeleteIcon from '@mui/icons-material/Delete';
+import emailjs from "@emailjs/browser";
 
 const style = {
     position: 'fixed',
@@ -130,10 +131,20 @@ const LiveChatWindow = ({user, conversations, isMobile}: {user: any, conversatio
         const payload = {
             conversationId: currentChat?.conversationId,
             sender: user.username,
-            content: filter.clean(message),
+            content: filter.clean(message)
         }
         try {
-            await axios.post("/api/submit-chat-message", payload);
+            const response: any = await axios.post("/api/submit-chat-message", payload);
+            //send email through emailjs
+            if (response.data.recipient_notification) {
+                const sendData: {from_username: string, to_username: string, to_email: string} = {
+                    from_username: user.username,
+                    to_username: response.data.to_username,
+                    to_email: response.data.to_email
+                }
+                emailjs.send(process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!, 
+                    process.env.NEXT_PUBLIC_EMAILJS_NOTIFICATION_TEMPLATE_ID!, sendData, process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
+            }
         } catch (error) {
             console.error(error);
         }

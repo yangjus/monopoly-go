@@ -6,5 +6,6 @@ export interface UserType {
     invite: string,
     social: string,
     trusted: boolean,
-    inventory: number[]
+    inventory: number[],
+    email_notification: boolean
 }

@@ -5,6 +5,26 @@ export interface ChangeLog {
 
 export const changelog: ChangeLog[] = [
     {
+        date: "August 17, 2023",
+        content: [
+            {
+                main: "Added email notifications feature",
+                sub: [
+                    "Stay up to date with the latest messages between your trade partners!",
+                    "Sends an automated email to your account's email whenever a user messages you",
+                    "Enable notifications in the trading page",
+                ]
+            },
+            {
+                main: "Other small changes",
+                sub: [
+                    "Increased max page count for matched users in the trading page",
+                    "Can now view the last month of global chat"
+                ]
+            }
+        ]
+    },
+    {
         date: "July 9, 2023",
         content: [
             {

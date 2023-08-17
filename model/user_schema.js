@@ -37,6 +37,10 @@ const userSchema = new mongoose.Schema({
     last_logged: {
         type: Date,
         required: true
+    },
+    email_notification: {
+        type: Boolean,
+        required: true
     }
 })
 //check if already schema, if not create a new schema

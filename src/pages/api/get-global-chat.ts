@@ -7,10 +7,10 @@ connect();
 export default async function getMessages(req: any, res: any) {
     try {
         const currentDate: moment.Moment = moment();
-        const twoDaysLess: moment.Moment = moment(currentDate).subtract(7, 'days');
+        const timeframe: moment.Moment = moment(currentDate).subtract(28, 'days');
         const response: any[] = await GlobalChat.find({
             timestamp: {
-                $gte: twoDaysLess
+                $gte: timeframe
             }
         })
         if (!response) res.status(400).json({status: 'No global messages found.'})

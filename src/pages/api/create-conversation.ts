@@ -1,6 +1,7 @@
 import connect from "@component/../lib/mongodb";
 import Conversation from "@component/../model/conversation_schema";
 import Message from "@component/../model/message_schema";
+import User from '@component/../model/user_schema';
 import moment from 'moment';
 
 connect()
@@ -21,7 +22,6 @@ export default async function createConversation(req: any, res: any) {
             }
         }
         //then just submit the message into the chat
-        console.log("through");
         let conversationId: string = convo._id.toString();
         await Conversation.findOneAndUpdate(
             { _id: convo._id }, 
@@ -43,7 +43,14 @@ export default async function createConversation(req: any, res: any) {
             res.status(400).json({status: 'message not created'})
         }
 
-        res.end(JSON.stringify(response));
+        //notify recipient if email_notification is true for them
+        const recipient: any = await User.findOne({email: req.body.participants_email[1]}, 'username email_notification')
+
+        res.end(JSON.stringify({
+            response, 
+            recipient_notification: recipient.email_notification,
+            to_username: recipient.username
+        }));
     } catch (error) {
         res.status(400).json({status: error})
     }

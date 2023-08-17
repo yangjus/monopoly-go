@@ -1,4 +1,5 @@
 import { GetServerSideProps } from "next";
+import axios from "axios";
 import { useState, ChangeEvent, useEffect } from "react";
 import jwt from "jsonwebtoken";
 import ReactPaginate from 'react-paginate';
@@ -7,7 +8,6 @@ import connect from "@component/../lib/mongodb";
 import User from "@component/../model/user_schema";
 import Conversation from "@component/../model/conversation_schema";
 import { UserType } from "../../constants/users";
-import { FormGroup, FormControlLabel, Checkbox, SelectChangeEvent } from '@mui/material';
 import { Album, stickers } from "../../constants/stickers";
 import FilterSelect from "@component/components/FilterSelect";
 import UserRow from "@component/components/UserRow";
@@ -15,7 +15,8 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import LiveChatWindow from "@component/components/LiveChatWindow";
 import GlobalChatWindow from "@component/components/GlobalChatWindow";
-
+import { alpha, styled } from '@mui/material/styles';
+import { grey } from '@mui/material/colors';
 import {
     Table, 
     TableBody, 
@@ -26,9 +27,15 @@ import {
     Paper, 
     Typography,
     Tooltip,
-    Grid
+    Grid, 
+    FormGroup, 
+    FormControlLabel, 
+    Checkbox, 
+    SelectChangeEvent, 
+    Switch
 } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import moment from "moment";
 
 export interface TradingUser {
@@ -48,6 +55,18 @@ interface TradingPageType {
     allConversations: any
 }
 
+const WhiteSwitch = styled(Switch)(({ theme }) => ({
+    '& .MuiSwitch-switchBase.Mui-checked': {
+      color: grey[50],
+      '&:hover': {
+        backgroundColor: alpha(grey[50], theme.palette.action.hoverOpacity),
+      },
+    },
+    '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+      backgroundColor: grey[50],
+    },
+}));
+
 export default function Trading({ user, matchedUsers, allConversations }: TradingPageType) {
 
     const [selectedAlbum, setSelectedAlbum] = useState<string>("Midsummer Meadows");
@@ -59,6 +78,9 @@ export default function Trading({ user, matchedUsers, allConversations }: Tradin
     const [filteredUsers, setFilteredUsers] = useState<TradingUser[]>(matchedUsers);
     const [isMobile, setIsMobile] = useState(false);
     const [windowHeight, setWindowHeight] = useState<number>(0);
+
+    const [notification, setNotification] = useState<boolean>(user.email_notification);
+    const [disableToggle, setDisableToggle] = useState<boolean>(false);
 
     useEffect(() => {
         const handleResize = () => {
@@ -89,7 +111,7 @@ export default function Trading({ user, matchedUsers, allConversations }: Tradin
 
     const [pageNumber, setPageNumber] = useState(0);
     const usersPerPage = 5; // Number of users to display per page
-    const maxDisplayedPages = isMobile ? 20 : 40; // Maximum number of displayed pages
+    const maxDisplayedPages = 80; // Maximum number of displayed pages
     const pagesVisited = pageNumber * usersPerPage;
     const pageCount = Math.ceil(filteredUsers.length / usersPerPage);
 
@@ -120,6 +142,21 @@ export default function Trading({ user, matchedUsers, allConversations }: Tradin
     const handleCheckStar = (event: ChangeEvent<HTMLInputElement>) => {
         setCheckAllStar(event.target.checked);
     };
+
+    const changeNotification = async (event: ChangeEvent<HTMLInputElement>) => {
+        setNotification(event.target.checked);
+        setDisableToggle(true);
+        //update user in database
+        try {
+            const payload = {email: user.email, email_notification: event.target.checked}
+            const response = await axios.post("/api/email-notification", payload);
+        } catch (error) {
+            console.error(error);
+        }
+        setTimeout(() => {
+            setDisableToggle(false);
+        }, 10000);
+    }
 
     useEffect(() => {
         if (checkAllAlbum && checkAllStar) {
@@ -212,7 +249,7 @@ export default function Trading({ user, matchedUsers, allConversations }: Tradin
                         selectedOption={selectedAlbum}
                     />
                 </div>
-                <div>
+                <div className="mb-4 sm:mb-10">
                     <FormGroup>
                         <FormControlLabel 
                             control={
@@ -238,6 +275,29 @@ export default function Trading({ user, matchedUsers, allConversations }: Tradin
                         onChange={handleStarSelectChange} 
                         selectedOption={selectedStar}
                     />
+                </div>
+                <div className="text-white flex justify-between items-center">
+                    <div>
+                        <Tooltip title="Recieve an email when a user messages you" placement='top'>
+                            <NotificationsIcon 
+                                style={{ 
+                                    color: 'white',
+                                    marginBottom: '4px',
+                                    marginRight: '4px'
+                                }}
+                            />
+                        </Tooltip>
+                        Email Notifications
+                    </div>
+                    <WhiteSwitch 
+                        className="m-0"
+                        checked={notification}
+                        onChange={changeNotification}
+                        disabled={disableToggle}
+                    />
+                </div>
+                <div className="text-xs text-white">
+                    Recieve emails for direct messages
                 </div>
                 <div className="fixed bottom-4 left-4 flex items-center z-20 justify-center bg-blue-700 rounded-full">
                     <LiveChatWindow user={user} conversations={allConversations} isMobile={isMobile}/>
@@ -327,7 +387,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }: {req:
       invite: parsedObject.invite,
       social: parsedObject.social,
       trusted: parsedObject.trusted,
-      inventory: parsedObject.inventory
+      inventory: parsedObject.inventory,
+      email_notification: parsedObject.email_notification
     }
 
     //find all users in db that have atleast 1 sticker user doesn't have,

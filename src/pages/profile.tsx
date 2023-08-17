@@ -120,7 +120,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }: {req:
     invite: parsedObject.invite,
     social: parsedObject.social,
     trusted: parsedObject.trusted,
-    inventory: parsedObject.inventory
+    inventory: parsedObject.inventory,
+    email_notification: parsedObject.email_notification
   }
 
   if (user) {

@@ -21,6 +21,7 @@ import { TradingUser } from '@component/pages/trading';
 import ChatIcon from '@mui/icons-material/Chat';
 import { UserType } from '../../constants/users';
 import axios from "axios";
+import emailjs from "@emailjs/browser";
 
 const style = {
     position: 'absolute', 
@@ -64,6 +65,16 @@ const UserRow = ( {user, otherUser, isMobile} : {user: UserType, otherUser: Trad
             }
             const response = await axios.post("/api/create-conversation", payload);
             if (response) {
+                //send email through emailjs
+                if (response.data.recipient_notification) {
+                    const sendData: {from_username: string, to_username: string, to_email: string} = {
+                        from_username: user.username,
+                        to_username: response.data.to_username,
+                        to_email: email
+                    }
+                    emailjs.send(process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!, 
+                        process.env.NEXT_PUBLIC_EMAILJS_NOTIFICATION_TEMPLATE_ID!, sendData, process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
+                }
                 setSuccess(true);
             }
             //console.log(response);

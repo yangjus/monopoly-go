@@ -16,7 +16,8 @@ export default async function handler(req: any, res: any) {
             social: req.body.social,
             trusted: req.body.trusted, 
             inventory: req.body.inventory, 
-            last_logged: req.body.last_logged
+            last_logged: req.body.last_logged,
+            email_notification: false
         }
         const user = await User.create(payload);
         if (!user) {
