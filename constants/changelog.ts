@@ -5,6 +5,20 @@ export interface ChangeLog {
 
 export const changelog: ChangeLog[] = [
     {
+        date: "August 31, 2023",
+        content: [
+            {
+                main: "Updated to reflect the new Epic Myths album set",
+                sub: [
+                    "Album names updated",
+                    "Stickers and their name, album, and stars are updated",
+                    "Inventory for all users are set back to 0 for all stickers",
+                    "Untradeable stickers info button updated in the profile page"
+                ]
+            },
+        ]
+    },
+    {
         date: "August 17, 2023",
         content: [
             {

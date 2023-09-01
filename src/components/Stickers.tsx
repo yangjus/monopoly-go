@@ -18,7 +18,7 @@ const style = {
     top: '50%', 
     left: '50%', 
     width: '30%',
-    height: '80%',
+    height: '20%',
     transform: 'translate(-50%, -50%)', 
     bgcolor: 'background.paper', 
     boxShadow: 24, 
@@ -26,7 +26,7 @@ const style = {
 };
 
 export default function Stickers({user, isMobile}: {user: any, isMobile: boolean }) {
-    const [selectedAlbum, setSelectedAlbum] = useState<string>("Midsummer Meadows");
+    const [selectedAlbum, setSelectedAlbum] = useState<string>("Adventures of Thor");
     const [selectedStar, setSelectedStar] = useState<string>("1");
 
     const [extraStickers, setExtraStickers] = useState<Sticker[]>();
@@ -181,12 +181,15 @@ export default function Stickers({user, isMobile}: {user: any, isMobile: boolean
                 <IconButton onClick={handleClose} size="small" sx={{ position: 'absolute', top: 0, right: 0 }}>
                     <CloseIcon />
                 </IconButton>
-                <Image
+                <Typography>
+                    All stickers at the end of the album, in a gold frame, are untradeable.
+                </Typography>
+                {/* <Image
                     className="object-contain max-w-full max-h-full mx-auto"
                     src={untradeableStickers.src}
                     alt="image of untradeable stickers"
                     loading="lazy"
-                />
+                /> */}
             </Box>
         </Modal>
         {isMobile && <div className="flex items-center justify-center">

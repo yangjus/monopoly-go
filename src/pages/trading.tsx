@@ -69,7 +69,7 @@ const WhiteSwitch = styled(Switch)(({ theme }) => ({
 
 export default function Trading({ user, matchedUsers, allConversations }: TradingPageType) {
 
-    const [selectedAlbum, setSelectedAlbum] = useState<string>("Midsummer Meadows");
+    const [selectedAlbum, setSelectedAlbum] = useState<string>("Adventures of Thor");
     const [selectedStar, setSelectedStar] = useState<string>("1");
 
     const [checkAllAlbum, setCheckAllAlbum] = useState<boolean>(true);

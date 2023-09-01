@@ -15,7 +15,7 @@ export default function Footer() {
             </Grid>
         </div>
         <div className="block mt-4 sm:inline-block sm:mt-0 text-white mr-4">
-            Ver 2.3.0
+            Ver 2.4.0
         </div>
     </div>
     )
