@@ -5,6 +5,19 @@ export interface ChangeLog {
 
 export const changelog: ChangeLog[] = [
     {
+        date: "December 2, 2023",
+        content: [
+            {
+                main: "Updated to reflect the new Heartfelt Holidays album set",
+                sub: [
+                    "Album names updated",
+                    "Stickers and their name, album, and stars are updated",
+                    "Inventory for all users are set back to 0 for all stickers",
+                ]
+            },
+        ]
+    },
+    {
         date: "August 31, 2023",
         content: [
             {

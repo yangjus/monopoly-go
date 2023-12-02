@@ -182,7 +182,7 @@ export default function Stickers({user, isMobile}: {user: any, isMobile: boolean
                     <CloseIcon />
                 </IconButton>
                 <Typography>
-                    All stickers at the end of the album, in a gold frame, are untradeable.
+                    All stickers in a gold frame are untradeable.
                 </Typography>
                 {/* <Image
                     className="object-contain max-w-full max-h-full mx-auto"
